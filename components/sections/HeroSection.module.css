@@ -1,0 +1,193 @@
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(20px, 4vw, 60px);
+}
+
+/* ── Top Bar ─────────────────────────────── */
+.topBar {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+.topBarLeft, .topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+.globe {
+  color: var(--white-dim);
+  opacity: 0.5;
+}
+
+/* ── Main Content ────────────────────────── */
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  z-index: 1;
+}
+
+/* ── Title Block ─────────────────────────── */
+.titleBlock {
+  flex: 1;
+  max-width: 600px;
+}
+.title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(5rem, 12vw, 11rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+.titleLine {
+  display: block;
+}
+.titleAccent {
+  color: var(--orange);
+  text-shadow: 0 0 40px var(--orange-glow);
+}
+.subtitle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+.subtitleLine {
+  width: 60px;
+  height: 1px;
+  background: var(--orange);
+  opacity: 0.5;
+}
+.codes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 24px;
+}
+
+/* ── Wireframe Container ─────────────────── */
+.wireframeContainer {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+  height: 600px;
+}
+.wireframe {
+  width: 100%;
+  height: 100%;
+  animation: float 8s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* ── Floating Labels ─────────────────────── */
+.floatingLabel {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--white-dim);
+  opacity: 0.4;
+}
+.fl1 { top: 10%; right: -10px; }
+.fl2 { top: 45%; left: -30px; }
+.fl3 { bottom: 20%; right: 10%; }
+
+/* ── Geometric Corners ───────────────────── */
+.geoCorner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: 2;
+}
+.geoTL {
+  top: 20px;
+  left: 20px;
+  border-top: 1px solid rgba(232, 85, 15, 0.25);
+  border-left: 1px solid rgba(232, 85, 15, 0.25);
+}
+.geoTR {
+  top: 20px;
+  right: 20px;
+  border-top: 1px solid rgba(232, 85, 15, 0.25);
+  border-right: 1px solid rgba(232, 85, 15, 0.25);
+}
+.geoBL {
+  bottom: 20px;
+  left: 20px;
+  border-bottom: 1px solid rgba(232, 85, 15, 0.25);
+  border-left: 1px solid rgba(232, 85, 15, 0.25);
+}
+.geoBR {
+  bottom: 20px;
+  right: 20px;
+  border-bottom: 1px solid rgba(232, 85, 15, 0.25);
+  border-right: 1px solid rgba(232, 85, 15, 0.25);
+}
+
+/* ── Scroll Indicator ────────────────────── */
+.scrollIndicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+.scrollLine {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 900px) {
+  .content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .titleBlock {
+    max-width: 100%;
+  }
+  .wireframeContainer {
+    max-width: 300px;
+    height: 400px;
+  }
+  .subtitle {
+    justify-content: center;
+  }
+  .codes {
+    align-items: center;
+  }
+}

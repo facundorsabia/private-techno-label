@@ -1,0 +1,92 @@
+.artist {
+  position: relative;
+  padding: 140px 0;
+  overflow: hidden;
+}
+
+.layout {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+/* ── Wireframe Column ────────────────────── */
+.wireframeCol {
+  flex: 1;
+  max-width: 400px;
+  transition: transform 0.1s linear;
+}
+.wireframeWrapper {
+  width: 100%;
+  max-width: 350px;
+  opacity: 0.6;
+}
+
+/* ── Text Column ─────────────────────────── */
+.textCol {
+  flex: 1;
+}
+.heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin-top: 12px;
+  margin-bottom: 32px;
+  line-height: 0.95;
+}
+.headingAccent {
+  color: var(--orange);
+  text-shadow: 0 0 40px var(--orange-glow);
+}
+.paragraph {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--white-dim);
+  max-width: 520px;
+  margin-bottom: 24px;
+}
+
+/* ── Stats ────────────────────────────────── */
+.stats {
+  display: flex;
+  gap: 48px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.statNumber {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+/* ── Background Element ──────────────────── */
+.bgElement {
+  position: absolute;
+  top: 10%;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  pointer-events: none;
+  transition: transform 0.1s linear;
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .wireframeCol {
+    max-width: 250px;
+  }
+  .stats {
+    gap: 32px;
+  }
+}

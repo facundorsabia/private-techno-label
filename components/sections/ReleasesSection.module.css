@@ -1,0 +1,115 @@
+.releases {
+  position: relative;
+  padding: 120px 0;
+}
+
+/* ── Header ──────────────────────────────── */
+.header {
+  margin-bottom: 60px;
+}
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 6rem);
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+.headerLine {
+  width: 80px;
+  height: 1px;
+  background: var(--orange);
+  margin-top: 20px;
+  opacity: 0.5;
+}
+
+/* ── Grid ─────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* ── Card ─────────────────────────────────── */
+.card {
+  background: var(--black-light);
+  padding: 12px;
+  cursor: pointer;
+  transition: transform var(--transition-smooth);
+}
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* ── Artwork ──────────────────────────────── */
+.artwork {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.artworkInner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.artworkSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.playIcon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  opacity: 0;
+  background: rgba(10, 10, 10, 0.6);
+  transition: opacity var(--transition-fast);
+}
+.card:hover .playIcon {
+  opacity: 1;
+}
+
+/* ── Card Info ────────────────────────────── */
+.cardInfo {
+  padding: 16px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cardArtist {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white-dim);
+}
+.cardCatalog {
+  margin-top: 6px;
+  color: var(--orange);
+  opacity: 0.5;
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}

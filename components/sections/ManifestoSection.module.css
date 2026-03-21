@@ -1,0 +1,79 @@
+.manifesto {
+  position: relative;
+  padding: 160px 0;
+  overflow: hidden;
+}
+
+/* ── Background Lines ────────────────────── */
+.bgLines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.bgLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--white);
+}
+
+/* ── Text Block ──────────────────────────── */
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.lineMain {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+.lineSecondary {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--white-dim);
+}
+.lineMarker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--orange);
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+/* ── Markers ─────────────────────────────── */
+.markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.marker {
+  position: absolute;
+  opacity: 0.3;
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 768px) {
+  .manifesto {
+    padding: 100px 0;
+  }
+  .line {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .lineMarker {
+    align-self: flex-end;
+  }
+}
