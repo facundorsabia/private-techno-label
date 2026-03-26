@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import WireframeBody from '@/components/svg/WireframeBody';
+import Image from 'next/image';
 import DiagramLines from '@/components/svg/DiagramLines';
 import styles from './HeroSection.module.css';
 
@@ -34,25 +34,36 @@ export default function HeroSection() {
         {/* Left: Typography */}
         <div className={styles.titleBlock}>
           <h1 className={styles.title}>
-            <span className={styles.titleLine}>PRIVATE</span>
-            <span className={styles.titleLine}>
-              TECH<span className={styles.titleAccent}>N</span>O
-            </span>
+            <Image
+              src="/images/logos/Private Techno blanco.png"
+              alt="Private Techno"
+              width={600}
+              height={150}
+              className={styles.logo}
+              priority
+            />
           </h1>
           <div className={styles.subtitle}>
             <span className={styles.subtitleLine} />
             <span className="ui-label">UNDERGROUND ELECTRONIC CULTURE</span>
           </div>
           <div className={styles.codes}>
-            <span className="ui-label">CAT.NO: PT-2024-001</span>
-            <span className="ui-label">FORMAT: DIGITAL / VINYL</span>
+            <span className="ui-label">h y p n ø t i c   s ø u n d</span>
+            <span className="ui-label">FORMAT: DIGITAL </span>
           </div>
         </div>
 
-        {/* Right: Wireframe */}
+        {/* Right: Hero Video */}
         <div className={styles.wireframeContainer}>
           <div className={styles.wireframe}>
-            <WireframeBody />
+            <video 
+              src="/videos/PinDown.io_@traf__1774565975.mp4" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className={styles.heroVideo}
+            />
           </div>
           {/* Floating labels */}
           <span className={`${styles.floatingLabel} ${styles.fl1}`}>AXIS.Y</span>

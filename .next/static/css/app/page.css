@@ -56,12 +56,17 @@
   max-width: 600px;
 }
 .HeroSection_title__ayy8V {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: clamp(5rem, 12vw, 11rem);
-  line-height: 0.9;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
+  margin: 0;
+  padding: 0;
+}
+.HeroSection_logo__nFAQ9 {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  display: block;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .HeroSection_titleLine__uwYUx {
   display: block;
@@ -100,6 +105,12 @@
   width: 100%;
   height: 100%;
   animation: HeroSection_float__0q4J_ 8s ease-in-out infinite;
+}
+.HeroSection_heroVideo__UcG0R {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 @keyframes HeroSection_float__0q4J_ {
   0%, 100% { transform: translateY(0); }

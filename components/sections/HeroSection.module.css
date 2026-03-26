@@ -53,12 +53,15 @@
   max-width: 600px;
 }
 .title {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: clamp(5rem, 12vw, 11rem);
-  line-height: 0.9;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
+  margin: 0;
+  padding: 0;
+}
+.logo {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  display: block;
+  user-select: none;
 }
 .titleLine {
   display: block;
@@ -97,6 +100,12 @@
   width: 100%;
   height: 100%;
   animation: float 8s ease-in-out infinite;
+}
+.heroVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
