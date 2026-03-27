@@ -1,3 +1,57 @@
+/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/ui/FuturisticShape.module.css ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************/
+.FuturisticShape_shape__AlduS {
+  background-image: url('/images/assets/shapes.png');
+  background-repeat: no-repeat;
+  display: inline-block;
+  /* Since it's black on white, and site is dark: */
+  filter: invert(1) brightness(1.5) contrast(1.2); 
+  opacity: 0.25;
+  pointer-events: none;
+  background-size: 1000px 1000px; /* Base reference size */
+  transition: opacity 0.3s ease;
+}
+
+.FuturisticShape_shape__AlduS:hover {
+  opacity: 0.5;
+}
+
+/* 1: Large Globe / Planet */
+.FuturisticShape_shape1__zM6ST {
+  width: 90px;
+  height: 90px;
+  background-position: -535px -325px;
+}
+
+/* 2: Tech Crosshair */
+.FuturisticShape_shape2__2D62Q {
+  width: 70px;
+  height: 70px;
+  background-position: -800px -325px;
+}
+
+/* 3: Geometric Grid / Matrix */
+.FuturisticShape_shape3__FDiMu {
+  width: 100px;
+  height: 100px;
+  background-position: -875px -130px;
+}
+
+/* 4: Tactical Arrows line */
+.FuturisticShape_shape4__EkoaO {
+  width: 170px;
+  height: 40px;
+  background-position: -120px -415px;
+}
+
+/* 5: Tech Sparkle / Pulse */
+.FuturisticShape_shape5__5_FHg {
+  width: 45px;
+  height: 45px;
+  background-position: -645px -405px;
+}
+
 /*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/sections/HeroSection.module.css ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************/
@@ -12,6 +66,39 @@
   padding: clamp(20px, 4vw, 60px);
 }
 
+.HeroSection_decorationContainer__lEluD {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.HeroSection_shapeHero1___IIVL {
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  opacity: 0.1;
+  transform: rotate(15deg);
+}
+
+.HeroSection_shapeHero2__dom9w {
+  position: absolute;
+  bottom: 120px;
+  right: 150px;
+  opacity: 0.12;
+}
+
+.HeroSection_shapeHero3__2uAav {
+  position: absolute;
+  top: 40%;
+  left: 30px;
+  opacity: 0.08;
+  transform: rotate(-10deg);
+}
+
 /* ── Top Bar ─────────────────────────────── */
 .HeroSection_topBar__4ulrb {
   position: absolute;
@@ -23,16 +110,20 @@
   align-items: center;
   z-index: 2;
 }
-.HeroSection_topBarLeft__JONqT, .HeroSection_topBarRight__VU8eC {
+
+.HeroSection_topBarLeft__JONqT,
+.HeroSection_topBarRight__VU8eC {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
 .HeroSection_divider__vdGiG {
   width: 40px;
   height: 1px;
   background: rgba(255, 255, 255, 0.15);
 }
+
 .HeroSection_globe__lvukV {
   color: var(--white-dim);
   opacity: 0.5;
@@ -55,38 +146,45 @@
   flex: 1 1;
   max-width: 600px;
 }
+
 .HeroSection_title__ayy8V {
   margin: 0;
   padding: 0;
 }
+
 .HeroSection_logo__nFAQ9 {
   width: 100%;
-  max-width: 500px;
+  max-width: 1000px;
   height: auto;
   display: block;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
 }
+
 .HeroSection_titleLine__uwYUx {
   display: block;
 }
+
 .HeroSection_titleAccent__qwAj0 {
   color: var(--orange);
   text-shadow: 0 0 40px var(--orange-glow);
 }
+
 .HeroSection_subtitle__CoOe2 {
   display: flex;
   align-items: center;
   gap: 16px;
   margin-top: 32px;
 }
+
 .HeroSection_subtitleLine__bbx9H {
   width: 60px;
   height: 1px;
   background: var(--orange);
   opacity: 0.5;
 }
+
 .HeroSection_codes__Ni1WQ {
   display: flex;
   flex-direction: column;
@@ -98,23 +196,33 @@
 .HeroSection_wireframeContainer__Q9Xlq {
   position: relative;
   flex: 1 1;
-  max-width: 500px;
+  max-width: 1200px;
   height: 600px;
 }
+
 .HeroSection_wireframe___Eeu0 {
   width: 100%;
   height: 100%;
   animation: HeroSection_float__0q4J_ 8s ease-in-out infinite;
 }
+
 .HeroSection_heroVideo__UcG0R {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
 }
+
 @keyframes HeroSection_float__0q4J_ {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 /* ── Floating Labels ─────────────────────── */
@@ -126,9 +234,21 @@
   color: var(--white-dim);
   opacity: 0.4;
 }
-.HeroSection_fl1__B01MA { top: 10%; right: -10px; }
-.HeroSection_fl2__AywQ_ { top: 45%; left: -30px; }
-.HeroSection_fl3__DYY7Y { bottom: 20%; right: 10%; }
+
+.HeroSection_fl1__B01MA {
+  top: 10%;
+  right: -10px;
+}
+
+.HeroSection_fl2__AywQ_ {
+  top: 45%;
+  left: -30px;
+}
+
+.HeroSection_fl3__DYY7Y {
+  bottom: 20%;
+  right: 10%;
+}
 
 /* ── Geometric Corners ───────────────────── */
 .HeroSection_geoCorner__k79vG {
@@ -137,24 +257,28 @@
   height: 40px;
   z-index: 2;
 }
+
 .HeroSection_geoTL__SJtX0 {
   top: 20px;
   left: 20px;
   border-top: 1px solid rgba(232, 85, 15, 0.25);
   border-left: 1px solid rgba(232, 85, 15, 0.25);
 }
+
 .HeroSection_geoTR__9FtSx {
   top: 20px;
   right: 20px;
   border-top: 1px solid rgba(232, 85, 15, 0.25);
   border-right: 1px solid rgba(232, 85, 15, 0.25);
 }
+
 .HeroSection_geoBL__qHKoj {
   bottom: 20px;
   left: 20px;
   border-bottom: 1px solid rgba(232, 85, 15, 0.25);
   border-left: 1px solid rgba(232, 85, 15, 0.25);
 }
+
 .HeroSection_geoBR__f2YvV {
   bottom: 20px;
   right: 20px;
@@ -174,15 +298,24 @@
   gap: 8px;
   z-index: 2;
 }
+
 .HeroSection_scrollLine__Ml00q {
   width: 1px;
   height: 40px;
   background: linear-gradient(to bottom, var(--orange), transparent);
   animation: HeroSection_pulse__zSKBW 2s ease-in-out infinite;
 }
+
 @keyframes HeroSection_pulse__zSKBW {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* ── Responsive ──────────────────────────── */
@@ -191,21 +324,24 @@
     flex-direction: column;
     text-align: center;
   }
+
   .HeroSection_titleBlock__hRJMH {
     max-width: 100%;
   }
+
   .HeroSection_wireframeContainer__Q9Xlq {
     max-width: 300px;
     height: 400px;
   }
+
   .HeroSection_subtitle__CoOe2 {
     justify-content: center;
   }
+
   .HeroSection_codes__Ni1WQ {
     align-items: center;
   }
 }
-
 /*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/sections/ReleasesSection.module.css ***!
   \******************************************************************************************************************************************************************************************************************************************************************************************/
@@ -356,6 +492,16 @@
 /* ── Text Column ─────────────────────────── */
 .ArtistSection_textCol__Wha0s {
   flex: 1 1;
+  position: relative;
+}
+
+.ArtistSection_decorationShape__ZHzJp {
+  position: absolute;
+  top: -40px;
+  right: -20px;
+  opacity: 0.1;
+  pointer-events: none;
+  transform: rotate(45deg);
 }
 .ArtistSection_heading__Aizoh {
   font-family: var(--font-heading);

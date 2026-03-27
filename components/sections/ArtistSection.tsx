@@ -3,6 +3,7 @@
 import React from 'react';
 import WireframeHand from '@/components/svg/WireframeHand';
 import ScrollReveal from '@/components/ScrollReveal';
+import FuturisticShape from '@/components/ui/FuturisticShape';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import styles from './ArtistSection.module.css';
 
@@ -25,8 +26,9 @@ export default function ArtistSection() {
 
           {/* Right: text editorial */}
           <div className={styles.textCol}>
+            <FuturisticShape type={5} className={styles.decorationShape} />
             <ScrollReveal>
-              <span className="ui-label">ABOUT THE LABEL</span>
+              <span className="ui-label ui-label-md">ABOUT THE LABEL</span>
               <h2 className={styles.heading}>
                 WE ARE THE<br />
                 <span className={styles.headingAccent}>SIGNAL</span>
@@ -35,16 +37,16 @@ export default function ArtistSection() {
 
             <ScrollReveal delay={200}>
               <p className={styles.paragraph}>
-                Private Techno is not just a record label — it is a collective consciousness operating 
-                at the intersection of sound design, visual experimentation, and underground culture. 
+                Private Techno is not just a record label — it is a collective consciousness operating
+                at the intersection of sound design, visual experimentation, and underground culture.
                 Born in the depths of warehouses and coded into digital frequencies.
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay={400}>
               <p className={styles.paragraph}>
-                Every release is an artifact. Every track, a transmission from the future. We curate 
-                artists who push the boundaries of hypnotic, industrial, and experimental electronic 
+                Every release is an artifact. Every track, a transmission from the future. We curate
+                artists who push the boundaries of hypnotic, industrial, and experimental electronic
                 music into uncharted territories.
               </p>
             </ScrollReveal>
@@ -52,11 +54,11 @@ export default function ArtistSection() {
             <ScrollReveal delay={600}>
               <div className={styles.stats}>
                 <div className={styles.stat}>
-                  <span className={styles.statNumber}>24</span>
+                  <span className={styles.statNumber}>37</span>
                   <span className="ui-label">RELEASES</span>
                 </div>
                 <div className={styles.stat}>
-                  <span className={styles.statNumber}>12</span>
+                  <span className={styles.statNumber}>+50</span>
                   <span className="ui-label">ARTISTS</span>
                 </div>
                 <div className={styles.stat}>

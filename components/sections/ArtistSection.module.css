@@ -25,6 +25,16 @@
 /* ── Text Column ─────────────────────────── */
 .textCol {
   flex: 1;
+  position: relative;
+}
+
+.decorationShape {
+  position: absolute;
+  top: -40px;
+  right: -20px;
+  opacity: 0.1;
+  pointer-events: none;
+  transform: rotate(45deg);
 }
 .heading {
   font-family: var(--font-heading);

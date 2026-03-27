@@ -25,7 +25,9 @@
 }
 
 /* ── Reset & Base ──────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -51,13 +53,16 @@ body {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--black);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--orange);
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #ff6622;
 }
@@ -78,7 +83,12 @@ body {
 }
 
 /* ── Typography ────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   text-transform: uppercase;
@@ -91,6 +101,7 @@ a {
   text-decoration: none;
   transition: color var(--transition-fast);
 }
+
 a:hover {
   color: var(--orange);
 }
@@ -101,10 +112,12 @@ a:hover {
   background: var(--white-dim);
   opacity: 0.25;
 }
+
 .diagram-line--h {
   height: 1px;
   width: 100%;
 }
+
 .diagram-line--v {
   width: 1px;
   height: 100%;
@@ -115,6 +128,7 @@ a:hover {
   border: 1px solid rgba(232, 85, 15, 0.15);
   transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
 }
+
 .glow-border:hover {
   border-color: var(--orange);
   box-shadow: 0 0 30px var(--orange-glow), inset 0 0 30px var(--orange-dim);
@@ -124,6 +138,7 @@ a:hover {
 .geo-frame {
   position: relative;
 }
+
 .geo-frame::before,
 .geo-frame::after {
   content: '';
@@ -131,12 +146,14 @@ a:hover {
   border: 1px solid rgba(255, 255, 255, 0.08);
   pointer-events: none;
 }
+
 .geo-frame::before {
   top: -8px;
   left: -8px;
   right: -8px;
   bottom: -8px;
 }
+
 .geo-frame::after {
   top: -16px;
   left: -16px;
@@ -153,6 +170,12 @@ a:hover {
   text-transform: uppercase;
   color: var(--white-dim);
   opacity: 0.6;
+  white-space: pre-wrap;
+}
+
+.ui-label-md {
+  font-size: 12px;
+  color: var(--white);
 }
 
 /* ── Section styles ────────────────────────────────────── */
@@ -170,6 +193,7 @@ a:hover {
   transform: translateY(40px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .scroll-reveal.visible {
   opacity: 1;
   transform: translateY(0);
@@ -180,8 +204,8 @@ a:hover {
   body {
     font-size: 13px;
   }
+
   .section-container {
     padding: 0 20px;
   }
 }
-

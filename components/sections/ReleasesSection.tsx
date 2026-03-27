@@ -27,7 +27,7 @@ export default function ReleasesSection() {
       <div className="section-container">
         <ScrollReveal>
           <div className={styles.header}>
-            <span className="ui-label">CATALOG</span>
+            <span className="ui-label ui-label-md">CATALOG</span>
             <h2 className={styles.sectionTitle}>RELEASES</h2>
             <div className={styles.headerLine} />
           </div>

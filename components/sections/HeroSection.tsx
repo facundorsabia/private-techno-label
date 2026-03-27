@@ -3,11 +3,18 @@
 import React from 'react';
 import Image from 'next/image';
 import DiagramLines from '@/components/svg/DiagramLines';
+import FuturisticShape from '@/components/ui/FuturisticShape';
 import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
   return (
     <section className={styles.hero} id="hero">
+      <div className={styles.decorationContainer}>
+        <FuturisticShape type={2} className={styles.shapeHero1} />
+        <FuturisticShape type={4} className={styles.shapeHero3} />
+        <FuturisticShape type={3} className={styles.shapeHero2} />
+      </div>
+
       <DiagramLines />
 
       {/* Top bar */}
@@ -45,23 +52,23 @@ export default function HeroSection() {
           </h1>
           <div className={styles.subtitle}>
             <span className={styles.subtitleLine} />
-            <span className="ui-label">UNDERGROUND ELECTRONIC CULTURE</span>
+            <span className="ui-label ui-label-md">UNDERGROUND FREQUENCY</span>
           </div>
           <div className={styles.codes}>
-            <span className="ui-label">h y p n ø t i c   s ø u n d</span>
-            <span className="ui-label">FORMAT: DIGITAL </span>
+            <span className="ui-label ui-label-md">h y p n ø t i c   s ø u n d</span>
+            <span className="ui-label ui-label-md">RΛW S1GNΛL</span>
           </div>
         </div>
 
         {/* Right: Hero Video */}
         <div className={styles.wireframeContainer}>
           <div className={styles.wireframe}>
-            <video 
-              src="/videos/PinDown.io_@traf__1774565975.mp4" 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
+            <video
+              src="/videos/SphereEditWebM.webm"
+              autoPlay
+              loop
+              muted
+              playsInline
               className={styles.heroVideo}
             />
           </div>

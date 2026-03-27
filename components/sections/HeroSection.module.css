@@ -9,6 +9,39 @@
   padding: clamp(20px, 4vw, 60px);
 }
 
+.decorationContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shapeHero1 {
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  opacity: 0.1;
+  transform: rotate(15deg);
+}
+
+.shapeHero2 {
+  position: absolute;
+  bottom: 120px;
+  right: 150px;
+  opacity: 0.12;
+}
+
+.shapeHero3 {
+  position: absolute;
+  top: 40%;
+  left: 30px;
+  opacity: 0.08;
+  transform: rotate(-10deg);
+}
+
 /* ── Top Bar ─────────────────────────────── */
 .topBar {
   position: absolute;
@@ -20,16 +53,20 @@
   align-items: center;
   z-index: 2;
 }
-.topBarLeft, .topBarRight {
+
+.topBarLeft,
+.topBarRight {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
 .divider {
   width: 40px;
   height: 1px;
   background: rgba(255, 255, 255, 0.15);
 }
+
 .globe {
   color: var(--white-dim);
   opacity: 0.5;
@@ -52,36 +89,43 @@
   flex: 1;
   max-width: 600px;
 }
+
 .title {
   margin: 0;
   padding: 0;
 }
+
 .logo {
   width: 100%;
-  max-width: 500px;
+  max-width: 1000px;
   height: auto;
   display: block;
   user-select: none;
 }
+
 .titleLine {
   display: block;
 }
+
 .titleAccent {
   color: var(--orange);
   text-shadow: 0 0 40px var(--orange-glow);
 }
+
 .subtitle {
   display: flex;
   align-items: center;
   gap: 16px;
   margin-top: 32px;
 }
+
 .subtitleLine {
   width: 60px;
   height: 1px;
   background: var(--orange);
   opacity: 0.5;
 }
+
 .codes {
   display: flex;
   flex-direction: column;
@@ -93,23 +137,33 @@
 .wireframeContainer {
   position: relative;
   flex: 1;
-  max-width: 500px;
+  max-width: 1200px;
   height: 600px;
 }
+
 .wireframe {
   width: 100%;
   height: 100%;
   animation: float 8s ease-in-out infinite;
 }
+
 .heroVideo {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
 }
+
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 /* ── Floating Labels ─────────────────────── */
@@ -121,9 +175,21 @@
   color: var(--white-dim);
   opacity: 0.4;
 }
-.fl1 { top: 10%; right: -10px; }
-.fl2 { top: 45%; left: -30px; }
-.fl3 { bottom: 20%; right: 10%; }
+
+.fl1 {
+  top: 10%;
+  right: -10px;
+}
+
+.fl2 {
+  top: 45%;
+  left: -30px;
+}
+
+.fl3 {
+  bottom: 20%;
+  right: 10%;
+}
 
 /* ── Geometric Corners ───────────────────── */
 .geoCorner {
@@ -132,24 +198,28 @@
   height: 40px;
   z-index: 2;
 }
+
 .geoTL {
   top: 20px;
   left: 20px;
   border-top: 1px solid rgba(232, 85, 15, 0.25);
   border-left: 1px solid rgba(232, 85, 15, 0.25);
 }
+
 .geoTR {
   top: 20px;
   right: 20px;
   border-top: 1px solid rgba(232, 85, 15, 0.25);
   border-right: 1px solid rgba(232, 85, 15, 0.25);
 }
+
 .geoBL {
   bottom: 20px;
   left: 20px;
   border-bottom: 1px solid rgba(232, 85, 15, 0.25);
   border-left: 1px solid rgba(232, 85, 15, 0.25);
 }
+
 .geoBR {
   bottom: 20px;
   right: 20px;
@@ -169,15 +239,24 @@
   gap: 8px;
   z-index: 2;
 }
+
 .scrollLine {
   width: 1px;
   height: 40px;
   background: linear-gradient(to bottom, var(--orange), transparent);
   animation: pulse 2s ease-in-out infinite;
 }
+
 @keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* ── Responsive ──────────────────────────── */
@@ -186,16 +265,20 @@
     flex-direction: column;
     text-align: center;
   }
+
   .titleBlock {
     max-width: 100%;
   }
+
   .wireframeContainer {
     max-width: 300px;
     height: 400px;
   }
+
   .subtitle {
     justify-content: center;
   }
+
   .codes {
     align-items: center;
   }
