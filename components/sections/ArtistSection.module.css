@@ -1,6 +1,5 @@
 .artistSection {
-  background-color: var(--background, #050505);
-  padding: 20px 0 100px 0;
+  padding: 20px 150px 100px 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,14 +30,14 @@
 
 .weAre {
   font-size: clamp(2rem, 6.5vw, 8rem);
-  color: var(--white-dim);
+  color: var(--white-dark);
   letter-spacing: -2px;
 }
 
 .signal {
   font-size: clamp(2rem, 6.5vw, 8rem);
   color: transparent;
-  -webkit-text-stroke: 2px var(--white-dim);
+  -webkit-text-stroke: 2px var(--white-dark);
 }
 
 .undergroundOuter {
@@ -63,7 +62,6 @@
 
 /* All boxes have the main dark background so the gap shows through as orange lines */
 .gridItem {
-  background-color: #030303;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -93,6 +91,13 @@
   object-position: left;
 }
 
+.gridVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* ── ROW 1/2 Placeholder/Adjustments ── */
 /* Since boxSignal is gone, we might want to let remaining boxes fill or shift.
    For now, we'll keep the grid columns as they are (1-12). */
@@ -111,18 +116,43 @@
   min-height: 300px;
 }
 
-/* ── ROW 3: Stripes ── */
+/* ── ROW 4: Stripes ── */
 .boxStripesRight {
-  grid-column: 9 / 13;
-  grid-row: 3;
-  min-height: 150px;
-}
-
-/* ── ROW 4: Globe ── */
-.boxGlobe {
   grid-column: 9 / 13;
   grid-row: 4;
   min-height: 150px;
+}
+
+/* ── ROW 3: Globe ── */
+.boxGlobe {
+  grid-column: 9 / 13;
+  grid-row: 3;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.globeImageWrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 120px;
+}
+
+.globePhraseWrapper {
+  margin-top: 15px;
+  padding: 0 5px;
+}
+
+.bottomPhraseSmall {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--white-dark);
+  line-height: 1.4;
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-align: center;
 }
 
 /* ── ROW 3: Barcode left ── */
@@ -138,7 +168,7 @@
 .barcodeTop {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .p2020 {
@@ -152,7 +182,7 @@
 .barcodeImgWrapper {
   flex: 1;
   position: relative;
-  height: 60px;
+  height: 4.5rem;
 }
 
 .manifestoRow {
@@ -160,7 +190,7 @@
   gap: 40px;
   font-family: var(--font-mono);
   font-size: 20px;
-  color: #888;
+  color: var(--white-dark);
   line-height: 1.5;
 }
 
@@ -197,12 +227,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.5px;
-  background-color: var(--orange);
 }
 
 .statBox,
 .statBoxLast {
-  background-color: #030303;
   flex: 1;
   padding: 16px 24px;
   display: flex;
@@ -260,7 +288,7 @@
 
 .bottomPhrase {
   font-family: var(--font-mono);
-  font-size: clamp(16px, 1.8vw, 32px);
+  font-size: 1.2rem;
   color: #ddd;
   line-height: 1.5;
   margin: 0;

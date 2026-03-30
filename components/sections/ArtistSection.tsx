@@ -25,9 +25,16 @@ export default function ArtistSection() {
       <div className={styles.gridContainer}>
 
 
-        {/* Rows 1/2 Right: Waveform decoration (Asset 1) */}
+        {/* Rows 1/2 Right: Abstract Video (replacing Waveform) */}
         <div className={`${styles.gridItem} ${styles.boxWaveform}`}>
-          <Image src="/images/assets/aboutAssets/1.png" alt="Waveform" fill sizes="33vw" className={styles.containImg} />
+          <video
+            src="/videos/abstract-background.webm"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className={styles.gridVideo}
+          />
         </div>
 
         {/* Row 3/4 Left: Warehouse (Asset 2) */}
@@ -35,14 +42,19 @@ export default function ArtistSection() {
           <Image src="/images/assets/aboutAssets/2.png" alt="Warehouse" fill sizes="66vw" className={styles.grayTint} />
         </div>
 
-        {/* Row 3 Right: Stripes (Asset 4) */}
-        <div className={`${styles.gridItem} ${styles.boxStripesRight}`}>
-          <Image src="/images/assets/aboutAssets/4.png" alt="Stripes" fill sizes="33vw" className={`${styles.orangeTint} ${styles.containImg}`} />
+        {/* Row 3 Right: Globe (Asset 6) + Phrase */}
+        <div className={`${styles.gridItem} ${styles.boxGlobe}`}>
+          <div className={styles.globeImageWrapper}>
+            <Image src="/images/assets/aboutAssets/6.png" alt="Globe" fill sizes="33vw" className={`${styles.containImg}`} />
+          </div>
+          <div className={styles.globePhraseWrapper}>
+            <p className={styles.bottomPhraseSmall}>WΞ DØN’T RΞLΞΛSΞ MɄSIC. WΞ RΞLΞΛSΞ STΛTΞS.</p>
+          </div>
         </div>
 
-        {/* Row 4 Right: Globe (Asset 6) */}
-        <div className={`${styles.gridItem} ${styles.boxGlobe}`}>
-          <Image src="/images/assets/aboutAssets/6.png" alt="Globe" fill sizes="33vw" className={`${styles.orangeTint} ${styles.containImg}`} />
+        {/* Row 4 Right: Stripes (Asset 4) */}
+        <div className={`${styles.gridItem} ${styles.boxStripesRight}`}>
+          <Image src="/images/assets/aboutAssets/4.png" alt="Stripes" fill sizes="33vw" className={`${styles.orangeTint} ${styles.containImg}`} />
         </div>
 
         {/* Row 5 Left: Barcode + Text (Asset 3) */}
@@ -50,7 +62,7 @@ export default function ArtistSection() {
           <div className={styles.barcodeTop}>
             <h3 className={styles.p2020}>P2020-20XX</h3>
             <div className={styles.barcodeImgWrapper}>
-              <Image src="/images/assets/aboutAssets/3.png" alt="Barcode" fill sizes="33vw" className={`${styles.orangeTint} ${styles.containImgLeft}`} />
+              <Image src="/images/assets/aboutAssets/3.png" alt="Barcode" fill sizes="33vw" className={`${styles.grayTint} ${styles.containImgLeft}`} />
             </div>
           </div>
           <div className={styles.manifestoRow}>
@@ -92,7 +104,6 @@ export default function ArtistSection() {
         {/* Row 6 Right: Bottom Text */}
         <div className={`${styles.gridItem} ${styles.boxBottomText}`}>
           <p className={styles.bottomPhrase}>BɄILT FØR DΔRK RØØMS ΛND ΣNDLΞSS NIGHTS.</p>
-          <p className={styles.bottomPhrase}>WΞ DØN’T RΞLΞΛSΞ MɄSIC. WΞ RΞLΞΛSΞ STΛTΞS.</p>
         </div>
 
       </div>

@@ -50,8 +50,8 @@ export default function HeroSection() {
             <Image
               src="/images/logos/Private Techno blanco.png"
               alt="Private Techno"
-              width={600}
-              height={150}
+              width={1200}
+              height={300}
               className={styles.logo}
               priority
             />

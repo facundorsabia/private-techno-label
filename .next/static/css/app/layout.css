@@ -14,8 +14,8 @@
   --black-mid: #1a1a1a;
   --white: #e8e8e8;
   --white-dim: #888888;
-  --white-dark: #d0cccc;
-  --orange: #E8550F;
+  --white-dark: #c9c5c5;
+  --orange: #b74829;
   --orange-glow: rgba(232, 85, 15, 0.35);
   --orange-dim: rgba(232, 85, 15, 0.12);
   --font-heading: 'Oswald', sans-serif;
@@ -32,6 +32,19 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  -webkit-user-drag: none;
+}
+
+img,
+video {
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  -webkit-user-drag: none;
 }
 
 html {
