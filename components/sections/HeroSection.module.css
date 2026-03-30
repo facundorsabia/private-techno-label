@@ -21,25 +21,63 @@
 
 .shapeHero1 {
   position: absolute;
-  top: 15%;
+  top: 10%;
   right: 5%;
-  opacity: 0.1;
+  opacity: 0.12;
   transform: rotate(15deg);
 }
 
 .shapeHero2 {
   position: absolute;
-  bottom: 120px;
-  right: 150px;
-  opacity: 0.12;
+  bottom: 80px;
+  right: 15%;
+  opacity: 0.15;
 }
 
 .shapeHero3 {
   position: absolute;
-  top: 40%;
-  left: 30px;
-  opacity: 0.08;
+  top: 35%;
+  left: 20px;
+  opacity: 0.1;
   transform: rotate(-10deg);
+}
+
+.shapeHero4 {
+  position: absolute;
+  top: 60%;
+  right: 100px;
+  opacity: 0.08;
+  transform: rotate(45deg);
+}
+
+.shapeHero5 {
+  position: absolute;
+  bottom: 20%;
+  left: 5%;
+  opacity: 0.1;
+}
+
+.shapeHero7 {
+  position: absolute;
+  top: 75%;
+  left: 25%;
+  opacity: 0.05;
+  transform: rotate(-15deg);
+}
+
+.shapeHero8 {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  opacity: 0.07;
+  transform: rotate(10deg);
+}
+
+.shapeHero9 {
+  position: absolute;
+  bottom: 10%;
+  left: 40%;
+  opacity: 0.08;
 }
 
 /* ── Top Bar ─────────────────────────────── */
@@ -75,19 +113,37 @@
 /* ── Main Content ────────────────────────── */
 .content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 60px;
+  justify-content: center;
+  text-align: center;
+  gap: 40px;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
   z-index: 1;
 }
 
+@media (min-width: 1024px) {
+  .content {
+    gap: 0;
+  }
+}
+
 /* ── Title Block ─────────────────────────── */
 .titleBlock {
-  flex: 1;
-  max-width: 600px;
+  flex: 0 1 auto;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .titleBlock {
+    top: 80px;
+  }
 }
 
 .title {
@@ -115,6 +171,7 @@
 .subtitle {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
   margin-top: 32px;
 }
@@ -129,16 +186,25 @@
 .codes {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 6px;
   margin-top: 24px;
 }
 
 /* ── Wireframe Container ─────────────────── */
+/* ── Wireframe Container ─────────────────── */
 .wireframeContainer {
   position: relative;
-  flex: 1;
-  max-width: 1200px;
-  height: 600px;
+  flex: 0 1 auto;
+  width: 100%;
+  max-width: 500px;
+  height: 500px;
+}
+
+@media (min-width: 1024px) {
+  .wireframeContainer {
+    top: -20px;
+  }
 }
 
 .wireframe {
@@ -260,26 +326,35 @@
 }
 
 /* ── Responsive ──────────────────────────── */
-@media (max-width: 900px) {
-  .content {
-    flex-direction: column;
-    text-align: center;
-  }
-
+@media (min-width: 1024px) {
   .titleBlock {
-    max-width: 100%;
+    max-width: 1000px;
   }
 
-  .wireframeContainer {
-    max-width: 300px;
-    height: 400px;
+  .logo {
+    max-width: 1200px;
   }
 
   .subtitle {
-    justify-content: center;
+    margin-top: 48px;
+    gap: 24px;
+  }
+
+  .subtitle :global(.ui-label) {
+    font-size: 18px;
   }
 
   .codes {
-    align-items: center;
+    margin-top: 36px;
+    gap: 12px;
+  }
+
+  .codes :global(.ui-label) {
+    font-size: 18px;
+  }
+
+  .wireframeContainer {
+    max-width: 500px;
+    height: 700px;
   }
 }

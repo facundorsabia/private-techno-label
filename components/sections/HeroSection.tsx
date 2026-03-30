@@ -10,9 +10,15 @@ export default function HeroSection() {
   return (
     <section className={styles.hero} id="hero">
       <div className={styles.decorationContainer}>
-        <FuturisticShape type={2} className={styles.shapeHero1} />
-        <FuturisticShape type={4} className={styles.shapeHero3} />
-        <FuturisticShape type={3} className={styles.shapeHero2} />
+        <FuturisticShape name="shape1" className={styles.shapeHero1} width={200} height={200} />
+        <FuturisticShape name="shape4" className={styles.shapeHero3} width={300} height={80} />
+        <FuturisticShape name="shape3" className={styles.shapeHero2} width={180} height={180} />
+        <FuturisticShape name="shape5" className={styles.shapeHero4} width={120} height={120} />
+        <FuturisticShape name="shape6" className={styles.shapeHero5} width={150} height={150} />
+        <FuturisticShape name="shape8" className={styles.shapeHero6} width={80} height={80} />
+        <FuturisticShape name="shape7" className={styles.shapeHero7} width={100} height={100} />
+        <FuturisticShape name="shape9" className={styles.shapeHero8} width={140} height={140} />
+        <FuturisticShape name="shapes2" className={styles.shapeHero9} width={110} height={110} />
       </div>
 
       <DiagramLines />

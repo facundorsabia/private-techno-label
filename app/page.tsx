@@ -17,9 +17,9 @@ export default function Home() {
         <WireframeGrid />
       </div>
 
-      <ReleasesSection />
       <ArtistSection />
       <ManifestoSection />
+      <ReleasesSection />
       <Footer />
     </main>
   );

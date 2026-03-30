@@ -1,102 +1,307 @@
-.artist {
-  position: relative;
-  padding: 140px 0;
-  overflow: hidden;
-}
-
-.layout {
-  display: flex;
-  align-items: center;
-  gap: 80px;
-}
-
-/* ── Wireframe Column ────────────────────── */
-.wireframeCol {
-  flex: 1;
-  max-width: 400px;
-  transition: transform 0.1s linear;
-}
-.wireframeWrapper {
-  width: 100%;
-  max-width: 350px;
-  opacity: 0.6;
-}
-
-/* ── Text Column ─────────────────────────── */
-.textCol {
-  flex: 1;
-  position: relative;
-}
-
-.decorationShape {
-  position: absolute;
-  top: -40px;
-  right: -20px;
-  opacity: 0.1;
-  pointer-events: none;
-  transform: rotate(45deg);
-}
-.heading {
-  font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  margin-top: 12px;
-  margin-bottom: 32px;
-  line-height: 0.95;
-}
-.headingAccent {
-  color: var(--orange);
-  text-shadow: 0 0 40px var(--orange-glow);
-}
-.paragraph {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--white-dim);
-  max-width: 520px;
-  margin-bottom: 24px;
-}
-
-/* ── Stats ────────────────────────────────── */
-.stats {
-  display: flex;
-  gap: 48px;
-  margin-top: 40px;
-  padding-top: 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-.stat {
+.artistSection {
+  background-color: var(--background, #050505);
+  padding: 20px 0 100px 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  min-height: 100vh;
 }
-.statNumber {
+
+.mainTitleWrapper {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 40px;
+  margin: 0 auto 60px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.weAreTheSignalOuter {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--orange);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  gap: 30px;
+  line-height: 0.8;
+  margin: 0;
+  white-space: nowrap;
+  width: 100%;
 }
 
-/* ── Background Element ──────────────────── */
-.bgElement {
-  position: absolute;
-  top: 10%;
-  right: -100px;
-  width: 400px;
-  height: 400px;
+.weAre {
+  font-size: clamp(2rem, 6.5vw, 8rem);
+  color: var(--white-dim);
+  letter-spacing: -2px;
+}
+
+.signal {
+  font-size: clamp(2rem, 6.5vw, 8rem);
+  color: transparent;
+  -webkit-text-stroke: 2px var(--white-dim);
+}
+
+.undergroundOuter {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 4vw, 4.8rem);
+  color: var(--white-dark);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  margin-top: 25px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: min-content;
+  gap: 0;
+  width: 100%;
+  max-width: 1500px;
+}
+
+/* All boxes have the main dark background so the gap shows through as orange lines */
+.gridItem {
+  background-color: #030303;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tint Images */
+.orangeTint {
+  object-fit: cover;
+  filter: sepia(1) hue-rotate(-20deg) saturate(10) brightness(0.8) contrast(1.5);
   pointer-events: none;
-  transition: transform 0.1s linear;
 }
 
-/* ── Responsive ──────────────────────────── */
-@media (max-width: 900px) {
-  .layout {
+.grayTint {
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.3) brightness(0.7);
+  pointer-events: none;
+}
+
+.containImg {
+  object-fit: contain;
+  padding: 10px;
+}
+
+.containImgLeft {
+  object-fit: contain;
+  object-position: left;
+}
+
+/* ── ROW 1/2 Placeholder/Adjustments ── */
+/* Since boxSignal is gone, we might want to let remaining boxes fill or shift.
+   For now, we'll keep the grid columns as they are (1-12). */
+
+/* ── ROW 1/2: Waveform ── */
+.boxWaveform {
+  grid-column: 9 / 13;
+  grid-row: 1 / span 2;
+  min-height: 280px;
+}
+
+/* ── ROW 1 & 2: Warehouse Image ── */
+.boxWarehouse {
+  grid-column: 1 / 9;
+  grid-row: 1 / span 2;
+  min-height: 300px;
+}
+
+/* ── ROW 3: Stripes ── */
+.boxStripesRight {
+  grid-column: 9 / 13;
+  grid-row: 3;
+  min-height: 150px;
+}
+
+/* ── ROW 4: Globe ── */
+.boxGlobe {
+  grid-column: 9 / 13;
+  grid-row: 4;
+  min-height: 150px;
+}
+
+/* ── ROW 3: Barcode left ── */
+.boxBarcode {
+  grid-column: 1 / 9;
+  grid-row: 3;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.barcodeTop {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.p2020 {
+  font-family: var(--font-heading);
+  color: var(--orange);
+  font-size: 4.5rem;
+  margin: 0;
+  line-height: 1;
+}
+
+.barcodeImgWrapper {
+  flex: 1;
+  position: relative;
+  height: 60px;
+}
+
+.manifestoRow {
+  display: flex;
+  gap: 40px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: #888;
+  line-height: 1.5;
+}
+
+/* ── ROW 5: Stars right ── */
+.boxGridStars {
+  grid-column: 9 / 13;
+  grid-row: 5;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1.5px;
+  background-color: var(--orange);
+}
+
+.emptyGridSpace {
+  background-color: #030303;
+  background-image:
+    linear-gradient(rgba(232, 85, 15, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 85, 15, 0.4) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center;
+  min-height: 100px;
+}
+
+.starsWrapper {
+  background-color: #030303;
+  position: relative;
+  min-height: 100px;
+}
+
+/* ── ROW 4: Stats left ── */
+.boxStats {
+  grid-column: 1 / 9;
+  grid-row: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+  background-color: var(--orange);
+}
+
+.statBox,
+.statBoxLast {
+  background-color: #030303;
+  flex: 1;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.statNumRow {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  width: 100%;
+}
+
+.statNumScale {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  color: var(--orange);
+  line-height: 1;
+  min-width: 120px;
+  /* Aligns the labels */
+}
+
+.statNumScaleLarge {
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  color: var(--orange);
+  line-height: 0.8;
+  min-width: 120px;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #888;
+  letter-spacing: 0.1em;
+  flex: 1;
+  border-bottom: 1.5px solid rgba(232, 85, 15, 0.3);
+  padding-bottom: 4px;
+}
+
+.statBoxLast .statLabel {
+  border-bottom: none;
+}
+
+/* ── ROW 6: Bottom Text right ── */
+.boxBottomText {
+  grid-column: 9 / 13;
+  grid-row: 6;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bottomPhrase {
+  font-family: var(--font-mono);
+  font-size: clamp(16px, 1.8vw, 32px);
+  color: #ddd;
+  line-height: 1.5;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .manifestoRow {
     flex-direction: column;
-    gap: 40px;
+    gap: 15px;
   }
-  .wireframeCol {
-    max-width: 250px;
+}
+
+@media (max-width: 600px) {
+  .gridContainer {
+    grid-template-columns: 1fr;
   }
-  .stats {
-    gap: 32px;
+
+  .gridItem {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+
+  .boxWarehouse {
+    min-height: 300px;
+  }
+
+  .weAre,
+  .signal,
+  .underground {
+    font-size: 15vw;
+  }
+
+  .statBox,
+  .statBoxLast {
+    padding: 24px;
+  }
+
+  .statNumScale {
+    min-width: 90px;
+    font-size: 3.5rem;
   }
 }

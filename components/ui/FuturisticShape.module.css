@@ -1,50 +1,18 @@
-.shape {
-  background-image: url('/images/assets/shapes.png');
-  background-repeat: no-repeat;
+.shapeContainer {
   display: inline-block;
-  /* Since it's black on white, and site is dark: */
-  filter: invert(1) brightness(1.5) contrast(1.2); 
-  opacity: 0.25;
+  opacity: 0.15;
+  transition: all 0.4s ease;
   pointer-events: none;
-  background-size: 1000px 1000px; /* Base reference size */
-  transition: opacity 0.3s ease;
+  filter: invert(1) brightness(1.2);
+  mix-blend-mode: screen;
 }
 
-.shape:hover {
-  opacity: 0.5;
+.shapeContainer:hover {
+  opacity: 0.4;
+  transform: scale(1.05);
 }
 
-/* 1: Large Globe / Planet */
-.shape1 {
-  width: 90px;
-  height: 90px;
-  background-position: -535px -325px;
-}
-
-/* 2: Tech Crosshair */
-.shape2 {
-  width: 70px;
-  height: 70px;
-  background-position: -800px -325px;
-}
-
-/* 3: Geometric Grid / Matrix */
-.shape3 {
-  width: 100px;
-  height: 100px;
-  background-position: -875px -130px;
-}
-
-/* 4: Tactical Arrows line */
-.shape4 {
-  width: 170px;
-  height: 40px;
-  background-position: -120px -415px;
-}
-
-/* 5: Tech Sparkle / Pulse */
-.shape5 {
-  width: 45px;
-  height: 45px;
-  background-position: -645px -405px;
+.shapeImage {
+  display: block;
+  user-select: none;
 }

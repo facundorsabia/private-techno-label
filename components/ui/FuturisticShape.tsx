@@ -1,25 +1,42 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import styles from './FuturisticShape.module.css';
 
 interface FuturisticShapeProps {
-  type: 1 | 2 | 3 | 4 | 5;
+  name: string; // e.g., 'shape1', 'shape3', etc.
   className?: string; // Optional class for positioning
   style?: React.CSSProperties; // Optional inline style
+  width?: number;
+  height?: number;
 }
 
 /**
- * Component to display futuristic shapes decoded from a sprite sheet.
- * The shapes are sourced from /public/images/assets/shapes.png
+ * Component to display futuristic shapes from individual assets.
+ * The shapes are sourced from /public/images/assets/
  */
-const FuturisticShape: React.FC<FuturisticShapeProps> = ({ type, className = '', style }) => {
+const FuturisticShape: React.FC<FuturisticShapeProps> = ({ 
+  name, 
+  className = '', 
+  style,
+  width = 100,
+  height = 100 
+}) => {
   return (
     <div 
-      className={`${styles.shape} ${styles[`shape${type}`]} ${className}`}
+      className={`${styles.shapeContainer} ${className}`}
       style={style}
       aria-hidden="true"
-    />
+    >
+      <Image
+        src={`/images/assets/${name}.png`}
+        alt=""
+        width={width}
+        height={height}
+        className={styles.shapeImage}
+      />
+    </div>
   );
 };
 
