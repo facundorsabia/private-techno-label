@@ -1,16 +1,17 @@
 .artistSection {
-  padding: 20px 150px 100px 150px;
+  padding: clamp(40px, 8vw, 100px) clamp(16px, 5vw, 150px);
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
   min-height: 100vh;
 }
 
 .mainTitleWrapper {
   width: 100%;
   max-width: 1200px;
-  padding: 0 40px;
-  margin: 0 auto 60px auto;
+  padding: 0 clamp(10px, 4vw, 40px);
+  margin: 0 auto clamp(30px, 6vw, 60px) auto;
   display: flex;
   flex-direction: column;
 }
@@ -19,12 +20,12 @@
   font-family: var(--font-heading);
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: baseline;
-  gap: 30px;
+  gap: clamp(10px, 2vw, 30px);
   line-height: 0.8;
   margin: 0;
-  white-space: nowrap;
   width: 100%;
 }
 
@@ -42,13 +43,13 @@
 
 .undergroundOuter {
   font-family: var(--font-heading);
-  font-size: clamp(1.6rem, 4vw, 4.8rem);
+  font-size: clamp(1.4rem, 4.5vw, 4.8rem);
   color: var(--white-dark);
   display: flex;
   justify-content: space-between;
   width: 100%;
   margin: 0;
-  margin-top: 25px;
+  margin-top: clamp(15px, 3vw, 25px);
 }
 
 .gridContainer {
@@ -89,6 +90,12 @@
 .containImgLeft {
   object-fit: contain;
   object-position: left;
+}
+
+.coverImg {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .gridVideo {
@@ -198,26 +205,21 @@
 .boxGridStars {
   grid-column: 9 / 13;
   grid-row: 5;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 1.5px;
-  background-color: var(--orange);
-}
-
-.emptyGridSpace {
-  background-color: #030303;
-  background-image:
-    linear-gradient(rgba(232, 85, 15, 0.4) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232, 85, 15, 0.4) 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-position: center;
-  min-height: 100px;
+  display: flex;
+  flex-direction: column;
 }
 
 .starsWrapper {
   background-color: #030303;
   position: relative;
   min-height: 100px;
+  opacity: 0.6;
+}
+
+@media (min-width: 1025px) {
+  .starsAssetDesktop {
+    width: 110% !important;
+  }
 }
 
 /* ── ROW 4: Stats left ── */
@@ -225,55 +227,65 @@
   grid-column: 1 / 9;
   grid-row: 4;
   display: flex;
-  flex-direction: column;
-  gap: 1.5px;
+  position: relative;
+  align-items: center;
+  /* Faint background grid lines to match the image aesthetic */
+  background-image:
+    linear-gradient(transparent 20%, rgba(232, 85, 15, 0.2) 20%, rgba(232, 85, 15, 0.2) calc(20% + 1px), transparent calc(20% + 1px)),
+    linear-gradient(transparent 70%, rgba(232, 85, 15, 0.2) 70%, rgba(232, 85, 15, 0.2) calc(70% + 1px), transparent calc(70% + 1px));
 }
 
-.statBox,
-.statBoxLast {
-  flex: 1;
-  padding: 16px 24px;
+.statsFlex {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.statNumRow {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 30px;
   width: 100%;
 }
 
-.statNumScale {
+.statBox {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--orange);
+  background-color: #030303;
+  width: auto;
+  min-width: 130px;
+}
+
+.statNumScale,
+.statNumScaleLarge {
   font-family: var(--font-heading);
-  font-size: 4rem;
   color: var(--orange);
-  line-height: 1;
-  min-width: 120px;
-  /* Aligns the labels */
+  padding: 10px 15px;
+  text-align: left;
+  line-height: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  /* Pushes the label to align evenly at the bottom of all cards */
+}
+
+.statNumScale {
+  font-size: clamp(3rem, 5vw, 4.5rem);
 }
 
 .statNumScaleLarge {
-  font-family: var(--font-heading);
-  font-size: 5rem;
-  color: var(--orange);
-  line-height: 0.8;
-  min-width: 120px;
+  font-size: clamp(5rem, 8vw, 8.5rem);
+  padding: 5px 15px 5px 15px;
+  line-height: 0.7;
+  transform: translate(10px, -10px);
 }
 
 .statLabel {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: #888;
+  color: var(--orange);
   letter-spacing: 0.1em;
-  flex: 1;
-  border-bottom: 1.5px solid rgba(232, 85, 15, 0.3);
-  padding-bottom: 4px;
-}
-
-.statBoxLast .statLabel {
-  border-bottom: none;
+  border-top: 1px solid var(--orange);
+  padding: 8px 15px;
+  text-align: left;
 }
 
 /* ── ROW 6: Bottom Text right ── */
@@ -299,37 +311,106 @@
 @media (max-width: 1024px) {
   .manifestoRow {
     flex-direction: column;
-    gap: 15px;
+    gap: 25px;
+  }
+
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+  .gridItem {
+    grid-column: span 1 !important;
+    grid-row: auto !important;
+  }
+
+  .boxWarehouse,
+  .boxWaveform,
+  .boxBarcode,
+  .boxStats,
+  .boxBottomText,
+  .boxStripesRight {
+    grid-column: 1 / -1 !important;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .gridContainer {
     grid-template-columns: 1fr;
   }
 
   .gridItem {
     grid-column: 1 / -1 !important;
-    grid-row: auto !important;
   }
 
   .boxWarehouse {
-    min-height: 300px;
+    min-height: 250px;
+  }
+
+  .boxGlobe {
+    min-height: 250px;
+  }
+
+  .weAreTheSignalOuter {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
   }
 
   .weAre,
-  .signal,
-  .underground {
-    font-size: 15vw;
+  .signal {
+    font-size: 20vw;
+    line-height: 1;
+    white-space: normal;
+    text-align: center;
   }
 
-  .statBox,
-  .statBoxLast {
-    padding: 24px;
+  .undergroundOuter {
+    font-size: 6.5vw;
+    margin-top: 20px;
+  }
+
+  .p2020 {
+    font-size: 3.5rem;
+  }
+
+  .barcodeTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .barcodeImgWrapper {
+    width: 100%;
+  }
+
+  .manifestoRow {
+    font-size: 16px;
+  }
+
+  .bottomPhrase,
+  .bottomPhraseSmall {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .statBox {
+    padding: 0;
+    min-width: auto;
+    width: 100%;
   }
 
   .statNumScale {
-    min-width: 90px;
     font-size: 3.5rem;
+    padding: 15px;
+  }
+
+  .statNumScaleLarge {
+    font-size: 5.5rem;
+    padding: 15px;
+    line-height: 0.8;
+  }
+
+  .statLabel {
+    padding: 10px 15px;
   }
 }

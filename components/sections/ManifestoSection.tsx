@@ -5,10 +5,9 @@ import ScrollReveal from '@/components/ScrollReveal';
 import styles from './ManifestoSection.module.css';
 
 const MANIFESTO_LINES = [
-  'PRIVATE TECHNO',
-  'UNDERGROUND ELECTRONIC CULTURE',
-  'HYPNOTIC SOUND EXPLORATION',
-  'DEEP INTO THE MACHINE',
+  'HYPNOTIC',
+  'SOUND',
+  'EXPLORATION',
   'BEYOND THE FREQUENCY',
 ];
 

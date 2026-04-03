@@ -1,23 +1,67 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import styles from './ArtistSection.module.css';
 
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 export default function ArtistSection() {
   const { ref } = useScrollAnimation();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    tl.from(`.${styles.weAre}`, {
+      opacity: 0,
+      y: 40,
+      duration: 0.7,
+      ease: 'power3.out'
+    })
+      .from(`.${styles.signal}`, {
+        opacity: 0,
+        scale: 1.4,
+        filter: 'blur(15px)',
+        duration: 1,
+        ease: 'expo.out'
+      }, "-=0.4")
+      .from('.underground-char', {
+        opacity: 0,
+        z: -800,
+        y: 80,
+        scale: 0.2,
+        rotationX: -90,
+        duration: 2.4,
+        stagger: {
+          each: 0.12,
+          from: 'start'
+        },
+        ease: 'back.out(2)'
+      }, "-=0.7");
+  }, { scope: containerRef });
 
   return (
     <section className={styles.artistSection} id="artist" ref={ref}>
-      <div className={styles.mainTitleWrapper}>
+      <div className={styles.mainTitleWrapper} ref={containerRef}>
         <h2 className={styles.weAreTheSignalOuter}>
           <span className={styles.weAre}>WE ARE THE</span>
           <span className={styles.signal}>SIGNAL</span>
         </h2>
-        <h2 className={styles.undergroundOuter}>
+        <h2 className={styles.undergroundOuter} style={{ perspective: '800px' }}>
           {"UNDERGROUND".split("").map((char, index) => (
-            <span key={index}>{char}</span>
+            <span key={index} className="underground-char" style={{ display: 'inline-block' }}>{char}</span>
           ))}
         </h2>
       </div>
@@ -54,13 +98,13 @@ export default function ArtistSection() {
 
         {/* Row 4 Right: Stripes (Asset 4) */}
         <div className={`${styles.gridItem} ${styles.boxStripesRight}`}>
-          <Image src="/images/assets/aboutAssets/4.png" alt="Stripes" fill sizes="33vw" className={`${styles.orangeTint} ${styles.containImg}`} />
+          <Image src="/images/assets/aboutAssets/4.png" alt="Stripes" fill sizes="100vw" className={styles.coverImg} />
         </div>
 
         {/* Row 5 Left: Barcode + Text (Asset 3) */}
         <div className={`${styles.gridItem} ${styles.boxBarcode}`}>
           <div className={styles.barcodeTop}>
-            <h3 className={styles.p2020}>P2020-20XX</h3>
+            <h3 className={styles.p2020}>P2ø20-2øXX</h3>
             <div className={styles.barcodeImgWrapper}>
               <Image src="/images/assets/aboutAssets/3.png" alt="Barcode" fill sizes="33vw" className={`${styles.grayTint} ${styles.containImgLeft}`} />
             </div>
@@ -73,28 +117,23 @@ export default function ArtistSection() {
 
         {/* Row 5 Right: Grid & Stars (Asset 5) */}
         <div className={`${styles.gridItem} ${styles.boxGridStars}`}>
-          <div className={styles.emptyGridSpace}></div>
           <div className={styles.starsWrapper}>
-            <Image src="/images/assets/aboutAssets/5.png" alt="Stars" fill sizes="15vw" className={`${styles.orangeTint} ${styles.containImg}`} />
+            <Image src="/images/assets/aboutAssets/5.png" alt="Stars" fill sizes="15vw" className={`${styles.containImg} ${styles.starsAssetDesktop}`} />
           </div>
         </div>
 
-        {/* Row 6 Left: Stats */}
+        {/* Row 4 Left: Stats */}
         <div className={`${styles.gridItem} ${styles.boxStats}`}>
-          <div className={styles.statBox}>
-            <div className={styles.statNumRow}>
-              <span className={styles.statNumScale}>+35</span>
+          <div className={styles.statsFlex}>
+            <div className={styles.statBox}>
+              <span className={styles.statNumScale}>37</span>
               <span className={styles.statLabel}>RELEASES</span>
             </div>
-          </div>
-          <div className={styles.statBox}>
-            <div className={styles.statNumRow}>
+            <div className={styles.statBox}>
               <span className={styles.statNumScale}>+50</span>
               <span className={styles.statLabel}>ARTISTS</span>
             </div>
-          </div>
-          <div className={styles.statBoxLast}>
-            <div className={styles.statNumRow}>
+            <div className={styles.statBox}>
               <span className={styles.statNumScaleLarge}>∞</span>
               <span className={styles.statLabel}>FREQUENCIES</span>
             </div>
