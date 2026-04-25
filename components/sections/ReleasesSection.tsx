@@ -5,69 +5,84 @@ import Image from 'next/image';
 import ScrollReveal from '@/components/ScrollReveal';
 import styles from './ReleasesSection.module.css';
 
-interface Release {
-  id: string;
-  title: string;
-  artist: string;
-  catalog: string;
-  color: string;
-  cover: string;
-}
+import { RELEASES } from '@/data/releases';
+import ReleaseCard from '@/components/ui/ReleaseCard';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 
-const RELEASES: Release[] = [
-  { id: '1', title: 'RISE AS ONE', artist: 'DEEPAK SHARMA', catalog: 'PT-001', color: '#E8550F', cover: '/images/albumCovers/0. Deepak Sharma - Rise as One Cover .jpg' },
-  { id: '2', title: 'KRYPTONITA', artist: 'NEURAL DRIFT', catalog: 'PT-002', color: '#8B3A0F', cover: '/images/albumCovers/0. Kryptonita.jpg' },
-  { id: '3', title: 'LANZAMIENTO', artist: 'AXIS CONTROL', catalog: 'PT-003', color: '#444', cover: '/images/albumCovers/0. Lanzamiento.jpg' },
-  { id: '4', title: 'ONIRICO', artist: 'PHASE SHIFT', catalog: 'PT-004', color: '#E8550F', cover: '/images/albumCovers/0. Onirico.jpg' },
-  { id: '5', title: 'RANDOM ILLUSIONS', artist: 'GRID ZERO', catalog: 'PT-005', color: '#666', cover: '/images/albumCovers/0. Random Illusions.jpg' },
-  { id: '6', title: 'SINAPSIS', artist: 'MONO CULT', catalog: 'PT-006', color: '#8B3A0F', cover: '/images/albumCovers/0. Sinapsis.jpg' },
-];
+const INITIAL_COUNT = 6;
+const INCREMENT = 6;
 
 export default function ReleasesSection() {
+  const [visibleCount, setVisibleCount] = React.useState(INITIAL_COUNT);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const visibleReleases = RELEASES.slice(0, visibleCount);
+  const hasMore = visibleCount < RELEASES.length;
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => Math.min(prev + INCREMENT, RELEASES.length));
+  };
+
+  // Animation for newly added items
+  useGSAP(() => {
+    const cards = containerRef.current?.querySelectorAll('.release-card-entry');
+    if (cards && cards.length > 0) {
+      // Only animate the newly added cards (the last INCREMENT items)
+      const newCards = Array.from(cards).slice(visibleCount - INCREMENT);
+      
+      gsap.fromTo(newCards, 
+        { 
+          opacity: 0, 
+          y: 30, 
+          scale: 0.95,
+          filter: 'brightness(2) blur(10px)'
+        }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          filter: 'brightness(1) blur(0px)',
+          duration: 0.8, 
+          stagger: 0.1, 
+          ease: 'power4.out' 
+        }
+      );
+    }
+  }, { dependencies: [visibleCount], scope: containerRef });
+
   return (
-    <section className={styles.releases} id="releases">
+    <section className={styles.releases} id="releases" ref={containerRef}>
       <div className="section-container">
         <ScrollReveal>
           <div className={styles.header}>
-            <span className="ui-label ui-label-md">CATALOG</span>
+            <div className={styles.headerTop}>
+              <span className="ui-label ui-label-md">CATALOG</span>
+              <span className={styles.count}>[{RELEASES.length} UNITS]</span>
+            </div>
             <h2 className={styles.sectionTitle}>RELEASES</h2>
             <div className={styles.headerLine} />
           </div>
         </ScrollReveal>
 
         <div className={styles.grid}>
-          {RELEASES.map((release, i) => (
-            <ScrollReveal key={release.id} delay={i * 100}>
-              <div className={`${styles.card} glow-border`}>
-                {/* Album artwork */}
-                <div className={styles.artwork}>
-                  <div className={styles.artworkInner}>
-                    <Image
-                      src={release.cover}
-                      alt={`${release.title} Cover`}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                      sizes="(max-width: 900px) 50vw, (max-width: 500px) 100vw, 33vw"
-                    />
-
-                    {/* Play icon on hover */}
-                    <div className={styles.playIcon}>
-                      <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-                        <polygon points="6,3 20,12 6,21" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.cardInfo}>
-                  <span className={styles.cardTitle}>{release.title}</span>
-                  <span className={styles.cardArtist}>{release.artist}</span>
-                  <span className={`ui-label ${styles.cardCatalog}`}>{release.catalog}</span>
-                </div>
-              </div>
-            </ScrollReveal>
+          {visibleReleases.map((release, i) => (
+            <ReleaseCard key={release.id} release={release} index={i} />
           ))}
         </div>
+
+        {hasMore && (
+          <div className={styles.actions}>
+            <button 
+              className={styles.loadMoreBtn} 
+              onClick={handleLoadMore}
+            >
+              <span className={styles.btnLabel}>LOAD MORE</span>
+              <div className={styles.btnLine} />
+              <div className={styles.btnGlitch} />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

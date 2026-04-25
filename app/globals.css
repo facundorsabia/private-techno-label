@@ -181,8 +181,10 @@ a:hover {
 }
 
 .ui-label-md {
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--white);
+  letter-spacing: 0.2em;
 }
 
 /* ── Section styles ────────────────────────────────────── */
