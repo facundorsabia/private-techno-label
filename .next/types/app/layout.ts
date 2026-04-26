@@ -1,4 +1,4 @@
-// File: /Users/facundorodriguezs/Documents/private-techno-label/app/layout.tsx
+// File: C:\Repos\private-techno-label\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -399,19 +399,37 @@
 /* ── Header ──────────────────────────────── */
 .ReleasesSection_header__tA_Ea {
   margin-bottom: 60px;
+  position: relative;
 }
+
+.ReleasesSection_headerTop__pYXti {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.ReleasesSection_count__D_S9o {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+}
+
 .ReleasesSection_sectionTitle__x94F_ {
   font-family: var(--font-heading);
   font-size: clamp(3rem, 8vw, 6rem);
   letter-spacing: 0.1em;
   margin-top: 8px;
+  line-height: 1;
 }
+
 .ReleasesSection_headerLine__Sf6yw {
-  width: 80px;
+  width: 100%;
   height: 1px;
-  background: var(--orange);
+  background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
   margin-top: 20px;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 /* ── Grid ─────────────────────────────────── */
@@ -494,24 +512,205 @@
   opacity: 0.5;
 }
 
+/* ── Actions ──────────────────────────────── */
+.ReleasesSection_actions__8EAep {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.ReleasesSection_loadMoreBtn__CA2qq {
+  position: relative;
+  background: transparent;
+  border: 1px solid var(--orange);
+  color: var(--white);
+  padding: 15px 40px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  overflow: hidden;
+}
+
+.ReleasesSection_loadMoreBtn__CA2qq:hover {
+  background: var(--orange);
+  color: var(--black);
+  box-shadow: 0 0 30px var(--orange-glow);
+}
+
+.ReleasesSection_btnLine__9Qugt {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--white);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s ease;
+}
+
+.ReleasesSection_loadMoreBtn__CA2qq:hover .ReleasesSection_btnLine__9Qugt {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 /* ── Responsive ──────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .ReleasesSection_grid__0sP6_ {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (max-width: 500px) {
+@media (max-width: 640px) {
   .ReleasesSection_grid__0sP6_ {
     grid-template-columns: 1fr;
-    max-width: 360px;
-    margin: 0 auto;
+  }
+  
+  .ReleasesSection_sectionTitle__x94F_ {
+    font-size: 40px;
   }
 }
 
-/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/sections/ArtistSection.module.css ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************/
-.ArtistSection_artistSection__88EB7 {
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/ui/ReleaseCard.module.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+.ReleaseCard_cardWrapper__K3pX1 {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  height: 100%;
+}
+
+.ReleaseCard_card__d5DvI {
+  position: relative;
+  background: var(--black-light);
+  padding: 12px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ReleaseCard_artwork__XRCnF {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--black-mid);
+  overflow: hidden;
+}
+
+.ReleaseCard_artworkInner__EJYpE {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform var(--transition-fast);
+}
+
+.ReleaseCard_card__d5DvI:hover .ReleaseCard_artworkInner__EJYpE {
+  transform: scale(1.05);
+}
+
+.ReleaseCard_playIcon__LZVFd {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  color: var(--orange);
+  transition: all var(--transition-fast);
+  z-index: 2;
+  text-shadow: 0 0 15px var(--orange);
+}
+
+.ReleaseCard_card__d5DvI:hover .ReleaseCard_playIcon__LZVFd {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.ReleaseCard_cardInfo__g9eWI {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-grow: 1;
+}
+
+.ReleaseCard_titleRow__wM09V {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.ReleaseCard_cardTitle__HoP37 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.ReleaseCard_cardCatalog__4Sau6 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--orange);
+  opacity: 1;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.ReleaseCard_cardArtist__E831u {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 5px;
+}
+
+/* Corner Accents */
+.ReleaseCard_cornerTL__OipU0, .ReleaseCard_cornerBR__Vx3Q6 {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--orange);
+  border-style: solid;
+  opacity: 0;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.ReleaseCard_cornerTL__OipU0 {
+  top: 0;
+  left: 0;
+  border-width: 2px 0 0 2px;
+}
+
+.ReleaseCard_cornerBR__Vx3Q6 {
+  bottom: 0;
+  right: 0;
+  border-width: 0 2px 2px 0;
+}
+
+.ReleaseCard_card__d5DvI:hover .ReleaseCard_cornerTL__OipU0,
+.ReleaseCard_card__d5DvI:hover .ReleaseCard_cornerBR__Vx3Q6 {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .ReleaseCard_cardTitle__HoP37 {
+    font-size: 16px;
+  }
+}
+
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/sections/AboutSection.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
+.AboutSection_aboutSection__hlP2L {
   padding: clamp(40px, 8vw, 100px) clamp(16px, 5vw, 150px);
   display: flex;
   flex-direction: column;
@@ -520,7 +719,7 @@
   min-height: 100vh;
 }
 
-.ArtistSection_mainTitleWrapper__01b38 {
+.AboutSection_mainTitleWrapper__o0vtR {
   width: 100%;
   max-width: 1200px;
   padding: 0 clamp(10px, 4vw, 40px);
@@ -529,7 +728,7 @@
   flex-direction: column;
 }
 
-.ArtistSection_weAreTheSignalOuter__na4Ak {
+.AboutSection_weAreTheSignalOuter__3AcQ7 {
   font-family: var(--font-heading);
   display: flex;
   flex-direction: row;
@@ -542,19 +741,19 @@
   width: 100%;
 }
 
-.ArtistSection_weAre__54TKx {
+.AboutSection_weAre__PwNDy {
   font-size: clamp(2rem, 6.5vw, 8rem);
   color: var(--white-dark);
   letter-spacing: -2px;
 }
 
-.ArtistSection_signal___upN2 {
+.AboutSection_signal__rV_at {
   font-size: clamp(2rem, 6.5vw, 8rem);
   color: transparent;
   -webkit-text-stroke: 2px var(--white-dark);
 }
 
-.ArtistSection_undergroundOuter__a0B9c {
+.AboutSection_undergroundOuter__V0I9b {
   font-family: var(--font-heading);
   font-size: clamp(1.4rem, 4.5vw, 4.8rem);
   color: var(--white-dark);
@@ -565,7 +764,7 @@
   margin-top: clamp(15px, 3vw, 25px);
 }
 
-.ArtistSection_gridContainer__QLjtk {
+.AboutSection_gridContainer__QV_87 {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-auto-rows: min-content;
@@ -576,7 +775,7 @@
 }
 
 /* All boxes have the main dark background so the gap shows through as orange lines */
-.ArtistSection_gridItem__bKNfK {
+.AboutSection_gridItem___5u4j {
   position: relative;
   overflow: hidden;
   display: flex;
@@ -584,35 +783,35 @@
 }
 
 /* Tint Images */
-.ArtistSection_orangeTint__kf3F3 {
+.AboutSection_orangeTint__sTL52 {
   object-fit: cover;
   filter: sepia(1) hue-rotate(-20deg) saturate(10) brightness(0.8) contrast(1.5);
   pointer-events: none;
 }
 
-.ArtistSection_grayTint__b4OZw {
+.AboutSection_grayTint__X28l0 {
   object-fit: cover;
   filter: grayscale(100%) contrast(1.3) brightness(0.7);
   pointer-events: none;
 }
 
-.ArtistSection_containImg__0mLxE {
+.AboutSection_containImg__8bjOT {
   object-fit: contain;
   padding: 10px;
 }
 
-.ArtistSection_containImgLeft__3nEaC {
+.AboutSection_containImgLeft__xZMlr {
   object-fit: contain;
   object-position: left;
 }
 
-.ArtistSection_coverImg__tq0_R {
+.AboutSection_coverImg__kKfxo {
   object-fit: cover;
   width: 100%;
   height: 100%;
 }
 
-.ArtistSection_gridVideo__KMAlj {
+.AboutSection_gridVideo__TLZFi {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -624,28 +823,28 @@
    For now, we'll keep the grid columns as they are (1-12). */
 
 /* ── ROW 1/2: Waveform ── */
-.ArtistSection_boxWaveform__NAMpu {
+.AboutSection_boxWaveform__5hFuJ {
   grid-column: 9 / 13;
   grid-row: 1 / span 2;
   min-height: 280px;
 }
 
 /* ── ROW 1 & 2: Warehouse Image ── */
-.ArtistSection_boxWarehouse__QRz0q {
+.AboutSection_boxWarehouse__nuJ6q {
   grid-column: 1 / 9;
   grid-row: 1 / span 2;
   min-height: 300px;
 }
 
 /* ── ROW 4: Stripes ── */
-.ArtistSection_boxStripesRight__gMeuR {
+.AboutSection_boxStripesRight__PbPM1 {
   grid-column: 9 / 13;
   grid-row: 4;
   min-height: 150px;
 }
 
 /* ── ROW 3: Globe ── */
-.ArtistSection_boxGlobe__bue_A {
+.AboutSection_boxGlobe__L7vOp {
   grid-column: 9 / 13;
   grid-row: 3;
   min-height: 250px;
@@ -654,19 +853,19 @@
   padding: 15px;
 }
 
-.ArtistSection_globeImageWrapper__Eszxf {
+.AboutSection_globeImageWrapper__Rr7_w {
   position: relative;
   width: 100%;
   flex: 1 1;
   min-height: 120px;
 }
 
-.ArtistSection_globePhraseWrapper__xHnvr {
+.AboutSection_globePhraseWrapper__UUFK6 {
   margin-top: 15px;
   padding: 0 5px;
 }
 
-.ArtistSection_bottomPhraseSmall__7XTlz {
+.AboutSection_bottomPhraseSmall__zAhQ9 {
   font-family: var(--font-mono);
   font-size: 1.2rem;
   color: var(--white-dark);
@@ -677,7 +876,7 @@
 }
 
 /* ── ROW 3: Barcode left ── */
-.ArtistSection_boxBarcode__IzwUC {
+.AboutSection_boxBarcode__H_AIB {
   grid-column: 1 / 9;
   grid-row: 3;
   padding: 24px;
@@ -686,13 +885,13 @@
   gap: 20px;
 }
 
-.ArtistSection_barcodeTop__lHv3R {
+.AboutSection_barcodeTop__pfJ_L {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.ArtistSection_p2020__ohkB_ {
+.AboutSection_p2020__7jeB1 {
   font-family: var(--font-heading);
   color: var(--orange);
   font-size: 4.5rem;
@@ -700,13 +899,13 @@
   line-height: 1;
 }
 
-.ArtistSection_barcodeImgWrapper__uLcgm {
+.AboutSection_barcodeImgWrapper__F1TTf {
   flex: 1 1;
   position: relative;
   height: 4.5rem;
 }
 
-.ArtistSection_manifestoRow__Z_Bsg {
+.AboutSection_manifestoRow__0yL1G {
   display: flex;
   gap: 40px;
   font-family: var(--font-mono);
@@ -716,14 +915,14 @@
 }
 
 /* ── ROW 5: Stars right ── */
-.ArtistSection_boxGridStars__ra4eZ {
+.AboutSection_boxGridStars__bbSxl {
   grid-column: 9 / 13;
   grid-row: 5;
   display: flex;
   flex-direction: column;
 }
 
-.ArtistSection_starsWrapper__o0afG {
+.AboutSection_starsWrapper__qo3HD {
   background-color: #030303;
   position: relative;
   min-height: 100px;
@@ -731,13 +930,13 @@
 }
 
 @media (min-width: 1025px) {
-  .ArtistSection_starsAssetDesktop__rBHw9 {
+  .AboutSection_starsAssetDesktop__02v4N {
     width: 110% !important;
   }
 }
 
 /* ── ROW 4: Stats left ── */
-.ArtistSection_boxStats__ymDSL {
+.AboutSection_boxStats__Ep0YG {
   grid-column: 1 / 9;
   grid-row: 4;
   display: flex;
@@ -749,7 +948,7 @@
     linear-gradient(transparent 70%, rgba(232, 85, 15, 0.2) 70%, rgba(232, 85, 15, 0.2) calc(70% + 1px), transparent calc(70% + 1px));
 }
 
-.ArtistSection_statsFlex__ecHX4 {
+.AboutSection_statsFlex__LPZuT {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -758,7 +957,7 @@
   width: 100%;
 }
 
-.ArtistSection_statBox__PW62i {
+.AboutSection_statBox__W7BVQ {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--orange);
@@ -767,8 +966,8 @@
   min-width: 130px;
 }
 
-.ArtistSection_statNumScale__q0Fsq,
-.ArtistSection_statNumScaleLarge__RLK75 {
+.AboutSection_statNumScale__tH4Ir,
+.AboutSection_statNumScaleLarge__SlrTQ {
   font-family: var(--font-heading);
   color: var(--orange);
   padding: 10px 15px;
@@ -781,18 +980,18 @@
   /* Pushes the label to align evenly at the bottom of all cards */
 }
 
-.ArtistSection_statNumScale__q0Fsq {
+.AboutSection_statNumScale__tH4Ir {
   font-size: clamp(3rem, 5vw, 4.5rem);
 }
 
-.ArtistSection_statNumScaleLarge__RLK75 {
+.AboutSection_statNumScaleLarge__SlrTQ {
   font-size: clamp(5rem, 8vw, 8.5rem);
   padding: 5px 15px 5px 15px;
   line-height: 0.7;
   transform: translate(10px, -10px);
 }
 
-.ArtistSection_statLabel__X8rS3 {
+.AboutSection_statLabel__p_fU1 {
   font-family: var(--font-mono);
   font-size: 14px;
   color: var(--orange);
@@ -803,7 +1002,7 @@
 }
 
 /* ── ROW 6: Bottom Text right ── */
-.ArtistSection_boxBottomText__0d7B9 {
+.AboutSection_boxBottomText__eW8Jx {
   grid-column: 9 / 13;
   grid-row: 6;
   padding: 30px;
@@ -812,7 +1011,7 @@
   justify-content: space-between;
 }
 
-.ArtistSection_bottomPhrase__UArjD {
+.AboutSection_bottomPhrase__fEf1n {
   font-family: var(--font-mono);
   font-size: 1.2rem;
   color: #ddd;
@@ -823,111 +1022,112 @@
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
-  .ArtistSection_manifestoRow__Z_Bsg {
+  .AboutSection_manifestoRow__0yL1G {
     flex-direction: column;
     gap: 25px;
   }
 
-  .ArtistSection_gridContainer__QLjtk {
+  .AboutSection_gridContainer__QV_87 {
     grid-template-columns: repeat(2, 1fr);
     gap: 2px;
   }
 
-  .ArtistSection_gridItem__bKNfK {
+  .AboutSection_gridItem___5u4j {
     grid-column: span 1 !important;
     grid-row: auto !important;
   }
 
-  .ArtistSection_boxWarehouse__QRz0q,
-  .ArtistSection_boxWaveform__NAMpu,
-  .ArtistSection_boxBarcode__IzwUC,
-  .ArtistSection_boxStats__ymDSL,
-  .ArtistSection_boxBottomText__0d7B9,
-  .ArtistSection_boxStripesRight__gMeuR {
+  .AboutSection_boxWarehouse__nuJ6q,
+  .AboutSection_boxWaveform__5hFuJ,
+  .AboutSection_boxBarcode__H_AIB,
+  .AboutSection_boxStats__Ep0YG,
+  .AboutSection_boxBottomText__eW8Jx,
+  .AboutSection_boxStripesRight__PbPM1 {
     grid-column: 1 / -1 !important;
   }
 }
 
 @media (max-width: 768px) {
-  .ArtistSection_gridContainer__QLjtk {
+  .AboutSection_gridContainer__QV_87 {
     grid-template-columns: 1fr;
   }
 
-  .ArtistSection_gridItem__bKNfK {
+  .AboutSection_gridItem___5u4j {
     grid-column: 1 / -1 !important;
   }
 
-  .ArtistSection_boxWarehouse__QRz0q {
+  .AboutSection_boxWarehouse__nuJ6q {
     min-height: 250px;
   }
 
-  .ArtistSection_boxGlobe__bue_A {
+  .AboutSection_boxGlobe__L7vOp {
     min-height: 250px;
   }
 
-  .ArtistSection_weAreTheSignalOuter__na4Ak {
+  .AboutSection_weAreTheSignalOuter__3AcQ7 {
     flex-direction: column;
     align-items: center;
     gap: 5px;
   }
 
-  .ArtistSection_weAre__54TKx,
-  .ArtistSection_signal___upN2 {
+  .AboutSection_weAre__PwNDy,
+  .AboutSection_signal__rV_at {
     font-size: 20vw;
     line-height: 1;
     white-space: normal;
     text-align: center;
   }
 
-  .ArtistSection_undergroundOuter__a0B9c {
+  .AboutSection_undergroundOuter__V0I9b {
     font-size: 6.5vw;
     margin-top: 20px;
   }
 
-  .ArtistSection_p2020__ohkB_ {
+  .AboutSection_p2020__7jeB1 {
     font-size: 3.5rem;
   }
 
-  .ArtistSection_barcodeTop__lHv3R {
+  .AboutSection_barcodeTop__pfJ_L {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .ArtistSection_barcodeImgWrapper__uLcgm {
+  .AboutSection_barcodeImgWrapper__F1TTf {
     width: 100%;
   }
 
-  .ArtistSection_manifestoRow__Z_Bsg {
+  .AboutSection_manifestoRow__0yL1G {
     font-size: 16px;
   }
 
-  .ArtistSection_bottomPhrase__UArjD,
-  .ArtistSection_bottomPhraseSmall__7XTlz {
+  .AboutSection_bottomPhrase__fEf1n,
+  .AboutSection_bottomPhraseSmall__zAhQ9 {
     font-size: 0.9rem;
     text-align: center;
   }
 
-  .ArtistSection_statBox__PW62i {
+  .AboutSection_statBox__W7BVQ {
     padding: 0;
     min-width: auto;
     width: 100%;
   }
 
-  .ArtistSection_statNumScale__q0Fsq {
+  .AboutSection_statNumScale__tH4Ir {
     font-size: 3.5rem;
     padding: 15px;
   }
 
-  .ArtistSection_statNumScaleLarge__RLK75 {
+  .AboutSection_statNumScaleLarge__SlrTQ {
     font-size: 5.5rem;
     padding: 15px;
     line-height: 0.8;
   }
 
-  .ArtistSection_statLabel__X8rS3 {
+  .AboutSection_statLabel__p_fU1 {
     padding: 10px 15px;
   }
 }
+
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/sections/ManifestoSection.module.css ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************/
