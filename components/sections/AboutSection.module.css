@@ -1,4 +1,4 @@
-.artistSection {
+.aboutSection {
   padding: clamp(40px, 8vw, 100px) clamp(16px, 5vw, 150px);
   display: flex;
   flex-direction: column;

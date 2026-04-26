@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface BinaryScrambleProps {
   text: string;
@@ -11,8 +11,30 @@ interface BinaryScrambleProps {
 export default function BinaryScramble({ text, duration = 1000, delay = 0 }: BinaryScrambleProps) {
   const [displayText, setDisplayText] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
     let timeout: NodeJS.Timeout;
     let interval: NodeJS.Timeout;
 
@@ -53,7 +75,8 @@ export default function BinaryScramble({ text, duration = 1000, delay = 0 }: Bin
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [text, duration, delay]);
+  }, [text, duration, delay, isVisible]);
 
-  return <span>{displayText || (isAnimating ? '' : '')}</span>;
+  // Render a non-breaking space if empty to ensure the element has height for the IntersectionObserver
+  return <span ref={elementRef}>{displayText || '\u00A0'}</span>;
 }

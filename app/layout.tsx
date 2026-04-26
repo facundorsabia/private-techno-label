@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import NoiseBackground from '@/components/NoiseBackground';
+import InitialLoader from '@/components/ui/InitialLoader';
 
 export const metadata: Metadata = {
   title: 'PRIVATE TECHNO — Underground Electronic Culture',
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <InitialLoader />
         <NoiseBackground />
         <div className="grain-overlay" aria-hidden="true" />
         {children}

@@ -3,7 +3,8 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import styles from './ArtistSection.module.css';
+import styles from './AboutSection.module.css';
+import BinaryScramble from '@/components/ui/BinaryScramble';
 
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -11,7 +12,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-export default function ArtistSection() {
+export default function AboutSection() {
   const { ref } = useScrollAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +54,7 @@ export default function ArtistSection() {
   }, { scope: containerRef });
 
   return (
-    <section className={styles.artistSection} id="artist" ref={ref}>
+    <section className={styles.aboutSection} id="about" ref={ref}>
       <div className={styles.mainTitleWrapper} ref={containerRef}>
         <h2 className={styles.weAreTheSignalOuter}>
           <span className={styles.weAre}>WE ARE THE</span>
@@ -104,7 +105,7 @@ export default function ArtistSection() {
         {/* Row 5 Left: Barcode + Text (Asset 3) */}
         <div className={`${styles.gridItem} ${styles.boxBarcode}`}>
           <div className={styles.barcodeTop}>
-            <h3 className={styles.p2020}>P2ø20-2øXX</h3>
+            <h3 className={styles.p2020}><BinaryScramble text="P2ø20-2øXX" duration={1000} delay={400} /></h3>
             <div className={styles.barcodeImgWrapper}>
               <Image src="/images/assets/aboutAssets/3.png" alt="Barcode" fill sizes="33vw" className={`${styles.grayTint} ${styles.containImgLeft}`} />
             </div>
