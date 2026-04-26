@@ -1128,6 +1128,178 @@
   }
 }
 
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/sections/RosterSection.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
+.RosterSection_rosterSection__AdNGx {
+  padding: clamp(60px, 10vh, 120px) 0;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+.RosterSection_header__wnt5E {
+  margin-bottom: clamp(40px, 8vw, 80px);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.RosterSection_title__kxPu0 {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.9;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.RosterSection_titleDim__EESj7 {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--white-dim);
+}
+
+.RosterSection_headerLine__A5kHC {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+}
+
+.RosterSection_grid__jxbvy {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: clamp(20px, 4vw, 40px);
+  gap: clamp(20px, 4vw, 40px);
+}
+
+.RosterSection_artistCard__WwOM7 {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.RosterSection_artistCard__WwOM7:hover {
+  transform: translateY(-10px);
+}
+
+.RosterSection_imageWrapper__2IAZ5 {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: var(--black-mid);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.RosterSection_artistImage__qULlk {
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1);
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1), filter 0.6s ease;
+}
+
+.RosterSection_artistCard__WwOM7:hover .RosterSection_artistImage__qULlk {
+  transform: scale(1.05);
+  filter: grayscale(0%) contrast(1.1);
+}
+
+.RosterSection_overlay___SlXf {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.RosterSection_artistCard__WwOM7:hover .RosterSection_overlay___SlXf {
+  opacity: 0.4;
+}
+
+.RosterSection_cornerTL__aukac, .RosterSection_cornerBR__Lzc_4 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--orange);
+  z-index: 2;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.RosterSection_cornerTL__aukac {
+  top: 15px;
+  left: 15px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.RosterSection_cornerBR__Lzc_4 {
+  bottom: 15px;
+  right: 15px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.RosterSection_artistCard__WwOM7:hover .RosterSection_cornerTL__aukac { top: 10px; left: 10px; opacity: 1; }
+.RosterSection_artistCard__WwOM7:hover .RosterSection_cornerBR__Lzc_4 { bottom: 10px; right: 10px; opacity: 1; }
+
+.RosterSection_info___vXPZ {
+  padding: 25px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.RosterSection_infoTop__xFhKF {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.RosterSection_location__Phjoy {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white-dim);
+  letter-spacing: 0.1em;
+}
+
+.RosterSection_name__Lg34V {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0;
+  color: var(--white);
+  line-height: 1;
+}
+
+.RosterSection_role__EzigH {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.RosterSection_viewPresskit__nGDg4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white-dim);
+  margin-top: 15px;
+  transition: color 0.3s ease, gap 0.3s ease;
+}
+
+.RosterSection_artistCard__WwOM7:hover .RosterSection_viewPresskit__nGDg4 {
+  color: var(--white);
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .RosterSection_grid__jxbvy {
+    grid-template-columns: 1fr;
+  }
+}
+
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./components/sections/ManifestoSection.module.css ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************/

@@ -1,0 +1,167 @@
+.rosterSection {
+  padding: clamp(60px, 10vh, 120px) 0;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+.header {
+  margin-bottom: clamp(40px, 8vw, 80px);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.9;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.titleDim {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--white-dim);
+}
+
+.headerLine {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(20px, 4vw, 40px);
+}
+
+.artistCard {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.artistCard:hover {
+  transform: translateY(-10px);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: var(--black-mid);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.artistImage {
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1);
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1), filter 0.6s ease;
+}
+
+.artistCard:hover .artistImage {
+  transform: scale(1.05);
+  filter: grayscale(0%) contrast(1.1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.artistCard:hover .overlay {
+  opacity: 0.4;
+}
+
+.cornerTL, .cornerBR {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--orange);
+  z-index: 2;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.cornerTL {
+  top: 15px;
+  left: 15px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.cornerBR {
+  bottom: 15px;
+  right: 15px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.artistCard:hover .cornerTL { top: 10px; left: 10px; opacity: 1; }
+.artistCard:hover .cornerBR { bottom: 10px; right: 10px; opacity: 1; }
+
+.info {
+  padding: 25px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infoTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.location {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white-dim);
+  letter-spacing: 0.1em;
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0;
+  color: var(--white);
+  line-height: 1;
+}
+
+.role {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.viewPresskit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white-dim);
+  margin-top: 15px;
+  transition: color 0.3s ease, gap 0.3s ease;
+}
+
+.artistCard:hover .viewPresskit {
+  color: var(--white);
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

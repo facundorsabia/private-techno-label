@@ -21,7 +21,7 @@ export const RELEASES: Release[] = [
     description: 'The latest sonic transmission from Piero Ceraolo.',
     bandcampId: '2472143578',
     bandcampSlug: '003-prv037',
-    releaseDate: '2024-07-01',
+    releaseDate: '2026',
     color: '#b74829'
   },
   {
@@ -33,7 +33,7 @@ export const RELEASES: Release[] = [
     description: 'A deep sea of industrial sounds.',
     bandcampId: '3404978588',
     bandcampSlug: 'kraken-rising-prv036',
-    releaseDate: '2024-06-15',
+    releaseDate: '2025',
     color: '#b74829'
   },
   {
@@ -45,7 +45,7 @@ export const RELEASES: Release[] = [
     description: 'Four years of Private Techno.',
     bandcampId: '782643880',
     bandcampSlug: '4-years-prv035',
-    releaseDate: '2024-05-15',
+    releaseDate: '2024',
     color: '#b74829'
   },
   {
@@ -57,7 +57,7 @@ export const RELEASES: Release[] = [
     description: 'Organic textures and deep rhythms.',
     bandcampId: '4197944753',
     bandcampSlug: 'flowing-prv034',
-    releaseDate: '2024-04-15',
+    releaseDate: '2024',
     color: '#b74829'
   },
   {
@@ -69,7 +69,7 @@ export const RELEASES: Release[] = [
     description: 'Exploring the aftermath of rhythm.',
     bandcampId: '2883725554',
     bandcampSlug: 'rhythmic-consequences-prv033',
-    releaseDate: '2024-03-15',
+    releaseDate: '2023',
     color: '#b74829'
   },
   {
@@ -81,7 +81,7 @@ export const RELEASES: Release[] = [
     description: 'Pushing the boundaries of logic.',
     bandcampId: '2918704423',
     bandcampSlug: 'beyond-reason-and-prudence-prv032',
-    releaseDate: '2024-02-15',
+    releaseDate: '2023',
     color: '#b74829'
   },
   {
@@ -93,7 +93,7 @@ export const RELEASES: Release[] = [
     description: 'Minimalist approach to sound.',
     bandcampId: '2089718658',
     bandcampSlug: 'ponto-prv031',
-    releaseDate: '2024-01-15',
+    releaseDate: '2023',
     color: '#b74829'
   },
   {
@@ -105,7 +105,7 @@ export const RELEASES: Release[] = [
     description: 'Fateful encounters in sound.',
     bandcampId: '834453463',
     bandcampSlug: 'destiny-prv030',
-    releaseDate: '2023-12-15',
+    releaseDate: '2023',
     color: '#b74829'
   },
   {
@@ -117,7 +117,7 @@ export const RELEASES: Release[] = [
     description: 'Celebrating three years of label history.',
     bandcampId: '2995638142',
     bandcampSlug: '3-years-prv029',
-    releaseDate: '2023-11-15',
+    releaseDate: '2023',
     color: '#b74829'
   },
   {
@@ -129,7 +129,7 @@ export const RELEASES: Release[] = [
     description: 'A reflection of global isolation.',
     bandcampId: '4203505637',
     bandcampSlug: 'estatus-pandemico-prv028',
-    releaseDate: '2023-10-15',
+    releaseDate: '2023',
     color: '#b74829'
   },
   {
@@ -141,7 +141,7 @@ export const RELEASES: Release[] = [
     description: 'Fear of light, love for sound.',
     bandcampId: '26317634',
     bandcampSlug: 'photofobia-prv027',
-    releaseDate: '2023-09-15',
+    releaseDate: '2023',
     color: '#b74829'
   },
   {
@@ -153,7 +153,7 @@ export const RELEASES: Release[] = [
     description: 'Sonic landscapes of a broken future.',
     bandcampId: '2938604230',
     bandcampSlug: 'dystopia-prv026',
-    releaseDate: '2023-08-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -165,7 +165,7 @@ export const RELEASES: Release[] = [
     description: 'Unpredictable rhythms and heavy bass.',
     bandcampId: '1408170882',
     bandcampSlug: 'causality-prv025',
-    releaseDate: '2023-07-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -177,7 +177,7 @@ export const RELEASES: Release[] = [
     description: 'Aquatic techno explorations.',
     bandcampId: '2116075507',
     bandcampSlug: 'liquid-essence-prv024',
-    releaseDate: '2023-06-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -189,7 +189,7 @@ export const RELEASES: Release[] = [
     description: 'Alternative takes on the liquid sound.',
     bandcampId: '1146021842',
     bandcampSlug: 'alter-ego-prv023',
-    releaseDate: '2023-05-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -201,7 +201,7 @@ export const RELEASES: Release[] = [
     description: 'Architectural sound design.',
     bandcampId: '3052852184',
     bandcampSlug: 'bauhaus-prv022',
-    releaseDate: '2023-04-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -213,7 +213,7 @@ export const RELEASES: Release[] = [
     description: 'Esoteric techno rhythms.',
     bandcampId: '4097455615',
     bandcampSlug: '12-de-copas-prv021',
-    releaseDate: '2023-03-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -225,7 +225,7 @@ export const RELEASES: Release[] = [
     description: 'Two years of underground techno.',
     bandcampId: '423457700',
     bandcampSlug: '2-years-prv020',
-    releaseDate: '2023-02-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -237,7 +237,7 @@ export const RELEASES: Release[] = [
     description: 'Exploring the void in sound.',
     bandcampId: '728755572',
     bandcampSlug: 'antimateria-prv019',
-    releaseDate: '2023-01-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -249,7 +249,7 @@ export const RELEASES: Release[] = [
     description: 'Mental landscapes through audio.',
     bandcampId: '175744020',
     bandcampSlug: 'subconscious-prv018',
-    releaseDate: '2022-12-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -261,7 +261,7 @@ export const RELEASES: Release[] = [
     description: 'Energy in motion.',
     bandcampId: '850731393',
     bandcampSlug: 'kinetic-prv017',
-    releaseDate: '2022-11-15',
+    releaseDate: '2022',
     color: '#b74829'
   },
   {
@@ -273,7 +273,7 @@ export const RELEASES: Release[] = [
     description: 'Glitch-heavy sonic shifts.',
     bandcampId: '1586143340',
     bandcampSlug: 'transition-effects-prv016',
-    releaseDate: '2022-10-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -285,7 +285,7 @@ export const RELEASES: Release[] = [
     description: 'Eruptive club material.',
     bandcampId: '4083800106',
     bandcampSlug: 'vulcano-prv015',
-    releaseDate: '2022-09-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -297,7 +297,7 @@ export const RELEASES: Release[] = [
     description: 'Alternative takes on transition.',
     bandcampId: '1586143340',
     bandcampSlug: 'transition-effects-prv014',
-    releaseDate: '2022-08-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -309,7 +309,7 @@ export const RELEASES: Release[] = [
     description: 'Cold industrial beats.',
     bandcampId: '3017293367',
     bandcampSlug: 'frozen-hell-prv013',
-    releaseDate: '2022-07-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -321,7 +321,7 @@ export const RELEASES: Release[] = [
     description: 'Celebrating the first year.',
     bandcampId: '1842381777',
     bandcampSlug: '1-year-prv012',
-    releaseDate: '2022-06-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -333,7 +333,7 @@ export const RELEASES: Release[] = [
     description: 'The force of gravity in rhythm.',
     bandcampId: '1657029455',
     bandcampSlug: 'grv-prv011',
-    releaseDate: '2022-05-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -345,7 +345,7 @@ export const RELEASES: Release[] = [
     description: 'Powerful peak-time techno.',
     bandcampId: '1783689998',
     bandcampSlug: 'kryptonita-prv010',
-    releaseDate: '2022-04-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -357,7 +357,7 @@ export const RELEASES: Release[] = [
     description: 'Illusory sonic patterns.',
     bandcampId: '644621554',
     bandcampSlug: 'random-illusions-prv009',
-    releaseDate: '2022-03-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -369,7 +369,7 @@ export const RELEASES: Release[] = [
     description: 'Poetic techno transmissions.',
     bandcampId: '37656494',
     bandcampSlug: 'so-words-for-crows-prv008',
-    releaseDate: '2022-02-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -381,7 +381,7 @@ export const RELEASES: Release[] = [
     description: 'Connecting neural beats.',
     bandcampId: '174506142',
     bandcampSlug: 'sinapsis-prv007',
-    releaseDate: '2022-01-15',
+    releaseDate: '2021',
     color: '#b74829'
   },
   {
@@ -393,7 +393,7 @@ export const RELEASES: Release[] = [
     description: 'A study of time through audio.',
     bandcampId: '2763266456',
     bandcampSlug: 'zeit-prv006',
-    releaseDate: '2021-12-15',
+    releaseDate: '2020',
     color: '#b74829'
   },
   {
@@ -405,7 +405,7 @@ export const RELEASES: Release[] = [
     description: 'Mathematical precision in sound.',
     bandcampId: '947598567',
     bandcampSlug: 'tetraktys-prv005',
-    releaseDate: '2021-11-15',
+    releaseDate: '2020',
     color: '#b74829'
   },
   {
@@ -417,7 +417,7 @@ export const RELEASES: Release[] = [
     description: 'Space-age techno exploration.',
     bandcampId: '138132557',
     bandcampSlug: 'soyuz-prv004',
-    releaseDate: '2021-10-15',
+    releaseDate: '2020',
     color: '#b74829'
   },
   {
@@ -429,7 +429,7 @@ export const RELEASES: Release[] = [
     description: 'Hypnotic masterclass.',
     bandcampId: '3144618892',
     bandcampSlug: 'rise-as-one-prv003',
-    releaseDate: '2021-09-15',
+    releaseDate: '2020',
     color: '#b74829'
   },
   {
@@ -441,7 +441,7 @@ export const RELEASES: Release[] = [
     description: 'Dreamlike techno textures.',
     bandcampId: '1301664063',
     bandcampSlug: 'onirico-prv002',
-    releaseDate: '2021-08-15',
+    releaseDate: '2020',
     color: '#b74829'
   },
   {
@@ -453,7 +453,7 @@ export const RELEASES: Release[] = [
     description: 'The beginning of the journey.',
     bandcampId: '4231429697',
     bandcampSlug: 'lanzamiento-prv001',
-    releaseDate: '2021-07-15',
+    releaseDate: '2020',
     color: '#b74829'
   }
 ];

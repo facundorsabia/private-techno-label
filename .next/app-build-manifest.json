@@ -17,6 +17,12 @@
       "static/chunks/main-app.js",
       "static/css/app/releases/[id]/page.css",
       "static/chunks/app/releases/[id]/page.js"
+    ],
+    "/artists/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/artists/[id]/page.css",
+      "static/chunks/app/artists/[id]/page.js"
     ]
   }
 }
