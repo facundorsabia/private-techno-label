@@ -3,6 +3,8 @@ import './globals.css';
 import NoiseBackground from '@/components/NoiseBackground';
 import InitialLoader from '@/components/ui/InitialLoader';
 
+import Navigation from '@/components/ui/Navigation';
+
 export const metadata: Metadata = {
   title: 'PRIVATE TECHNO — Underground Electronic Culture',
   description: 'PRIVATE TECHNO is an experimental techno record label exploring the boundaries of hypnotic sound, industrial aesthetics, and underground electronic culture.',
@@ -26,6 +28,7 @@ export default function RootLayout({
         <InitialLoader />
         <NoiseBackground />
         <div className="grain-overlay" aria-hidden="true" />
+        <Navigation />
         {children}
       </body>
     </html>
