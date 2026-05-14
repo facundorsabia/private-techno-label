@@ -8,6 +8,7 @@ import FeaturedReleaseSection from '@/components/sections/FeaturedReleaseSection
 import AboutSection from '@/components/sections/AboutSection';
 import RosterSection from '@/components/sections/RosterSection';
 import ManifestoSection from '@/components/sections/ManifestoSection';
+import SubscribeSection from '@/components/sections/SubscribeSection';
 import Footer from '@/components/sections/Footer';
 import WireframeGrid from '@/components/svg/WireframeGrid';
 
@@ -33,6 +34,7 @@ export default function Home() {
       <FeaturedReleaseSection />
       <ReleasesSection />
       <RosterSection />
+      <SubscribeSection />
       <Footer />
     </main>
   );

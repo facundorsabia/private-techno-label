@@ -145,13 +145,30 @@ export default function FeaturedReleaseSection() {
       <div className={styles.dataBox}>
         SYS.REQ // FEATURED_TRANSMISSION // {featuredRelease.catalog}
       </div>
-      
+
       <div className={styles.header} ref={headerRef}>
-        <div className="flex flex-col gap-1 mb-4">
-          <span className="ui-label text-orange" style={{ color: '#b74829' }}>SPOTLIGHT</span>
-          <h2 className={styles.sectionTitle}>
-            <span className={styles.titleDim}>FEATURED</span> RELEASE
-          </h2>
+        <div className={styles.headerMain}>
+          <div className={styles.titleWrapper}>
+            <span className="ui-label text-orange" style={{ color: '#b74829' }}>SPOTLIGHT</span>
+            <div className={styles.titleRow}>
+              <h2 className={styles.sectionTitle}>
+                <span>
+                  <span style={{ color: '#b74829' }}>FEΔTURΣD</span>
+                </span>{' '}
+                RELΞΔSE
+              </h2>
+              <div className={styles.headerAsset}>
+                <Image
+                  src="/images/assets/ciberpunk-asset.png"
+                  alt="Cyber HUD Element"
+                  width={400}
+                  height={50}
+                  priority
+                  className={styles.assetImage}
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div className={styles.headerLine} />
         <div className="flex justify-between items-center w-full mt-2">
@@ -203,9 +220,9 @@ export default function FeaturedReleaseSection() {
           </div>
 
           <div className={styles.playerContainer}>
-            <iframe 
-              style={{ border: 0, width: '100%', height: '120px' }} 
-              src={`https://bandcamp.com/EmbeddedPlayer/album=${featuredRelease.bandcampId}/size=large/bgcol=111111/linkcol=b74829/tracklist=false/artwork=small/transparent=true/`} 
+            <iframe
+              style={{ border: 0, width: '100%', height: '120px' }}
+              src={`https://bandcamp.com/EmbeddedPlayer/album=${featuredRelease.bandcampId}/size=large/bgcol=111111/linkcol=b74829/tracklist=false/artwork=small/transparent=true/`}
               seamless
               title={`${featuredRelease.title} Bandcamp Player`}
             />

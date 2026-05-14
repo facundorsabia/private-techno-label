@@ -30,22 +30,22 @@ export default function ReleasesSection() {
     if (cards && cards.length > 0) {
       // Only animate the newly added cards (the last INCREMENT items)
       const newCards = Array.from(cards).slice(visibleCount - INCREMENT);
-      
-      gsap.fromTo(newCards, 
-        { 
-          opacity: 0, 
-          y: 30, 
+
+      gsap.fromTo(newCards,
+        {
+          opacity: 0,
+          y: 30,
           scale: 0.95,
           filter: 'brightness(2) blur(10px)'
-        }, 
-        { 
-          opacity: 1, 
-          y: 0, 
+        },
+        {
+          opacity: 1,
+          y: 0,
           scale: 1,
           filter: 'brightness(1) blur(0px)',
-          duration: 0.8, 
-          stagger: 0.1, 
-          ease: 'power4.out' 
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power4.out'
         }
       );
     }
@@ -60,7 +60,7 @@ export default function ReleasesSection() {
               <span className="ui-label ui-label-md">CATALOG</span>
               <span className={styles.count}>[{RELEASES.length} UNITS]</span>
             </div>
-            <h2 className={styles.sectionTitle}>RELEASES</h2>
+            <h2 className={styles.sectionTitle}>RΣLEΔSΞS</h2>
             <div className={styles.headerLine} />
           </div>
         </ScrollReveal>
@@ -73,8 +73,8 @@ export default function ReleasesSection() {
 
         {hasMore && (
           <div className={styles.actions}>
-            <button 
-              className={styles.loadMoreBtn} 
+            <button
+              className={styles.loadMoreBtn}
               onClick={handleLoadMore}
             >
               <span className={styles.btnLabel}>LOAD MORE</span>

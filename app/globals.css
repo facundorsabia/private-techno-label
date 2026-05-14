@@ -2,7 +2,7 @@
    PRIVATE TECHNO — Design System & Global Styles
    ═══════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 /* ── Custom Properties ─────────────────────────────────── */
 :root {
@@ -17,6 +17,7 @@
   --orange-dim: rgba(232, 85, 15, 0.12);
   --font-heading: 'Oswald', sans-serif;
   --font-mono: 'Space Mono', monospace;
+  --font-orbitron: 'Orbitron', sans-serif;
   --grain-opacity: 0.04;
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);

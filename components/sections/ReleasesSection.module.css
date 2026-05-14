@@ -24,9 +24,9 @@
 }
 
 .sectionTitle {
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 8vw, 6rem);
-  letter-spacing: 0.1em;
+  font-family: var(--font-orbitron, 'Orbitron', sans-serif);
+  font-size: clamp(2rem, 8vw, 4rem);
+  letter-spacing: 0.05em;
   margin-top: 8px;
   line-height: 1;
 }
@@ -53,6 +53,7 @@
   cursor: pointer;
   transition: transform var(--transition-smooth);
 }
+
 .card:hover {
   transform: scale(1.03);
 }
@@ -64,6 +65,7 @@
   aspect-ratio: 1 / 1;
   overflow: hidden;
 }
+
 .artworkInner {
   width: 100%;
   height: 100%;
@@ -72,12 +74,14 @@
   align-items: center;
   justify-content: center;
 }
+
 .artworkSvg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
+
 .playIcon {
   position: absolute;
   inset: 0;
@@ -89,6 +93,7 @@
   background: rgba(10, 10, 10, 0.6);
   transition: opacity var(--transition-fast);
 }
+
 .card:hover .playIcon {
   opacity: 1;
 }
@@ -100,6 +105,7 @@
   flex-direction: column;
   gap: 4px;
 }
+
 .cardTitle {
   font-family: var(--font-heading);
   font-size: 16px;
@@ -107,11 +113,13 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
 .cardArtist {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--white-dim);
 }
+
 .cardCatalog {
   margin-top: 6px;
   color: var(--orange);
@@ -169,11 +177,12 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @media (max-width: 640px) {
   .grid {
     grid-template-columns: 1fr;
   }
-  
+
   .sectionTitle {
     font-size: 40px;
   }
