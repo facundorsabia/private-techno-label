@@ -73,9 +73,19 @@ export default function FrequencySection() {
 
             <div className={`${styles.colCenter} fade-up`}>
               <Image
-                src="/images/assets/subscribe assets/asset-s2.png"
-                alt="Wireframe Globe"
-                width={766}
+                src="/images/assets/subscribe assets/asset-s2-column1.png"
+                alt="Wireframe Globe Part 1"
+                width={383}
+                height={426}
+                className={styles.globeImage}
+              />
+            </div>
+            
+            <div className={`${styles.colRight} fade-up`}>
+              <Image
+                src="/images/assets/subscribe assets/asset-s2-column2.png"
+                alt="Wireframe Globe Part 2"
+                width={383}
                 height={426}
                 className={styles.globeImage}
               />

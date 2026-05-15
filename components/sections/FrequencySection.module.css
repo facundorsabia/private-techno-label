@@ -61,8 +61,8 @@
 
 @media (min-width: 900px) {
   .gridRow {
-    grid-template-columns: 1fr 1.2fr;
-    gap: 60px;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 40px;
   }
 }
 
@@ -98,7 +98,8 @@
   font-weight: 700;
 }
 
-.colCenter {
+.colCenter,
+.colRight {
   position: relative;
   width: 100%;
   display: flex;
@@ -108,7 +109,7 @@
 
 .globeImage {
   width: 100%;
-  max-width: 600px;
+  max-width: 400px;
   height: auto;
   opacity: 0.9;
   filter: contrast(1.2);

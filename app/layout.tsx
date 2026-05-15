@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     description: 'Underground Electronic Culture — Hypnotic Sound Exploration',
     type: 'website',
   },
+  icons: {
+    icon: '/favicon.ico',
+  },
   themeColor: '#0a0a0a',
 };
 
