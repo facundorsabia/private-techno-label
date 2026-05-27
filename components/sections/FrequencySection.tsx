@@ -72,12 +72,14 @@ export default function FrequencySection() {
             </div>
 
             <div className={`${styles.colCenter} fade-up`}>
-              <Image
-                src="/images/assets/subscribe assets/asset-s2-column1.png"
-                alt="Wireframe Globe Part 1"
-                width={383}
-                height={426}
+              <video
+                src="/images/assets/subscribe assets/asset-s2-column1-video.mp4"
                 className={styles.globeImage}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
               />
             </div>
             

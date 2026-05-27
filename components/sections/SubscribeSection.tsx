@@ -27,6 +27,14 @@ export default function SubscribeSection() {
       stagger: 0.1,
       ease: 'power3.out'
     });
+
+    tl.from('.fade-up-hud', {
+      y: 30,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.15,
+      ease: 'power2.out'
+    }, '-=0.4');
   }, { scope: containerRef });
 
   return (
@@ -84,14 +92,34 @@ export default function SubscribeSection() {
               <div className={styles.copyrightLabel}>/// PRIVATE TECHNO © XXXX</div>
             </div>
 
-            <div className={`${styles.bottomRight} fade-up`}>
-              <Image
-                src="/images/assets/subscribe assets/asset-s4.png"
-                alt="HUD Elements"
-                width={168}
-                height={362}
-                className={styles.hudStack}
-              />
+            <div className={styles.bottomRight}>
+              <div className={`${styles.hudImageWrapper} fade-up-hud`}>
+                <Image
+                  src="/images/assets/subscribe assets/asset-s4-1.png"
+                  alt="HUD Element 1"
+                  width={168}
+                  height={100}
+                  className={styles.hudPart}
+                />
+              </div>
+              <div className={`${styles.hudImageWrapper} fade-up-hud`}>
+                <Image
+                  src="/images/assets/subscribe assets/asset-s4-2.png"
+                  alt="HUD Element 2"
+                  width={168}
+                  height={107}
+                  className={styles.hudPart}
+                />
+              </div>
+              <div className={`${styles.hudImageWrapper} fade-up-hud`}>
+                <Image
+                  src="/images/assets/subscribe assets/asset-s4-3.png"
+                  alt="HUD Element 3"
+                  width={168}
+                  height={133}
+                  className={styles.hudPart}
+                />
+              </div>
             </div>
           </div>
 

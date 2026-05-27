@@ -145,6 +145,13 @@
   width: 100%;
   max-width: 605px;
   aspect-ratio: 415 / 267;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease;
+}
+
+.bottomLeft:hover {
+  transform: translateY(-5px) scale(1.01);
+  filter: drop-shadow(0 0 15px rgba(232, 85, 15, 0.25));
 }
 
 .cornerBracket {
@@ -152,6 +159,7 @@
   width: 15px;
   height: 15px;
   border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.2s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .bracketTL {
@@ -161,11 +169,21 @@
   border-bottom: none;
 }
 
+.bottomLeft:hover .bracketTL {
+  border-color: var(--orange);
+  transform: translate(-4px, -4px);
+}
+
 .bracketTR {
   top: 0;
   right: 0;
   border-left: none;
   border-bottom: none;
+}
+
+.bottomLeft:hover .bracketTR {
+  border-color: var(--orange);
+  transform: translate(4px, -4px);
 }
 
 .bracketBL {
@@ -175,11 +193,21 @@
   border-top: none;
 }
 
+.bottomLeft:hover .bracketBL {
+  border-color: var(--orange);
+  transform: translate(-4px, 4px);
+}
+
 .bracketBR {
   bottom: 0;
   right: 0;
   border-left: none;
   border-top: none;
+}
+
+.bottomLeft:hover .bracketBR {
+  border-color: var(--orange);
+  transform: translate(4px, 4px);
 }
 
 .terrainImage {
@@ -188,6 +216,11 @@
   object-fit: contain;
   opacity: 0.8;
   padding: 10px;
+  transition: opacity 0.4s ease;
+}
+
+.bottomLeft:hover .terrainImage {
+  opacity: 1;
 }
 
 .bottomCenter {
@@ -228,6 +261,45 @@
 
 .bottomRight {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.hudImageWrapper {
+  flex: 1;
+  max-width: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hudPart {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+@media (min-width: 900px) {
+  .bottomRight {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 15px;
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  .hudImageWrapper {
+    width: 168px;
+    max-width: none;
+    flex: none;
+  }
 }
