@@ -29,7 +29,7 @@ export default function HeroSection() {
         <div className={styles.titleBlock}>
           <h1 className={styles.title}>
             <Image
-              src="/images/logos/Private Techno blanco.png"
+              src="/images/logos/private-rebranding-logo-no-bg.png"
               alt="Private Techno"
               width={1200}
               height={300}
