@@ -9,64 +9,17 @@ import styles from './Navigation.module.css';
 import BinaryScramble from './BinaryScramble';
 
 const NAV_LINKS = [
-  { 
-    name: 'HOME', 
-    href: '/',
-    icon: (
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="7" height="7" />
-        <rect x="14" y="3" width="7" height="7" />
-        <rect x="14" y="14" width="7" height="7" />
-        <rect x="3" y="14" width="7" height="7" />
-      </svg>
-    )
-  },
-  { 
-    name: 'ABOUT', 
-    href: '/#about',
-    icon: (
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="16" x2="12" y2="12" />
-        <line x1="12" y1="8" x2="12.01" y2="8" />
-      </svg>
-    )
-  },
-  { 
-    name: 'RELEASES', 
-    href: '/#releases',
-    icon: (
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <circle cx="12" cy="12" r="3" />
-        <circle cx="12" cy="12" r="1" fill="currentColor" />
-      </svg>
-    )
-  },
-  { 
-    name: 'ROSTER', 
-    href: '/#roster',
-    icon: (
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="18" cy="5" r="3" />
-        <circle cx="6" cy="12" r="3" />
-        <circle cx="18" cy="19" r="3" />
-        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-      </svg>
-    )
-  }
+  { name: 'HOME', href: '/' },
+  { name: 'ABOUT', href: '/#about' },
+  { name: 'RELEASES', href: '/#releases' },
+  { name: 'ROSTER', href: '/#roster' }
 ];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('/');
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  
   const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const lastScrollY = useRef(0);
   const pathname = usePathname();
 
   // Close menu on route change
@@ -75,43 +28,6 @@ export default function Navigation() {
       setIsOpen(false);
     }
   }, [pathname]);
-
-  // Track active section based on scroll and manage mobile nav visibility
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // 1. Auto-hide logic for mobile nav
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-        setIsNavVisible(false); // Scrolling down
-      } else {
-        setIsNavVisible(true);  // Scrolling up or at top
-      }
-      lastScrollY.current = currentScrollY;
-
-      // 2. Active section tracking
-      const sections = ['roster', 'releases', 'about'];
-      let current = '/';
-
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          // If the section occupies the middle of the viewport
-          if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-            current = `/#${section}`;
-            break;
-          }
-        }
-      }
-      setActiveSection(current);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check on mount
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useGSAP(() => {
     // Setup GSAP Timeline
@@ -210,27 +126,6 @@ export default function Navigation() {
           <span>LAT:-34.6037 LON:-58.3816</span>
         </div>
       </div>
-
-      {/* Mobile Bottom Navigation (Instagram style) */}
-      <nav className={`${styles.mobileBottomNav} ${isNavVisible ? '' : styles.navHidden}`}>
-        <div className={styles.mobileNavContainer}>
-          {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.href;
-            return (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className={`${styles.mobileNavItem} ${isActive ? styles.active : ''}`}
-                aria-label={link.name}
-              >
-                <div className={styles.mobileIconWrapper}>
-                  {link.icon}
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
     </div>
   );
 }

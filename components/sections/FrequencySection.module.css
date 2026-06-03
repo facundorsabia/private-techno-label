@@ -73,7 +73,7 @@
 }
 
 .description {
-  font-size: clamp(14px, 1.5vw, 16px);
+  font-size: clamp(20px, 2vw, 20px);
   line-height: 1.6;
   color: var(--white-dark);
   max-width: 400px;
@@ -113,6 +113,24 @@
   height: auto;
   opacity: 0.9;
   filter: contrast(1.2);
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1.25);
+}
+
+.globeVideo {
+  width: 100%;
+  height: auto;
+  opacity: 0.9;
+  filter: contrast(1.2);
+  display: block;
 }
 
 .hudStack {

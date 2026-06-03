@@ -37,10 +37,10 @@ export default function HeroSection() {
               priority
             />
           </h1>
-          <div className={styles.subtitle}>
+          {/* <div className={styles.subtitle}>
             <span className={styles.subtitleLine} />
             <span className="ui-label ui-label-md">UNDERGROUND FREQUENCY</span>
-          </div>
+          </div> */}
           <div className={styles.codes}>
             <span className="ui-label ui-label-md">h y p n ø t i c   s ø u n d</span>
             <span className="ui-label ui-label-md">RΛW S1GNΛL</span>

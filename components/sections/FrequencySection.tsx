@@ -11,8 +11,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function FrequencySection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  useGSAP(() => {
+  const { contextSafe } = useGSAP(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
@@ -28,6 +29,59 @@ export default function FrequencySection() {
       ease: 'power3.out'
     });
   }, { scope: containerRef });
+
+  const triggerGlitch = contextSafe(() => {
+    if (!videoRef.current) return;
+    const tl = gsap.timeline();
+    tl.set(videoRef.current, {
+      x: -35,
+      skewX: 40,
+      scaleX: 1.4,
+      filter: 'contrast(4) brightness(2.5) hue-rotate(120deg) saturate(3)',
+      opacity: 0.3,
+    })
+    .to(videoRef.current, { duration: 0.04 })
+    .set(videoRef.current, {
+      x: 40,
+      skewX: -45,
+      scaleX: 0.6,
+      filter: 'contrast(5) brightness(0.2) hue-rotate(240deg) invert(1)',
+      opacity: 0.8,
+    })
+    .to(videoRef.current, { duration: 0.04 })
+    .set(videoRef.current, {
+      x: -20,
+      skewX: 25,
+      scaleX: 1.3,
+      filter: 'contrast(3) brightness(2) hue-rotate(-90deg) saturate(4)',
+      opacity: 0.4,
+    })
+    .to(videoRef.current, { duration: 0.04 })
+    .set(videoRef.current, {
+      x: 15,
+      skewX: -15,
+      scaleX: 0.8,
+      filter: 'contrast(4) brightness(1.8) hue-rotate(45deg) saturate(2)',
+      opacity: 0.6,
+    })
+    .to(videoRef.current, { duration: 0.04 })
+    .set(videoRef.current, {
+      x: 0,
+      skewX: 0,
+      scaleX: 1,
+      filter: 'contrast(1.2) brightness(1) hue-rotate(0deg) saturate(1) invert(0)',
+      opacity: 0.9,
+    });
+  });
+
+  const handleVideoEnded = () => {
+    triggerGlitch();
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.warn('Video playback was interrupted:', err);
+      });
+    }
+  };
 
   return (
     <section className={styles.frequencySection} ref={containerRef}>
@@ -72,17 +126,20 @@ export default function FrequencySection() {
             </div>
 
             <div className={`${styles.colCenter} fade-up`}>
-              <video
-                src="/images/assets/subscribe assets/asset-s2-column1-video.mp4"
-                className={styles.globeImage}
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-              />
+              <div className={styles.videoWrapper}>
+                <video
+                  ref={videoRef}
+                  src="/images/assets/subscribe assets/world.webm"
+                  className={styles.globeVideo}
+                  autoPlay
+                  muted
+                  playsInline
+                  preload="auto"
+                  onEnded={handleVideoEnded}
+                />
+              </div>
             </div>
-            
+
             <div className={`${styles.colRight} fade-up`}>
               <Image
                 src="/images/assets/subscribe assets/asset-s2-column2.png"
