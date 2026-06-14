@@ -60,7 +60,7 @@ export default function ReleasesSection() {
               <span className="ui-label ui-label-md">CATALOG</span>
               <span className={styles.count}>[{RELEASES.length} UNITS]</span>
             </div>
-            <h2 className={styles.sectionTitle}>RΣLEΔSΞS</h2>
+            <h2 className={styles.sectionTitle}>RELEASES</h2>
             <div className={styles.headerLine} />
           </div>
         </ScrollReveal>
