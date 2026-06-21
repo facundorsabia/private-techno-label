@@ -90,6 +90,9 @@ export default function LeadMagnetModal() {
       }
 
       setStatus('success');
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead');
+      }
       try {
         localStorage.setItem('pt_lead_magnet_subscribed', 'true');
       } catch (err) {

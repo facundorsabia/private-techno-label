@@ -32,6 +32,16 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
   const nextRelease = currentIndex > 0 ? RELEASES[currentIndex - 1] : null;
   const prevRelease = currentIndex < RELEASES.length - 1 ? RELEASES[currentIndex + 1] : null;
 
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'ViewContent', {
+        content_name: release.title,
+        content_type: 'product',
+        content_ids: [release.catalog]
+      });
+    }
+  }, [release.id, release.title, release.catalog]);
+
   useGSAP(() => {
     const tl = gsap.timeline();
     
@@ -123,6 +133,17 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
               target="_blank" 
               rel="noopener noreferrer"
               className={styles.buyButton}
+              onClick={() => {
+                if (typeof window !== 'undefined' && (window as any).fbq) {
+                  (window as any).fbq('track', 'InitiateCheckout', {
+                    content_name: release.title,
+                    content_ids: [release.catalog],
+                    content_type: 'product',
+                    value: 5.00,
+                    currency: 'USD'
+                  });
+                }
+              }}
             >
               <span>BUY ON BANDCAMP</span>
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">

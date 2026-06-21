@@ -66,6 +66,10 @@ export default function FreeDownloadClient() {
         // Ignorar
       }
 
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead');
+      }
+
       router.push('/thank-you');
       
     } catch (err: any) {

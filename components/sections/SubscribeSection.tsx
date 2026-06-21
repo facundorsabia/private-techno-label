@@ -37,6 +37,9 @@ export default function SubscribeSection() {
 
       setStatus('success');
       setEmail('');
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead');
+      }
     } catch (err: any) {
       setStatus('error');
       setErrorMessage(err.message || 'Ocurrió un error. Intenta de nuevo.');

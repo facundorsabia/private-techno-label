@@ -198,6 +198,17 @@ export default function FeaturedReleaseSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.buyButton}
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).fbq) {
+                    (window as any).fbq('track', 'InitiateCheckout', {
+                      content_name: featuredRelease.title,
+                      content_ids: [featuredRelease.catalog],
+                      content_type: 'product',
+                      value: 5.00,
+                      currency: 'USD'
+                    });
+                  }
+                }}
               >
                 <span>BUY ON BANDCAMP</span>
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">

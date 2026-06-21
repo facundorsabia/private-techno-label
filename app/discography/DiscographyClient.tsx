@@ -125,6 +125,16 @@ export default function DiscographyClient() {
                 rel="noopener noreferrer"
                 className={styles.submitBtn}
                 style={{ textAlign: 'center', display: 'block', textDecoration: 'none' }}
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).fbq) {
+                    (window as any).fbq('track', 'InitiateCheckout', {
+                      content_name: 'Private Techno Full Catalog Bundle',
+                      content_category: 'bundle',
+                      value: 49.00,
+                      currency: 'USD'
+                    });
+                  }
+                }}
               >
                 SECURE FULL BUNDLE
               </a>
@@ -236,6 +246,16 @@ export default function DiscographyClient() {
           rel="noopener noreferrer"
           className={styles.ctaBtnLarge}
           style={{ textDecoration: 'none' }}
+          onClick={() => {
+            if (typeof window !== 'undefined' && (window as any).fbq) {
+              (window as any).fbq('track', 'InitiateCheckout', {
+                content_name: 'Private Techno Full Catalog Bundle',
+                content_category: 'bundle',
+                value: 49.00,
+                currency: 'USD'
+              });
+            }
+          }}
         >
           DOWNLOAD THE CATALOG
         </a>
