@@ -3,8 +3,8 @@ import Script from 'next/script';
 import './globals.css';
 import NoiseBackground from '@/components/NoiseBackground';
 import InitialLoader from '@/components/ui/InitialLoader';
-
 import Navigation from '@/components/ui/Navigation';
+import LeadMagnetModal from '@/components/ui/LeadMagnetModal';
 
 export const metadata: Metadata = {
   title: 'PRIVATE TECHNO — Underground Electronic Culture',
@@ -43,6 +43,32 @@ export default function RootLayout({
             fbq('track', 'PageView');
           `}
         </Script>
+        <Script id="brevo-tracker" strategy="afterInteractive">
+          {`
+            (function() {
+              window.sib = {
+                  equeue: [],
+                  client_key: "YOUR_BREVO_CLIENT_KEY" // REPLACE THIS WITH YOUR BREVO CLIENT KEY or use process.env.NEXT_PUBLIC_BREVO_CLIENT_KEY
+              };
+              window.sendinblue = {};
+              for (var j = ['track', 'identify', 'trackLink', 'page'], i = 0; i < j.length; i++) {
+              (function(k) {
+                  window.sendinblue[k] = function() {
+                      var arg = Array.prototype.slice.call(arguments);
+                      (window.sib[k] || function() {
+                              var t = {};
+                              t[k] = arg;
+                              window.sib.equeue.push(t);
+                          })(arg[0], arg[1], arg[2], arg[3]);
+                      };
+                  })(j[i]);
+              }
+              var n = document.createElement("script"),
+                  i = document.getElementsByTagName("script")[0];
+              n.type = "text/javascript", n.id = "sendinblue-js", n.async = !0, n.src = "https://sibautomation.com/sa.js?key=" + window.sib.client_key, i.parentNode.insertBefore(n, i), window.sendinblue.page();
+            })();
+          `}
+        </Script>
       </head>
       <body>
         <noscript>
@@ -57,6 +83,7 @@ export default function RootLayout({
         <InitialLoader />
         <NoiseBackground />
         <div className="grain-overlay" aria-hidden="true" />
+        <LeadMagnetModal />
         <Navigation />
         {children}
       </body>

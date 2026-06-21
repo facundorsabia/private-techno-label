@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { name: 'HOME', href: '/' },
   { name: 'ABOUT', href: '/#about' },
   { name: 'RELEASES', href: '/#releases' },
-  { name: 'ROSTER', href: '/#roster' }
+  { name: 'FREQUENCY', href: '/#frequency' }
 ];
 
 export default function Navigation() {

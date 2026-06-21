@@ -35,7 +35,7 @@ export default function Home() {
       <FeaturedReleaseSection />
       <ReleasesSection />
       <FrequencySection />
-      <RosterSection />
+      {/* <RosterSection /> */}
       <SubscribeSection />
       <Footer />
     </main>
