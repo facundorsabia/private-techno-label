@@ -40,7 +40,19 @@ export default function ReleaseCard({ release, index }: ReleaseCardProps) {
             <span className={styles.cardTitle}>{release.title}</span>
             <span className={`ui-label ${styles.cardCatalog}`}>{release.catalog}</span>
           </div>
-          <span className={styles.cardArtist}>{release.artist}</span>
+          <div className={styles.artistRow}>
+            <span className={styles.cardArtist}>{release.artist}</span>
+            <button 
+              className={styles.buyBtn}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(`https://private-techno.bandcamp.com/album/${release.bandcampSlug}`, '_blank');
+              }}
+            >
+              BUY
+            </button>
+          </div>
         </div>
         
         {/* Corner accents for futuristic feel */}

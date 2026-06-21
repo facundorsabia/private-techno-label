@@ -17,6 +17,9 @@ export default function LeadMagnetModal() {
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  
+  // We need usePathname to hide this modal on funnel pages
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
 
   // Auto-open after 5 seconds, or via custom event
   useEffect(() => {
@@ -101,6 +104,7 @@ export default function LeadMagnetModal() {
   };
 
   if (!isOpen && status === 'idle') return null;
+  if (pathname === '/free-download' || pathname === '/discography') return null;
 
   return (
     <div 
