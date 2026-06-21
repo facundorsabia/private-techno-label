@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { name: 'HOME', href: '/' },
   { name: 'ABOUT', href: '/#about' },
   { name: 'RELEASES', href: '/#releases' },
-  { name: 'ROSTER', href: '/#roster' }
+  { name: 'FREQUENCY', href: '/#frequency' }
 ];
 
 export default function Navigation() {
@@ -21,6 +21,11 @@ export default function Navigation() {
   const overlayRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const pathname = usePathname();
+
+  // Hide on funnel pages
+  if (pathname === '/free-download' || pathname === '/discography') {
+    return null;
+  }
 
   // Close menu on route change
   useEffect(() => {
