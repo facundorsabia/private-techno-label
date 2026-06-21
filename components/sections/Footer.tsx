@@ -103,6 +103,14 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.channelItem}
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && (window as any).fbq) {
+                      (window as any).fbq('track', 'Contact', {
+                        content_name: channel.name,
+                        content_category: 'social_channel'
+                      });
+                    }
+                  }}
                 >
                   <span className={styles.chLabel}>{channel.label}</span>
                   <span className={styles.chName}>{channel.name.toUpperCase()}</span>
