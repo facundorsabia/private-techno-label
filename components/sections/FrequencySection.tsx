@@ -129,14 +129,15 @@ export default function FrequencySection() {
               <div className={styles.videoWrapper}>
                 <video
                   ref={videoRef}
-                  src="/images/assets/subscribe assets/world.webm"
                   className={styles.globeVideo}
                   autoPlay
+                  loop
                   muted
                   playsInline
                   preload="auto"
-                  onEnded={handleVideoEnded}
-                />
+                >
+                  <source src="/images/assets/subscribe assets/world.webm" type="video/webm" />
+                </video>
               </div>
             </div>
 

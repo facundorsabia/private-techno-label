@@ -66,8 +66,7 @@ export default function FreeDownloadClient() {
         // Ignorar
       }
 
-      // REDIRECT TO UPSELL PAGE ON SUCCESS!
-      router.push('/discography');
+      router.push('/thank-you');
       
     } catch (err: any) {
       setStatus('error');
@@ -235,13 +234,14 @@ export default function FreeDownloadClient() {
           </div>
           <div className={styles.manifestoImage}>
             <video 
-              src="/images/assets/subscribe assets/world.webm" 
               autoPlay 
               loop 
               muted 
               playsInline 
               className={styles.grittyVideo}
-            />
+            >
+              <source src="/videos/new-mundo.webm" type="video/webm" />
+            </video>
           </div>
         </section>
       </div>

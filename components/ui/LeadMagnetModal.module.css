@@ -39,23 +39,20 @@
 }
 
 .imageSection {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
 }
 
 @media (min-width: 768px) {
   .imageSection {
+    display: flex;
+    position: relative;
     width: 50%;
     aspect-ratio: auto;
     border-bottom: none;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
+    background: #000;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -313,4 +310,37 @@
   font-size: 12px;
   font-family: var(--font-mono);
   margin-top: -5px;
+}
+
+@media (max-width: 767px) {
+  .modalOverlay {
+    padding: 15px;
+  }
+
+  .modalContent {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .formSection {
+    padding: 40px 20px 30px 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .description {
+    font-size: 12px;
+  }
+
+  .input {
+    padding: 12px 15px;
+    font-size: 12px;
+  }
+
+  .submitBtn {
+    padding: 14px;
+    font-size: 14px;
+  }
 }

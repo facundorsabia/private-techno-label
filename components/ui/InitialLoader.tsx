@@ -1,13 +1,17 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './InitialLoader.module.css';
 
 export default function InitialLoader() {
+  const pathname = usePathname();
+  const isSalesPage = pathname === '/free-download' || pathname === '/discography' || pathname === '/thank-you';
+
   const [progress, setProgress] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(!isSalesPage);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Prevent scrolling while loader is active
@@ -23,6 +27,8 @@ export default function InitialLoader() {
   }, [isVisible]);
 
   useGSAP(() => {
+    if (isSalesPage) return;
+
     // Check sessionStorage only on client to avoid hydration issues later
     // const hasLoaded = sessionStorage.getItem('hasLoaded');
     // if (hasLoaded) {

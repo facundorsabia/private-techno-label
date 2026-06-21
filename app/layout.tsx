@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 import NoiseBackground from '@/components/NoiseBackground';
 import InitialLoader from '@/components/ui/InitialLoader';
 import Navigation from '@/components/ui/Navigation';
@@ -86,6 +87,7 @@ export default function RootLayout({
         <LeadMagnetModal />
         <Navigation />
         {children}
+        <Analytics />
       </body>
     </html>
   );
