@@ -191,7 +191,7 @@ export default function DiscographyClient() {
 
       {/* BLOQUE 3: El Manifiesto */}
       <div className={styles.manifestoWrapper}>
-        <section className={`${styles.manifestoBlock} gsap-block`}>
+        <section className={styles.manifestoBlock}>
           <div className={styles.manifestoContent}>
             <div className={styles.blockHeader}>
               <span className={styles.statusBlink}></span>
