@@ -1,7 +1,13 @@
 .frequencySection {
   position: relative;
   width: 100%;
-  background-color: transparent;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000000 25%,
+    #000000 75%,
+    transparent 100%
+  );
   padding: clamp(60px, 8vw, 120px) 0;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
@@ -131,6 +137,7 @@
   opacity: 0.9;
   filter: contrast(1.2);
   display: block;
+  mix-blend-mode: screen;
 }
 
 .hudStack {

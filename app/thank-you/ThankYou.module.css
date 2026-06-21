@@ -1,0 +1,176 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 80px 20px 40px 20px;
+  background-color: var(--black);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.logoWrapper {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  animation: logoFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes logoFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  max-width: 280px;
+  height: auto;
+}
+
+.contentSection {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: sectionFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  padding: 0 10px;
+}
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.systemStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--orange);
+  letter-spacing: 0.20em;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.statusBlink {
+  width: 8px;
+  height: 8px;
+  background-color: var(--orange);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+  box-shadow: 0 0 10px var(--orange);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 8vw, 54px);
+  color: var(--white);
+  line-height: 0.95;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.subTitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white-dim);
+  letter-spacing: 0.15em;
+  margin: 0 0 35px 0;
+  opacity: 0.8;
+  width: 100%;
+}
+
+.messageBox {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid var(--orange);
+  padding: 24px;
+  margin-bottom: 35px;
+  border-radius: 0 4px 4px 0;
+  text-align: left;
+}
+
+.leadText {
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  letter-spacing: 0.02em;
+}
+
+.infoText {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--white-dim);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.infoText strong {
+  color: var(--white);
+}
+
+.spamAlert {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(232, 85, 15, 0.85);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.ctaButton {
+  width: 100%;
+  background: var(--orange);
+  color: var(--black);
+  border: 1px solid var(--orange);
+  padding: 18px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.ctaButton:hover {
+  background: #ff6622;
+  box-shadow: 0 0 30px rgba(232, 85, 15, 0.45);
+  transform: translateY(-2px);
+}
+
+.ctaButton:active {
+  transform: translateY(0);
+}
+
+.minimalLegal {
+  margin-top: 40px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white-dim);
+  letter-spacing: 0.15em;
+  opacity: 0.5;
+  text-align: center;
+}

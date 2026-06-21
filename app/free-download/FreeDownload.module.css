@@ -496,7 +496,7 @@
   position: relative;
   min-height: 400px;
   flex: 1;
-  background: #000;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -515,6 +515,7 @@
   object-fit: contain;
   filter: contrast(1.5) brightness(0.8) grayscale(50%);
   opacity: 0.9;
+  mix-blend-mode: screen;
 }
 
 /* =========================================

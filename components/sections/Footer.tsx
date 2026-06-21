@@ -124,7 +124,7 @@ export default function Footer() {
 
             <div className={styles.logoWrapper}>
               <Image
-                src="/images/logos/Private Techno blanco.png"
+                src="/images/logos/private-rebranding-logo-no-bg.png"
                 alt="Private Techno"
                 width={360}
                 height={100}

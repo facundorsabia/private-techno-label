@@ -22,10 +22,7 @@ export default function Navigation() {
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const pathname = usePathname();
 
-  // Hide on funnel pages
-  if (pathname === '/free-download' || pathname === '/discography') {
-    return null;
-  }
+
 
   // Close menu on route change
   useEffect(() => {
@@ -68,6 +65,11 @@ export default function Navigation() {
       tlRef.current?.reverse();
     }
   }, [isOpen]);
+
+  // Hide on funnel pages
+  if (pathname === '/free-download' || pathname === '/discography' || pathname === '/thank-you') {
+    return null;
+  }
 
   return (
     <div ref={containerRef}>

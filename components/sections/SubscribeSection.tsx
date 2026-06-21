@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -11,6 +11,37 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function SubscribeSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Error al suscribirse.');
+      }
+
+      setStatus('success');
+      setEmail('');
+    } catch (err: any) {
+      setStatus('error');
+      setErrorMessage(err.message || 'Ocurrió un error. Intenta de nuevo.');
+    }
+  };
 
   useGSAP(() => {
     const tl = gsap.timeline({
@@ -51,15 +82,34 @@ export default function SubscribeSection() {
             </div>
             <div className={`${styles.emailInputContainer} fade-up`}>
               <div className={styles.inputStripe}></div>
-              <form className={styles.emailForm} onSubmit={(e) => e.preventDefault()}>
+              <form className={styles.emailForm} onSubmit={handleSubmit}>
                 <input
                   type="email"
-                  placeholder="ENTER YOUR EMAIL"
+                  placeholder={status === 'loading' ? 'TRANSMITTING...' : 'ENTER YOUR EMAIL'}
                   className={styles.emailInput}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={status === 'loading' || status === 'success'}
                   required
                 />
-                <button type="submit" className={styles.submitBtn}>SUBMIT</button>
+                <button 
+                  type="submit" 
+                  className={styles.submitBtn}
+                  disabled={status === 'loading' || status === 'success'}
+                >
+                  {status === 'loading' ? '...' : status === 'success' ? 'DONE' : 'SUBMIT'}
+                </button>
               </form>
+              {status === 'error' && (
+                <p style={{ color: '#ff4444', fontSize: '11px', fontFamily: 'var(--font-mono)', marginTop: '5px', alignSelf: 'flex-start' }}>
+                  {errorMessage}
+                </p>
+              )}
+              {status === 'success' && (
+                <p style={{ color: 'var(--orange)', fontSize: '11px', fontFamily: 'var(--font-mono)', marginTop: '5px', alignSelf: 'flex-start' }}>
+                  /// TRANSMISSION SUCCESSFUL. WELCOME TO THE FREQUENCY.
+                </p>
+              )}
             </div>
           </div>
 

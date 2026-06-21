@@ -17,6 +17,15 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = React.useState(false);
+  const [currentTime, setCurrentTime] = React.useState<string>('00:00:00');
+
+  React.useEffect(() => {
+    setCurrentTime(new Date().toLocaleTimeString());
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
   
   // Find current index to calculate navigation
   const currentIndex = RELEASES.findIndex(r => r.id === release.id);
@@ -105,7 +114,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
             {/* System Status Label - Decorative */}
             <div className={styles.systemStatus}>
               <div className={styles.statusDot} />
-              <span>STREAMS_ACTIVE // {new Date().toLocaleTimeString()}</span>
+              <span>STREAMS_ACTIVE // {currentTime}</span>
             </div>
 
             {/* BUY CTA - Repositioned here */}
