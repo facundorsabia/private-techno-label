@@ -6,8 +6,6 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './LeadMagnetModal.module.css';
 
-gsap.registerPlugin(useGSAP);
-
 export default function LeadMagnetModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -46,7 +44,7 @@ export default function LeadMagnetModal() {
     };
   }, []);
 
-  useGSAP(() => {
+  const { contextSafe } = useGSAP(() => {
     if (isOpen) {
       gsap.fromTo(overlayRef.current, 
         { opacity: 0, visibility: 'hidden' },
@@ -57,9 +55,9 @@ export default function LeadMagnetModal() {
         { y: 0, opacity: 1, scale: 1, duration: 0.5, delay: 0.1, ease: 'back.out(1.2)' }
       );
     }
-  }, [isOpen]);
+  }, { dependencies: [isOpen] });
 
-  const handleClose = () => {
+  const handleClose = contextSafe(() => {
     if (status === 'loading') return;
     
     gsap.to(contentRef.current, {
@@ -69,7 +67,7 @@ export default function LeadMagnetModal() {
       opacity: 0, duration: 0.3, delay: 0.1, ease: 'power2.in',
       onComplete: () => setIsOpen(false)
     });
-  };
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

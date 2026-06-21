@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RELEASES } from '@/data/releases';
 import styles from './Discography.module.css';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 export default function DiscographyClient() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,29 +40,36 @@ export default function DiscographyClient() {
 
     // Continuous Flipping Animation
     const cards = gsap.utils.toArray('.flip-card-item');
-    if (cards.length > 0) {
+    
+    const flipRandomCard = () => {
+      if (cards.length === 0) return;
+      // Pick a random card
+      const cardToFlip = gsap.utils.random(cards) as Element;
+      if (!cardToFlip) return;
       
-      const flipRandomCard = () => {
-        // Pick a random card
-        const cardToFlip = gsap.utils.random(cards) as Element;
-        
-        // Get current rotation to add 180 degrees
-        const currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
-        
-        gsap.to(cardToFlip, {
-          rotationY: currentRot + 180,
-          duration: 1.2,
-          ease: "back.out(1.2)",
-        });
+      // Get current rotation to add 180 degrees
+      const currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
+      
+      gsap.to(cardToFlip, {
+        rotationY: currentRot + 180,
+        duration: 1.2,
+        ease: "back.out(1.2)",
+      });
 
-        // Schedule next flip between 1 and 3 seconds
-        gsap.delayedCall(gsap.utils.random(1, 3), flipRandomCard);
-      };
+      // Schedule next flip between 1 and 3 seconds
+      gsap.delayedCall(gsap.utils.random(1, 3), flipRandomCard);
+    };
 
+    if (cards.length > 0) {
       // Start two concurrent flip loops for more activity
       gsap.delayedCall(1, flipRandomCard);
       gsap.delayedCall(2.5, flipRandomCard);
     }
+
+    return () => {
+      gsap.killTweensOf(flipRandomCard);
+      cards.forEach((card) => gsap.killTweensOf(card as any));
+    };
   }, { scope: containerRef });
 
   const bandcampLink = "https://private-techno.bandcamp.com/";

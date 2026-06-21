@@ -32,6 +32,10 @@ export default function Navigation() {
   }, [pathname]);
 
   useGSAP(() => {
+    if (pathname === '/free-download' || pathname === '/discography' || pathname === '/thank-you') {
+      return;
+    }
+
     // Setup GSAP Timeline
     tlRef.current = gsap.timeline({ paused: true })
       .to(overlayRef.current, {

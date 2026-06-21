@@ -10,7 +10,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import BinaryScramble from '@/components/ui/BinaryScramble';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 export default function RosterSection() {
   const containerRef = useRef<HTMLDivElement>(null);
