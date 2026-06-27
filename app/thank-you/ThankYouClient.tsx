@@ -43,7 +43,7 @@ export default function ThankYouClient() {
 
         <button 
           className={styles.ctaButton} 
-          onClick={() => router.push('/discography')}
+          onClick={() => router.push('/catalog')}
         >
           EXPLORE ENTIRE CATALOG (75% OFF)
         </button>

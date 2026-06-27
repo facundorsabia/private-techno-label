@@ -32,7 +32,7 @@ export default function Navigation() {
   }, [pathname]);
 
   useGSAP(() => {
-    if (pathname === '/free-download' || pathname === '/discography' || pathname === '/thank-you') {
+    if (pathname === '/free-download' || pathname === '/catalog' || pathname === '/thank-you') {
       return;
     }
 
@@ -71,7 +71,7 @@ export default function Navigation() {
   }, [isOpen]);
 
   // Hide on funnel pages
-  if (pathname === '/free-download' || pathname === '/discography' || pathname === '/thank-you') {
+  if (pathname === '/free-download' || pathname === '/catalog' || pathname === '/thank-you') {
     return null;
   }
 

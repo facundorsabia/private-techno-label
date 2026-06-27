@@ -8,7 +8,7 @@ import styles from './InitialLoader.module.css';
 
 export default function InitialLoader() {
   const pathname = usePathname();
-  const isSalesPage = pathname === '/free-download' || pathname === '/discography' || pathname === '/thank-you';
+  const isSalesPage = pathname === '/free-download' || pathname === '/catalog' || pathname === '/thank-you';
 
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(!isSalesPage);

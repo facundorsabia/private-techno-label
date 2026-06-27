@@ -105,7 +105,7 @@ export default function LeadMagnetModal() {
   };
 
   if (!isOpen && status === 'idle') return null;
-  if (pathname === '/free-download' || pathname === '/discography') return null;
+  if (pathname === '/free-download' || pathname === '/catalog') return null;
 
   return (
     <div 
