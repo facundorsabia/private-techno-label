@@ -139,7 +139,7 @@ export default function DiscographyClient() {
                 SECURE FULL BUNDLE
               </a>
               <p className={styles.microCopy}>
-                Secure checkout via Bandcamp. Instant WAV download.
+                Secure checkout via Lemon Squeezy. Instant WAV download.
               </p>
             </div>
           </div>

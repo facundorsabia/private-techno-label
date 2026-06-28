@@ -34,7 +34,7 @@ export default function ThankYouClient() {
             Your raw techno weapon is ready.
           </p>
           <p className={styles.infoText}>
-            The download link for <strong>Piero Ceraolo EP (WAV/MP3)</strong> has been successfully transmitted directly to your email inbox.
+            The download link for <strong>Underground Selection [WAV] (WAV/MP3)</strong> has been successfully transmitted directly to your email inbox.
           </p>
           <div className={styles.spamAlert}>
             /// NOTE: If you do not see the transmission within a few minutes, please verify your spam/junk folder.

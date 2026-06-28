@@ -131,10 +131,10 @@ export default function LeadMagnetModal() {
         <div className={styles.formSection}>
           <div className={styles.header}>
             <span className={styles.label}>/// EXCLUSIVE GIFT</span>
-            <h2 className={styles.title}>FREE DOWNLOAD: PIERO CERAOLO EP</h2>
+            <h2 className={styles.title}>FREE DOWNLOAD: UNDERGROUND SELECTION [WAV]</h2>
             {status !== 'success' && (
               <p className={styles.description}>
-                ENTER YOUR EMAIL TO RECEIVE OUR LATEST RELEASE (WAV/MP3) FOR FREE, DIRECTLY IN YOUR INBOX.
+                ENTER YOUR EMAIL TO RECEIVE OUR EXCLUSIVE SELECTION (WAV/MP3) FOR FREE, DIRECTLY IN YOUR INBOX.
               </p>
             )}
           </div>
@@ -146,7 +146,7 @@ export default function LeadMagnetModal() {
               </div>
               <h3 className={styles.successTitle}>ACCESS GRANTED</h3>
               <div className={styles.successBody}>
-                <p>The <strong>Piero Ceraolo EP (WAV/MP3)</strong> has been successfully transmitted to your email.</p>
+                <p>The <strong>Underground Selection [WAV] (WAV/MP3)</strong> has been successfully transmitted to your email.</p>
                 <div className={styles.spamAlert}>
                   /// NOTE: Please verify your spam/junk folder if the transmission is not visible within a few minutes.
                 </div>

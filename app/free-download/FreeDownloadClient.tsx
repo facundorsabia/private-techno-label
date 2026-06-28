@@ -118,7 +118,7 @@ export default function FreeDownloadClient() {
           <div className={styles.formSection}>
             <div className={styles.header}>
               <span className={styles.label}>/// UPGRADE YOUR ARSENAL WITH RAW TECHNO</span>
-              <h1 className={styles.title}>DOWNLOAD OUR LATEST EP FOR FREE.</h1>
+              <h1 className={styles.title}>DOWNLOAD OUR UNDERGROUND SELECTION FOR FREE.</h1>
               <p className={styles.description}>
                 Raw, hypnotic frequencies designed purely for the dancefloor. Stop sounding like the rest.
               </p>
@@ -210,7 +210,7 @@ export default function FreeDownloadClient() {
           <div className={styles.techImageWrapper}>
             <Image 
               src="/images/albumCovers/37-003.jpg" 
-              alt="Piero Ceraolo EP" 
+              alt="Underground Selection [WAV]" 
               fill 
               className={styles.epCoverImage}
             />
