@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import BinaryScramble from '@/components/ui/BinaryScramble';
 import styles from './SubscribeSection.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -72,7 +73,7 @@ export default function SubscribeSection() {
   }, { scope: containerRef });
 
   return (
-    <section className={styles.subscribeSection} ref={containerRef}>
+    <section className={styles.subscribeSection} id="subscribe" ref={containerRef}>
       <div className="section-container">
         <div className={styles.contentWrapper}>
 
@@ -85,33 +86,41 @@ export default function SubscribeSection() {
             </div>
             <div className={`${styles.emailInputContainer} fade-up`}>
               <div className={styles.inputStripe}></div>
-              <form className={styles.emailForm} onSubmit={handleSubmit}>
-                <input
-                  type="email"
-                  placeholder={status === 'loading' ? 'TRANSMITTING...' : 'ENTER YOUR EMAIL'}
-                  className={styles.emailInput}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={status === 'loading' || status === 'success'}
-                  required
-                />
-                <button 
-                  type="submit" 
-                  className={styles.submitBtn}
-                  disabled={status === 'loading' || status === 'success'}
-                >
-                  {status === 'loading' ? '...' : status === 'success' ? 'DONE' : 'SUBMIT'}
-                </button>
-              </form>
-              {status === 'error' && (
-                <p style={{ color: '#ff4444', fontSize: '11px', fontFamily: 'var(--font-mono)', marginTop: '5px', alignSelf: 'flex-start' }}>
-                  {errorMessage}
-                </p>
-              )}
-              {status === 'success' && (
-                <p style={{ color: 'var(--orange)', fontSize: '11px', fontFamily: 'var(--font-mono)', marginTop: '5px', alignSelf: 'flex-start' }}>
-                  /// TRANSMISSION SUCCESSFUL. WELCOME TO THE FREQUENCY.
-                </p>
+              {status === 'success' ? (
+                <div className={styles.successContainer}>
+                  <div className={styles.glitchBox}>
+                    <BinaryScramble text="[ ACCESS GRANTED. WELCOME TO THE NETWORK ]" duration={1200} />
+                  </div>
+                  <p className={styles.successSubtext}>
+                    <BinaryScramble text="/// SYSTEM UPDATED. PREPARE FOR TRANSMISSION." delay={800} duration={1000} />
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <form className={styles.emailForm} onSubmit={handleSubmit}>
+                    <input
+                      type="email"
+                      placeholder={status === 'loading' ? 'TRANSMITTING...' : 'ENTER YOUR EMAIL'}
+                      className={styles.emailInput}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={status === 'loading'}
+                      required
+                    />
+                    <button 
+                      type="submit" 
+                      className={styles.submitBtn}
+                      disabled={status === 'loading'}
+                    >
+                      {status === 'loading' ? '...' : 'SUBMIT'}
+                    </button>
+                  </form>
+                  {status === 'error' && (
+                    <p style={{ color: '#ff4444', fontSize: '11px', fontFamily: 'var(--font-mono)', marginTop: '5px', alignSelf: 'flex-start' }}>
+                      {errorMessage}
+                    </p>
+                  )}
+                </>
               )}
             </div>
           </div>

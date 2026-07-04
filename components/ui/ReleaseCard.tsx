@@ -26,10 +26,11 @@ export default function ReleaseCard({ release, index }: ReleaseCardProps) {
               sizes="(max-width: 900px) 50vw, (max-width: 500px) 100vw, 33vw"
             />
 
-            {/* Play icon on hover */}
+            {/* View details icon on hover */}
             <div className={styles.playIcon}>
-              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-                <polygon points="6,3 20,12 6,21" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="28" height="28">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
               </svg>
             </div>
           </div>
