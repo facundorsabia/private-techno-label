@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import ScrollReveal from '@/components/ScrollReveal';
+import BinaryScramble from '@/components/ui/BinaryScramble';
 import styles from './ManifestoSection.module.css';
 
 const MANIFESTO_LINES = [
@@ -56,9 +57,13 @@ export default function ManifestoSection() {
                   }}
                 >
                   {i === 0 ? (
-                    <span className={styles.lineMain}>{line}</span>
+                    <span className={styles.lineMain}>
+                      <BinaryScramble text={line} delay={i * 150} duration={800} />
+                    </span>
                   ) : (
-                    <span className={styles.lineSecondary}>{line}</span>
+                    <span className={styles.lineSecondary}>
+                      <BinaryScramble text={line} delay={i * 150} duration={800} />
+                    </span>
                   )}
                   <span className={styles.lineMarker}>{String(i + 1).padStart(2, '0')}</span>
                 </div>

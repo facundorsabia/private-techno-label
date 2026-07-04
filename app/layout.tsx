@@ -8,6 +8,7 @@ import Navigation from '@/components/ui/Navigation';
 import LeadMagnetModal from '@/components/ui/LeadMagnetModal';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://private-techno.com'),
   title: 'PRIVATE TECHNO — Underground Electronic Culture',
   description: 'PRIVATE TECHNO is an experimental techno record label exploring the boundaries of hypnotic sound, industrial aesthetics, and underground electronic culture.',
   keywords: ['techno', 'electronic music', 'record label', 'underground', 'experimental'],
