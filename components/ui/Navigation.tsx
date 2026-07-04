@@ -1,82 +1,84 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
 import styles from './Navigation.module.css';
-import BinaryScramble from './BinaryScramble';
 
 const NAV_LINKS = [
   { name: 'HOME', href: '/' },
   { name: 'ABOUT', href: '/#about' },
   { name: 'RELEASES', href: '/#releases' },
-  { name: 'FREQUENCY', href: '/#frequency' }
+  { name: 'ACCESS', href: '/#subscribe' }
 ];
 
 export default function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const pathname = usePathname();
+  const [activeIndex, setActiveIndex] = useState(0);
 
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const isNavigatingRef = useRef(false);
 
-
-  // Close menu on route change
+  // Scroll spy to detect active section
   useEffect(() => {
-    if (isOpen) {
-      setIsOpen(false);
-    }
-  }, [pathname]);
+    const handleScroll = () => {
+      const sections = NAV_LINKS.map(link => {
+        const id = link.href === '/' ? 'hero' : link.href.split('#')[1];
+        return document.getElementById(id);
+      });
 
-  useGSAP(() => {
-    if (pathname === '/free-download' || pathname === '/catalog' || pathname === '/thank-you') {
-      return;
-    }
+      let currentIdx = 0;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          // If the top of the section is above the middle of the screen
+          if (rect.top <= window.innerHeight / 2) {
+            currentIdx = i;
+            break;
+          }
+        }
+      }
 
-    // Setup GSAP Timeline
-    tlRef.current = gsap.timeline({ paused: true })
-      .to(overlayRef.current, {
-        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power4.inOut'
-      })
-      .to(`.${styles.navLink}`, {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, '-=0.4')
-      .to(`.${styles.meta}`, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out'
-      }, '-=0.4');
+      // Auto-hide logic
+      const currentScrollY = window.scrollY;
+      if (!isNavigatingRef.current) {
+        if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
+          setIsVisible(false);
+        } else {
+          setIsVisible(true);
+        }
+      } else {
+        setIsVisible(true);
+      }
+      lastScrollYRef.current = currentScrollY;
 
-  }, { scope: containerRef });
+      // Check if user is at the very bottom of the page
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+        currentIdx = sections.length - 1;
+      }
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      tlRef.current?.play();
-    } else {
-      document.body.style.overflow = '';
-      tlRef.current?.reverse();
-    }
-  }, [isOpen]);
+      // Only update active index based on scroll if the user is NOT clicking a nav link
+      if (!isNavigatingRef.current) {
+        setActiveIndex(currentIdx);
+      }
+    };
 
-  // Hide on funnel pages
-  if (pathname === '/free-download' || pathname === '/catalog' || pathname === '/thank-you') {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initial check
+    setTimeout(handleScroll, 100); 
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Only show navigation on the home page
+  if (pathname !== '/') {
     return null;
   }
 
   return (
-    <div ref={containerRef}>
+    <>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <span className="ui-label">SYS.001</span>
@@ -92,51 +94,33 @@ export default function Navigation() {
             </svg>
           </div>
           <span className="ui-label">48.8566° N, 2.3522° E</span>
-          <button 
-            className={styles.toggle}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle Menu"
-          >
-            <svg viewBox="0 0 40 40" className={`${styles.menuIcon} ${isOpen ? styles.menuOpen : ''}`}>
-              <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" className={styles.iconCircle} />
-              <circle cx="20" cy="20" r="12" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-              <line x1="14" y1="17" x2="26" y2="17" stroke="currentColor" strokeWidth="1.5" className={styles.line1} />
-              <line x1="14" y1="23" x2="26" y2="23" stroke="currentColor" strokeWidth="1.5" className={styles.line2} />
-            </svg>
-          </button>
         </div>
       </header>
 
-      <div 
-        ref={overlayRef} 
-        className={`${styles.overlay} ${isOpen ? styles.open : ''}`}
-      >
-        <div className={styles.scanlines} />
-        
-        <div className={styles.cornerTL} />
-        <div className={styles.cornerTR} />
-        <div className={styles.cornerBL} />
-        <div className={styles.cornerBR} />
-
-        <nav className={styles.navContent}>
-          {NAV_LINKS.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.href} 
-              className={styles.navLink}
-              onClick={() => setIsOpen(false)}
-            >
-              {isOpen ? <BinaryScramble text={link.name} delay={500} /> : link.name}
-            </Link>
-          ))}
+      <div className={`${styles.pillContainer} ${!isVisible ? styles.hidden : ''}`}>
+        <nav className={styles.pillNav}>
+          {NAV_LINKS.map((link, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                onClick={() => {
+                  setActiveIndex(index);
+                  isNavigatingRef.current = true;
+                  setTimeout(() => {
+                    isNavigatingRef.current = false;
+                  }, 1200);
+                }}
+              >
+                <span className={styles.itemText}>{link.name}</span>
+                {isActive && <div className={styles.activeIndicator} />}
+              </Link>
+            );
+          })}
         </nav>
-
-        <div className={styles.meta}>
-          <span>SYS_NAV_ACTIVE</span>
-          <span>EST. 2026</span>
-          <span>LAT:-34.6037 LON:-58.3816</span>
-        </div>
       </div>
-    </div>
+    </>
   );
 }

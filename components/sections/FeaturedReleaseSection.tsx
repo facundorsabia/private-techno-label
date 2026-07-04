@@ -173,48 +173,64 @@ export default function FeaturedReleaseSection() {
 
             <div className={styles.description}>
               <p className={styles.paragraph}>
-                003% marks the return of Private Techno after nearly a year of silence.
+                PHASE II is a V.A. compilation representing a new beginning—a Sumerian cycle of survival.
               </p>
               <p className={styles.paragraph}>
-                Three tracks by Piero Ceraolo: 001%, 002%, 003% delivering hypnotic, groove-focused techno built for the floor.
+                Featuring 7 uncompromising tracks from local and international artists, it reflects the constant changes in a dystopian world where only the strongest and most adaptable survive.
               </p>
               <p className={styles.paragraph}>
-                A functional release from one of the most consistent producers in Argentina and Latin America, reaffirming trust between artist and label.
+                This release also marks the launch of our new brutalist branding, pushing the boundaries of our sonic and visual identity.
               </p>
             </div>
 
             <div className={styles.playerContainer}>
-              <iframe
-                style={{ border: 0, width: '100%', height: '120px' }}
-                src={`https://bandcamp.com/EmbeddedPlayer/album=${featuredRelease.bandcampId}/size=large/bgcol=111111/linkcol=b74829/tracklist=false/artwork=small/transparent=true/`}
-                seamless
-                title={`${featuredRelease.title} Bandcamp Player`}
-              />
+              {featuredRelease.bandcampId ? (
+                <iframe
+                  style={{ border: 0, width: '100%', height: '120px' }}
+                  src={`https://bandcamp.com/EmbeddedPlayer/album=${featuredRelease.bandcampId}/size=large/bgcol=111111/linkcol=b74829/tracklist=false/artwork=small/transparent=true/`}
+                  seamless
+                  title={`${featuredRelease.title} Bandcamp Player`}
+                />
+              ) : (
+                <div style={{ width: '100%', height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'var(--font-mono)', fontSize: '12px', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
+                  [ BANDCAMP PLAYER: PENDING TRANSMISSION ]
+                </div>
+              )}
             </div>
 
             <div className={styles.actions}>
-              <a
-                href={`https://private-techno.bandcamp.com/album/${featuredRelease.bandcampSlug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.buyButton}
-                onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).fbq) {
-                    (window as any).fbq('track', 'InitiateCheckout', {
-                      content_name: featuredRelease.title,
-                      content_ids: [featuredRelease.catalog],
-                      content_type: 'product',
-                      value: 5.00,
-                      currency: 'USD'
-                    });
-                  }
-                }}
-              >
-                <span>BUY ON BANDCAMP</span>
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
+              {featuredRelease.bandcampSlug ? (
+                <a
+                  href={`https://private-techno.bandcamp.com/album/${featuredRelease.bandcampSlug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.buyButton}
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && (window as any).fbq) {
+                      (window as any).fbq('track', 'InitiateCheckout', {
+                        content_name: featuredRelease.title,
+                        content_ids: [featuredRelease.catalog],
+                        content_type: 'product',
+                        value: 5.00,
+                        currency: 'USD'
+                      });
+                    }
+                  }}
+                >
+                  <span>BUY ON BANDCAMP</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
+              ) : (
+                <button
+                  className={styles.buyButton}
+                  style={{ opacity: 0.5, cursor: 'not-allowed' }}
+                  disabled
+                >
+                  <span>INCOMING SECURE LINK</span>
+                </button>
+              )}
             </div>
           </div>
         </div>

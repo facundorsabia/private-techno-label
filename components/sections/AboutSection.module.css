@@ -210,7 +210,7 @@
 }
 
 .starsWrapper {
-  background-color: #030303;
+  background-color: transparent;
   position: relative;
   min-height: 100px;
   opacity: 0.6;

@@ -32,268 +32,113 @@
   align-items: center;
 }
 
-.toggle {
-  pointer-events: auto;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 15px;
-  color: var(--white-dim);
-  transition: color 0.3s ease;
+/* Floating Pill Navigation */
+.pillContainer {
   position: fixed;
-  top: 50px;
-  right: 30px;
-  z-index: 101;
-  /* Keep above header and overlay */
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.toggle:hover {
-  color: var(--orange);
-}
-
-.menuIcon {
-  width: 100%;
-  height: 100%;
-  display: block;
-  transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1);
-}
-
-.iconCircle {
-  animation: rotateSlow 10s linear infinite;
-  transform-origin: 20px 20px;
-  transition: stroke 0.4s ease, stroke-dasharray 0.4s ease;
-}
-
-@keyframes rotateSlow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.line1,
-.line2 {
-  transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1), stroke 0.4s ease;
-  transform-origin: 20px 20px;
-  /* Center of SVG */
-}
-
-/* Open State */
-.menuOpen {
-  transform: scale(0.9);
-}
-
-.menuOpen .line1 {
-  transform: translateY(3px) rotate(45deg);
-  stroke: var(--orange);
-}
-
-.menuOpen .line2 {
-  transform: translateY(-3px) rotate(-45deg);
-  stroke: var(--orange);
-}
-
-.menuOpen .iconCircle {
-  stroke: var(--orange);
-  stroke-dasharray: 1 8;
-  animation-duration: 20s;
-}
-
-/* OVERLAY */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 40px;
-  opacity: 0;
-  pointer-events: none;
-  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-  /* Start collapsed at top */
-}
-
-.overlay.open {
-  pointer-events: auto;
-}
-
-.scanlines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0) 50%,
-      rgba(0, 0, 0, 0.2) 50%,
-      rgba(0, 0, 0, 0.2));
-  background-size: 100% 4px;
-  pointer-events: none;
-  opacity: 0.3;
-  z-index: -1;
-}
-
-/* Technical Details in Overlay */
-.cornerTL,
-.cornerTR,
-.cornerBL,
-.cornerBR {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border: 1px solid var(--orange);
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.cornerTL {
-  top: 100px;
-  left: 40px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.cornerTR {
-  top: 100px;
-  right: 40px;
-  border-left: none;
-  border-bottom: none;
-}
-
-.cornerBL {
-  bottom: 100px;
-  left: 40px;
-  border-right: none;
-  border-top: none;
-}
-
-.cornerBR {
-  bottom: 100px;
-  right: 40px;
-  border-left: none;
-  border-top: none;
-}
-
-.navContent {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.navLink {
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 8vw, 7rem);
-  color: var(--white-dim);
-  text-decoration: none;
-  text-transform: uppercase;
-  line-height: 0.9;
-  transition: all 0.3s ease;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 20px;
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.navLink::before {
-  content: '>';
-  font-family: var(--font-mono);
-  font-size: clamp(1rem, 3vw, 2rem);
-  color: var(--orange);
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.3s ease;
-}
-
-.navLink:hover {
-  color: var(--white);
-  padding-left: 10px;
-}
-
-.navLink:hover::before {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.meta {
-  position: absolute;
   bottom: 40px;
-  left: 40px;
-  right: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: auto;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+.pillContainer.hidden {
+  transform: translate(-50%, 150%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pillNav {
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.navItem {
+  position: relative;
+  padding: 10px 20px;
+  text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 13px;
   color: var(--white-dim);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0;
+  transition: color 0.3s ease;
+  border-radius: 9999px;
+  overflow: hidden;
+  z-index: 1;
 }
 
-/* Mobile Bottom Navigation (Hidden on Desktop) */
+.navItem:hover {
+  color: var(--white);
+}
 
+.itemText {
+  position: relative;
+  z-index: 2;
+}
+
+/* Active State & Bubble Indicator */
+.navItem.active {
+  color: #000;
+  font-weight: 600;
+}
+
+.activeIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--orange);
+  border-radius: 9999px;
+  z-index: 0;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile Adjustments */
 @media (max-width: 768px) {
   .header {
     padding: 15px 20px;
   }
-  
-  /* Hide desktop toggle */
-  .toggle {
-    display: none;
-  }
 
-  .overlay {
-    padding: 20px;
-  }
-
-  .cornerTL {
-    top: 80px;
-    left: 20px;
-  }
-
-  .cornerTR {
-    top: 80px;
-    right: 20px;
-  }
-
-  .cornerBL {
-    bottom: 80px;
-    left: 20px;
-  }
-
-  .cornerBR {
-    bottom: 80px;
-    right: 20px;
-  }
-
-  .meta {
+  .pillContainer {
     bottom: 20px;
-    left: 20px;
-    right: 20px;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  .pillNav {
+    justify-content: space-between;
+    width: 100%;
+    padding: 6px 8px;
+  }
+
+  .navItem {
+    padding: 10px 12px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    flex: 1;
     text-align: center;
   }
 }

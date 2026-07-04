@@ -197,6 +197,8 @@ a:hover {
   padding: 0 clamp(20px, 4vw, 80px);
 }
 
+
+
 /* ── Scroll Reveal ─────────────────────────────────────── */
 .scroll-reveal {
   opacity: 0;
