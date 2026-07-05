@@ -27,7 +27,7 @@ export default function FeaturedReleaseSection() {
     title: 'PHASE II',
     artist: 'VARIOUS ARTISTS',
     catalog: 'PRV038',
-    cover: '/images/albumCovers/38-va-pashe-II.png',
+    cover: '/images/albumCovers/38-va-pashe-II.jpg',
     description: 'A new Sumerian cycle of survival in a dystopian world.',
     bandcampId: '',
     bandcampSlug: '',
@@ -130,6 +130,7 @@ export default function FeaturedReleaseSection() {
             fill 
             className={styles.bgImage} 
             sizes="100vw"
+            priority
           />
           <div className={styles.bgOverlay} />
           <div className={styles.bgTexture} />

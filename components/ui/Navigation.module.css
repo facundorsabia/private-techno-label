@@ -183,23 +183,6 @@
   }
 
   .timelineContainer {
-    right: 15px; /* Closer to the edge */
-  }
-
-  .timelineNav {
-    gap: 20px;
-  }
-  
-  /* On mobile, keep labels hidden even when active to avoid covering content, 
-     only show the glowing node. */
-  .navItem.active .labelContainer {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-  
-  /* Show only if explicitly touched */
-  .navItem:active .labelContainer {
-    opacity: 1;
-    transform: translateX(0);
+    display: none;
   }
 }

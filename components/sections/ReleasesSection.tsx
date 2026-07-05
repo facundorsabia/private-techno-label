@@ -24,6 +24,18 @@ export default function ReleasesSection() {
     setVisibleCount(prev => Math.min(prev + INCREMENT, RELEASES.length));
   };
 
+  // Auto-scroll to this section if navigated via hash from another page
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#releases') {
+      setTimeout(() => {
+        const el = document.getElementById('releases');
+        if (el) {
+          el.scrollIntoView({ behavior: 'auto' });
+        }
+      }, 200);
+    }
+  }, []);
+
   // Animation for newly added items
   useGSAP(() => {
     const cards = containerRef.current?.querySelectorAll('.release-card-entry');

@@ -20,11 +20,14 @@
   opacity: 0.3;
 }
 
-.dividerSquare {
-  width: 10px;
-  height: 10px;
-  background-color: var(--orange);
-  transform: rotate(45deg);
+.dividerLogo {
+  color: var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 5px var(--orange-glow));
 }
 
 .mainGrid {
