@@ -32,113 +32,174 @@
   align-items: center;
 }
 
-/* Floating Pill Navigation */
-.pillContainer {
+/* ── Lateral Timeline Navigation ──────────────────────── */
+.timelineContainer {
   position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
   z-index: 1000;
   pointer-events: auto;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  display: flex;
 }
 
-.pillContainer.hidden {
-  transform: translate(-50%, 150%);
+.timelineContainer.hidden {
+  transform: translate(50px, -50%);
   opacity: 0;
   pointer-events: none;
 }
 
-.pillNav {
+.timelineAxis {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  right: 14px; /* Centers with the 10px node */
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15) 10%, rgba(255, 255, 255, 0.15) 90%, transparent);
+  z-index: 0;
+}
+
+.timelineNav {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 12px;
-  background: rgba(10, 10, 10, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 9999px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px 0;
+  z-index: 1;
 }
 
 .navItem {
   position: relative;
-  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
   text-decoration: none;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--white-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: color 0.3s ease;
-  border-radius: 9999px;
-  overflow: hidden;
-  z-index: 1;
+  cursor: pointer;
 }
 
-.navItem:hover {
-  color: var(--white);
+/* ── Labels (Hidden by default, show on hover/active) ── */
+.labelContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none; /* Let hover trigger on the node/item area */
+}
+
+.itemNumber {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--orange);
+  opacity: 0.8;
+  letter-spacing: 0.1em;
 }
 
 .itemText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  background: rgba(10, 10, 10, 0.8);
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Nodes ───────────────────────────────────────────── */
+.node {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+}
+
+.node::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(45deg);
+  transition: background 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 2;
 }
 
-/* Active State & Bubble Indicator */
-.navItem.active {
-  color: #000;
-  font-weight: 600;
+/* ── Hover State ─────────────────────────────────────── */
+.navItem:hover .labelContainer {
+  opacity: 1;
+  transform: translateX(0);
 }
 
-.activeIndicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.navItem:hover .node::before {
+  background: var(--white);
+  transform: rotate(45deg) scale(1.5);
+}
+
+/* ── Active State ────────────────────────────────────── */
+.navItem.active .labelContainer {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.navItem.active .itemText {
+  color: var(--black);
   background: var(--orange);
-  border-radius: 9999px;
-  z-index: 0;
-  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  border-color: var(--orange);
+  font-weight: 700;
 }
 
-@keyframes popIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.navItem.active .node::before {
+  background: var(--orange);
+  transform: rotate(45deg) scale(1.5);
 }
 
-/* Mobile Adjustments */
+.activeGlow {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: var(--orange-glow);
+  border-radius: 50%;
+  filter: blur(4px);
+  animation: pulseGlow 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ── Mobile Adjustments ──────────────────────────────── */
 @media (max-width: 768px) {
   .header {
     padding: 15px 20px;
   }
 
-  .pillContainer {
-    bottom: 20px;
-    width: 90%;
-    max-width: 400px;
+  .timelineContainer {
+    right: 15px; /* Closer to the edge */
   }
 
-  .pillNav {
-    justify-content: space-between;
-    width: 100%;
-    padding: 6px 8px;
+  .timelineNav {
+    gap: 20px;
   }
-
-  .navItem {
-    padding: 10px 12px;
-    font-size: 11px;
-    letter-spacing: 0.05em;
-    flex: 1;
-    text-align: center;
+  
+  /* On mobile, keep labels hidden even when active to avoid covering content, 
+     only show the glowing node. */
+  .navItem.active .labelContainer {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  
+  /* Show only if explicitly touched */
+  .navItem:active .labelContainer {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

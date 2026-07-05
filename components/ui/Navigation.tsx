@@ -97,8 +97,9 @@ export default function Navigation() {
         </div>
       </header>
 
-      <div className={`${styles.pillContainer} ${!isVisible ? styles.hidden : ''}`}>
-        <nav className={styles.pillNav}>
+      <div className={`${styles.timelineContainer} ${!isVisible ? styles.hidden : ''}`}>
+        <div className={styles.timelineAxis} />
+        <nav className={styles.timelineNav}>
           {NAV_LINKS.map((link, index) => {
             const isActive = index === activeIndex;
             return (
@@ -114,8 +115,13 @@ export default function Navigation() {
                   }, 1200);
                 }}
               >
-                <span className={styles.itemText}>{link.name}</span>
-                {isActive && <div className={styles.activeIndicator} />}
+                <div className={styles.labelContainer}>
+                  <span className={styles.itemNumber}>0{index + 1}</span>
+                  <span className={styles.itemText}>{link.name}</span>
+                </div>
+                <div className={styles.node}>
+                  {isActive && <div className={styles.activeGlow} />}
+                </div>
               </Link>
             );
           })}
