@@ -6,7 +6,6 @@ import NoiseBackground from '@/components/NoiseBackground';
 import InitialLoader from '@/components/ui/InitialLoader';
 import Navigation from '@/components/ui/Navigation';
 import LeadMagnetModal from '@/components/ui/LeadMagnetModal';
-import CustomCursor from '@/components/ui/CustomCursor';
 
 export const metadata: Metadata = {
 
@@ -61,19 +60,6 @@ export default function RootLayout({
           `}
         </Script>
         
-        {/* Brevo V2 Tracker */}
-        <Script id="brevo-sdk" src="https://cdn.brevo.com/js/sdk-loader.js" strategy="lazyOnload" />
-        <Script id="brevo-init" strategy="lazyOnload">
-          {`
-            window.Brevo = window.Brevo || [];
-            Brevo.push([
-                "init",
-                {
-                client_key: "hf06nhyi1enl2iy8r4s0wejk"
-                }
-            ]);
-          `}
-        </Script>
       </head>
       <body>
         <noscript>
@@ -85,7 +71,6 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
-        <CustomCursor />
         <InitialLoader />
         <NoiseBackground />
         <div className="grain-overlay" aria-hidden="true" />

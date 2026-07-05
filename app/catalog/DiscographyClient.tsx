@@ -7,15 +7,15 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RELEASES } from '@/data/releases';
 import styles from './Discography.module.css';
+import ParticleSphere from '@/components/ui/ParticleSphere';
+import CustomCursor from '@/components/ui/CustomCursor';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function DiscographyClient() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // We need 18 covers for a 3x3 flipping grid (9 front, 9 back)
-  const frontCovers = RELEASES.slice(0, 9);
-  const backCovers = RELEASES.slice(9, 18);
+
 
   // Animation for scrolling elements
   useGSAP(() => {
@@ -38,58 +38,23 @@ export default function DiscographyClient() {
       );
     });
 
-    // Continuous Flipping Animation
-    const cards = gsap.utils.toArray('.flip-card-item');
-    
-    const flipRandomCard = () => {
-      if (cards.length === 0) return;
-      // Pick a random card
-      const cardToFlip = gsap.utils.random(cards) as Element;
-      if (!cardToFlip) return;
-      
-      // Get current rotation to add 180 degrees
-      const currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
-      
-      gsap.to(cardToFlip, {
-        rotationY: currentRot + 180,
-        duration: 1.2,
-        ease: "back.out(1.2)",
-      });
 
-      // Schedule next flip between 1 and 3 seconds
-      gsap.delayedCall(gsap.utils.random(1, 3), flipRandomCard);
-    };
-
-    if (cards.length > 0) {
-      // Start two concurrent flip loops for more activity
-      gsap.delayedCall(1, flipRandomCard);
-      gsap.delayedCall(2.5, flipRandomCard);
-    }
-
-    return () => {
-      gsap.killTweensOf(flipRandomCard);
-      cards.forEach((card) => gsap.killTweensOf(card as any));
-    };
   }, { scope: containerRef });
 
-  const bandcampLink = "https://private-techno.bandcamp.com/";
+  const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/72c67918-0003-40b7-bc72-9e4ffe132051";
 
   return (
     <div className={styles.container} ref={containerRef}>
       
       {/* BLOQUE 1: Hero & Checkout Area */}
       <div className={styles.heroWrapper}>
-        <section className={styles.heroBlock}>
+        <section className={styles.heroBlock} id="catalog-hero">
+          <CustomCursor targetId="catalog-hero" />
           <div className={styles.imageSection}>
             <div className={styles.imageOverlay}></div>
-            <video 
-              src="/videos/SphereEditWebM.webm" 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              className={styles.coverVideo}
-            />
+            <div className={styles.particleContainer}>
+              <ParticleSphere />
+            </div>
             {/* Logo overlay */}
             <div className={styles.heroLogoWrapper}>
               <Image 
@@ -114,13 +79,14 @@ export default function DiscographyClient() {
             </div>
 
             <div className={styles.form} style={{ marginTop: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '15px', marginBottom: '20px' }}>
-                <span style={{ color: '#ff4444', textDecoration: 'line-through', opacity: 0.7, fontSize: '20px', fontFamily: 'var(--font-mono)' }}>$185.00</span>
-                <span style={{ color: 'var(--orange)', fontSize: '32px', fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>$49.00</span>
+              <div className={styles.pricing}>
+                <span className={styles.oldPrice}>$185.00</span>
+                <span className={styles.newPrice}>$49.00</span>
+                <span className={styles.discountTag}>[ SAVE 73% ]</span>
               </div>
               
               <a 
-                href={bandcampLink}
+                href={checkoutLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.submitBtn}
@@ -184,24 +150,13 @@ export default function DiscographyClient() {
           </div>
           
           <div className={styles.techImageWrapper}>
+            <Image 
+              src="/images/landing/catalog-complete.jpg" 
+              alt="Complete Private Techno Catalog Bundle" 
+              fill 
+              className={styles.epCoverImage}
+            />
             <div className={styles.epCoverGlow}></div>
-            <div className={styles.catalogGrid}>
-              {frontCovers.map((frontRelease, i) => {
-                const backRelease = backCovers[i];
-                return (
-                  <div key={`flip-${frontRelease.id}`} className={`${styles.flipCard} flip-card-item`}>
-                    <div className={styles.flipCardFace}>
-                      <Image src={frontRelease.cover} alt={frontRelease.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
-                    </div>
-                    <div className={`${styles.flipCardFace} ${styles.flipCardBack}`}>
-                      {backRelease && (
-                        <Image src={backRelease.cover} alt={backRelease.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </section>
@@ -241,7 +196,7 @@ export default function DiscographyClient() {
       <section className={`${styles.closingBlock} gsap-block`}>
         <h2 className={styles.closingTitle}>THE DANCEFLOOR WON&apos;T WAIT.</h2>
         <a 
-          href={bandcampLink}
+          href={checkoutLink}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.ctaBtnLarge}

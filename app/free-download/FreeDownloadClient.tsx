@@ -7,6 +7,8 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './FreeDownload.module.css';
+import ParticleSphere from '@/components/ui/ParticleSphere';
+import CustomCursor from '@/components/ui/CustomCursor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,7 +44,7 @@ export default function FreeDownloadClient() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !firstName) return;
+    if (!email) return;
 
     setStatus('loading');
     setErrorMessage('');
@@ -91,17 +93,13 @@ export default function FreeDownloadClient() {
       
       {/* BLOQUE 1: Hero & Captura */}
       <div className={styles.heroWrapper}>
-        <section className={styles.heroBlock}>
+        <section className={styles.heroBlock} id="free-hero">
+          <CustomCursor targetId="free-hero" />
           <div className={styles.imageSection}>
             <div className={styles.imageOverlay}></div>
-            <video 
-              src="/videos/SphereEditWebM.webm" 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              className={styles.coverVideo}
-            />
+            <div className={styles.particleContainer}>
+              <ParticleSphere />
+            </div>
             {/* Logo overlay */}
             <div className={styles.heroLogoWrapper}>
               <Image 
@@ -125,18 +123,7 @@ export default function FreeDownloadClient() {
             </div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
-              <div className={styles.inputWrapper}>
-                <input
-                  id="name-input"
-                  type="text"
-                  placeholder="YOUR NAME"
-                  className={styles.input}
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  disabled={status === 'loading'}
-                  required
-                />
-              </div>
+
               <div className={styles.inputWrapper}>
                 <input
                   id="email-input"
@@ -179,37 +166,52 @@ export default function FreeDownloadClient() {
               <h2>&gt; AUDIO_FILE // TECH SPECS</h2>
             </div>
             <p className={styles.blockText}>
-              We don&apos;t make background music. You are downloading 3 tracks mastered and ready to hit high-pressure club systems. WAV 24-bit / 44.1kHz format.
+              We don&apos;t make background music. You are downloading 6 tracks mastered and ready to hit high-pressure club systems. WAV 24-bit / 44.1kHz format.
             </p>
 
             <div className={styles.tracklist}>
               <div className={styles.trackItem}>
                 <div className={styles.trackInfo}>
                   <span className={styles.trackNum}>[ TRK_01 ]</span>
-                  <span className={styles.trackTitle}>003% (Original Mix)</span>
+                  <span className={styles.trackTitle}>Augusto Taito - Trust the Toms (Original Mix)</span>
                 </div>
-                <p className={styles.trackDesc}>Heavy bassline and industrial percussion designed for peak time.</p>
               </div>
               <div className={styles.trackItem}>
                 <div className={styles.trackInfo}>
                   <span className={styles.trackNum}>[ TRK_02 ]</span>
-                  <span className={styles.trackTitle}>003% (Diofaro Remix)</span>
+                  <span className={styles.trackTitle}>Bruno Caro - Norfolk (Original Mix)</span>
                 </div>
-                <p className={styles.trackDesc}>Dark atmospheres, broken rhythms and raw kicks.</p>
               </div>
               <div className={styles.trackItem}>
                 <div className={styles.trackInfo}>
                   <span className={styles.trackNum}>[ TRK_03 ]</span>
-                  <span className={styles.trackTitle}>003% (Benac Remix)</span>
+                  <span className={styles.trackTitle}>SYNDRM - Airplane Security (Original Mix)</span>
                 </div>
-                <p className={styles.trackDesc}>Deep hypnotism and mental sequences for closing sets.</p>
+              </div>
+              <div className={styles.trackItem}>
+                <div className={styles.trackInfo}>
+                  <span className={styles.trackNum}>[ TRK_04 ]</span>
+                  <span className={styles.trackTitle}>Black Crow - So Words For Crows (Original Mix)</span>
+                </div>
+              </div>
+              <div className={styles.trackItem}>
+                <div className={styles.trackInfo}>
+                  <span className={styles.trackNum}>[ TRK_05 ]</span>
+                  <span className={styles.trackTitle}>Diofaro - Absolution (Original Mix)</span>
+                </div>
+              </div>
+              <div className={styles.trackItem}>
+                <div className={styles.trackInfo}>
+                  <span className={styles.trackNum}>[ TRK_06 ]</span>
+                  <span className={styles.trackTitle}>Piero Ceraolo - 001 (Original Mix)</span>
+                </div>
               </div>
             </div>
           </div>
           
           <div className={styles.techImageWrapper}>
             <Image 
-              src="/images/albumCovers/37-003.jpg" 
+              src="/images/landing/free-download.jpg" 
               alt="Underground Selection [WAV]" 
               fill 
               className={styles.epCoverImage}

@@ -4,18 +4,23 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './ThankYou.module.css';
+import MinimalGrid from '@/components/ui/MinimalGrid';
 
 export default function ThankYouClient() {
   const router = useRouter();
 
   return (
     <div className={styles.container}>
+      <div className={styles.gridContainer}>
+        <MinimalGrid />
+      </div>
+
       <div className={styles.logoWrapper}>
         <Image 
           src="/images/logos/private-rebranding-logo-no-bg.png" 
           alt="Private Techno Logo" 
-          width={320} 
-          height={80} 
+          width={450} 
+          height={112} 
           className={styles.logo}
           priority
         />

@@ -5,11 +5,13 @@ import Image from 'next/image';
 import DiagramLines from '@/components/svg/DiagramLines';
 import FuturisticShape from '@/components/ui/FuturisticShape';
 import ParticleSphere from '@/components/ui/ParticleSphere';
+import CustomCursor from '@/components/ui/CustomCursor';
 import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
   return (
     <section className={styles.hero} id="hero">
+      <CustomCursor targetId="hero" />
       <div className={styles.decorationContainer}>
         <FuturisticShape name="shape1" className={styles.shapeHero1} width={200} height={200} />
         <FuturisticShape name="shape4" className={styles.shapeHero3} width={300} height={80} />
