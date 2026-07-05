@@ -66,7 +66,11 @@ export default function Footer() {
       <div className="section-container">
         <div className={styles.topDivider}>
           <div className={styles.dividerLine} />
-          <div className={styles.dividerSquare} />
+          <div className={styles.dividerLogo}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
+              <path d="M2 12h4l3-9 5 18 3-9h5" />
+            </svg>
+          </div>
         </div>
 
         <div className={styles.mainGrid}>

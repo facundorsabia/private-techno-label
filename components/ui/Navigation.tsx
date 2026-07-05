@@ -41,17 +41,9 @@ export default function Navigation() {
         }
       }
 
-      // Auto-hide logic
+      // Auto-hide logic removed: Navigation is always visible
+      setIsVisible(true);
       const currentScrollY = window.scrollY;
-      if (!isNavigatingRef.current) {
-        if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
-          setIsVisible(false);
-        } else {
-          setIsVisible(true);
-        }
-      } else {
-        setIsVisible(true);
-      }
       lastScrollYRef.current = currentScrollY;
 
       // Check if user is at the very bottom of the page

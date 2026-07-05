@@ -73,7 +73,7 @@ export default function AboutSection() {
         {/* Rows 1/2 Right: Abstract Video (replacing Waveform) */}
         <div className={`${styles.gridItem} ${styles.boxWaveform}`}>
           <video
-            src="/videos/abstract-background.webm"
+            src="/videos/abstract-background.mp4"
             autoPlay
             loop
             muted

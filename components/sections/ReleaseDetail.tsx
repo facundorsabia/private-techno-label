@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Release, RELEASES } from '@/data/releases';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -14,6 +15,7 @@ interface ReleaseDetailProps {
 }
 
 export default function ReleaseDetail({ release }: ReleaseDetailProps) {
+  const router = useRouter();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = React.useState(false);
@@ -26,7 +28,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-  
+
   // Find current index to calculate navigation
   const currentIndex = RELEASES.findIndex(r => r.id === release.id);
   const nextRelease = currentIndex > 0 ? RELEASES[currentIndex - 1] : null;
@@ -44,7 +46,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
 
   useGSAP(() => {
     const tl = gsap.timeline();
-    
+
     tl.fromTo(`.${styles.backLink}`, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6 })
       .fromTo(`.${styles.cover}`, { opacity: 0, scale: 0.9, filter: 'blur(10px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.8 }, "-=0.4")
       .fromTo(`.${styles.info} > *`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.6 }, "-=0.6")
@@ -68,7 +70,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
             <div className={styles.bgLine} />
             <div className={styles.bgLine} />
             <div className={styles.bgLine} />
-            
+
             {/* Asset Shapes from Home */}
             <div className={styles.shape1}>
               <Image src="/images/assets/shape1.png" alt="" width={400} height={400} />
@@ -80,7 +82,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
 
           {/* Left Side: Artwork */}
           <div className={styles.artworkSection}>
-            <div 
+            <div
               className={`${styles.cover} glow-border`}
               onMouseMove={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
@@ -105,11 +107,11 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
 
               {/* Custom Crosshair Cursor - Moved inside cover to be relative to it */}
               {isHovering && (
-                <div 
+                <div
                   className={styles.crosshair}
-                  style={{ 
-                    left: `${mousePos.x}px`, 
-                    top: `${mousePos.y}px` 
+                  style={{
+                    left: `${mousePos.x}px`,
+                    top: `${mousePos.y}px`
                   }}
                 >
                   <div className={styles.chX} />
@@ -120,7 +122,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
                 </div>
               )}
             </div>
-            
+
             {/* System Status Label - Decorative */}
             <div className={styles.systemStatus}>
               <div className={styles.statusDot} />
@@ -128,9 +130,9 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
             </div>
 
             {/* BUY CTA - Repositioned here */}
-            <a 
-              href={`https://private-techno.bandcamp.com/album/${release.bandcampSlug}`} 
-              target="_blank" 
+            <a
+              href={`https://private-techno.bandcamp.com/album/${release.bandcampSlug}`}
+              target="_blank"
               rel="noopener noreferrer"
               className={styles.buyButton}
               onClick={() => {
@@ -162,7 +164,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
               <h2 className={styles.artist}>
                 <BinaryScramble text={release.artist} duration={800} delay={600} />
               </h2>
-              
+
               <div className={styles.details}>
                 <div className={styles.detailItem}>
                   <span className="ui-label">RELEASE DATE</span>
