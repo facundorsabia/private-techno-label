@@ -21,9 +21,19 @@ export default function FeaturedReleaseSection() {
   const imageRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
 
-  // We want to feature the first release, PRV037
-  const featuredRelease = RELEASES[0];
-
+  // Feature PHASE II independently of the main catalog list
+  const featuredRelease = {
+    id: 'prv038',
+    title: 'PHASE II',
+    artist: 'VARIOUS ARTISTS',
+    catalog: 'PRV038',
+    cover: '/images/albumCovers/38-va-pashe-II.png',
+    description: 'A new Sumerian cycle of survival in a dystopian world.',
+    bandcampId: '',
+    bandcampSlug: '',
+    releaseDate: '2026',
+    color: '#b74829'
+  };
   useGSAP(() => {
     if (!sectionRef.current) return;
 
