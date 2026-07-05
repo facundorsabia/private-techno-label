@@ -41,8 +41,8 @@ export default function Navigation() {
         }
       }
 
-      // Auto-hide logic removed: Navigation is always visible
-      setIsVisible(true);
+      // Hide timeline navigation when on the Hero section (index 0)
+      setIsVisible(currentIdx > 0);
       const currentScrollY = window.scrollY;
       lastScrollYRef.current = currentScrollY;
 

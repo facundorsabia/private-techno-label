@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function CustomCursor() {
+export default function CustomCursor({ targetId }: { targetId?: string }) {
   const cursorRef = useRef<HTMLDivElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -22,17 +22,28 @@ export default function CustomCursor() {
     const cursor = cursorRef.current;
     if (!cursor) return;
 
+    const checkVisibility = (target: HTMLElement | null) => {
+      if (!targetId) return true; // Always visible if no targetId specified
+      if (!target) return false;
+      const targetElement = document.getElementById(targetId);
+      if (targetElement && (targetElement === target || targetElement.contains(target))) {
+        return true;
+      }
+      return false;
+    };
+
     // Follow mouse
     const handleMouseMove = (e: MouseEvent) => {
-      const x = e.clientX - 20; // offset half of 40px width to center
-      const y = e.clientY - 20; // offset half of 40px height to center
+      const x = e.clientX - 20;
+      const y = e.clientY - 20;
       
       if (cursor) {
         cursor.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${isHovered ? 1.35 : 1})`;
       }
       
-      if (!isVisible) {
-        setIsVisible(true);
+      const shouldBeVisible = checkVisibility(e.target as HTMLElement);
+      if (isVisible !== shouldBeVisible) {
+        setIsVisible(shouldBeVisible);
       }
     };
 
@@ -44,6 +55,11 @@ export default function CustomCursor() {
       } else {
         setIsHovered(false);
       }
+      
+      const shouldBeVisible = checkVisibility(target);
+      if (isVisible !== shouldBeVisible) {
+        setIsVisible(shouldBeVisible);
+      }
     };
 
     // Fade out cursor when leaving window bounds
@@ -51,8 +67,9 @@ export default function CustomCursor() {
       setIsVisible(false);
     };
 
-    const handleMouseEnter = () => {
-      setIsVisible(true);
+    const handleMouseEnter = (e: MouseEvent) => {
+      const shouldBeVisible = checkVisibility(e.target as HTMLElement);
+      setIsVisible(shouldBeVisible);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -66,7 +83,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [isHovered, isVisible]);
+  }, [isHovered, isVisible, targetId]);
 
   // Render nothing on touch screens
   if (isTouch) return null;

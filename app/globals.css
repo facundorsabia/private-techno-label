@@ -221,10 +221,3 @@ a:hover {
     padding: 0 20px;
   }
 }
-
-/* ── Custom Global Cursor Reticle ──────────────────────── */
-@media (hover: hover) and (pointer: fine) {
-  *, body, html, a, button, select, input, textarea, [role="button"] {
-    cursor: none !important;
-  }
-}

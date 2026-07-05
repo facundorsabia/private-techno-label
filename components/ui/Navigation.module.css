@@ -44,10 +44,11 @@
   display: flex;
 }
 
-.timelineContainer.hidden {
-  transform: translate(50px, -50%);
-  opacity: 0;
-  pointer-events: none;
+.hidden {
+  transform: translate(150px, -50%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 .timelineAxis {
