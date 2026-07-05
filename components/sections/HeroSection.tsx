@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import DiagramLines from '@/components/svg/DiagramLines';
 import FuturisticShape from '@/components/ui/FuturisticShape';
+import ParticleSphere from '@/components/ui/ParticleSphere';
 import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
@@ -22,6 +23,11 @@ export default function HeroSection() {
       </div>
 
       <DiagramLines />
+
+      {/* Background Canvas */}
+      <div className={styles.fullCanvasContainer}>
+        <ParticleSphere />
+      </div>
 
       {/* Main content */}
       <div className={styles.content}>
@@ -45,24 +51,6 @@ export default function HeroSection() {
             <span className="ui-label ui-label-md">h y p n ø t i c   s ø u n d</span>
             <span className="ui-label ui-label-md">RΛW S1GNΛL</span>
           </div>
-        </div>
-
-        {/* Right: Hero Video */}
-        <div className={styles.wireframeContainer}>
-          <div className={styles.wireframe}>
-            <video
-              src="/videos/SphereEditWebM.webm"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className={styles.heroVideo}
-            />
-          </div>
-          {/* Floating labels */}
-          <span className={`${styles.floatingLabel} ${styles.fl1}`}>AXIS.Y</span>
-          <span className={`${styles.floatingLabel} ${styles.fl2}`}>NODE.07</span>
-          <span className={`${styles.floatingLabel} ${styles.fl3}`}>SIGNAL</span>
         </div>
       </div>
 

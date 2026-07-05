@@ -7,6 +7,7 @@
   justify-content: center;
   overflow: hidden;
   padding: clamp(20px, 4vw, 60px);
+  cursor: none;
 }
 
 .decorationContainer {
@@ -193,15 +194,14 @@
   margin-top: 24px;
 }
 
-/* ── Wireframe Container ─────────────────── */
-/* ── Wireframe Container ─────────────────── */
-.wireframeContainer {
-  position: relative;
-  flex: 0 1 auto;
+.fullCanvasContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 500px;
-  height: 500px;
+  height: 100%;
   z-index: 1;
+  pointer-events: none;
 }
 
 
@@ -353,9 +353,5 @@
     font-size: 25px;
   }
 
-  .wireframeContainer {
-    max-width: 515px;
-    height: 700px;
-    top: -90px;
-  }
+
 }

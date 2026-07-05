@@ -6,6 +6,7 @@ import NoiseBackground from '@/components/NoiseBackground';
 import InitialLoader from '@/components/ui/InitialLoader';
 import Navigation from '@/components/ui/Navigation';
 import LeadMagnetModal from '@/components/ui/LeadMagnetModal';
+import CustomCursor from '@/components/ui/CustomCursor';
 
 export const metadata: Metadata = {
 
@@ -84,6 +85,7 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
+        <CustomCursor />
         <InitialLoader />
         <NoiseBackground />
         <div className="grain-overlay" aria-hidden="true" />
