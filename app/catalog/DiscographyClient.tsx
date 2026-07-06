@@ -17,7 +17,7 @@ export default function DiscographyClient() {
 
 
   // Animation for scrolling elements
-  useGSAP(() => {
+  const { contextSafe } = useGSAP(() => {
     const blocks = gsap.utils.toArray('.gsap-block');
     
     blocks.forEach((block: any) => {
@@ -46,13 +46,15 @@ export default function DiscographyClient() {
       const cardToFlip = gsap.utils.random(cards) as Element;
       if (!cardToFlip) return;
       
-      // Get current rotation to add 180 degrees
-      const currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
+      // Get current rotation and snap to nearest 180 degrees to prevent sideways stuck state
+      let currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
+      currentRot = Math.round(currentRot / 180) * 180;
       
       gsap.to(cardToFlip, {
         rotationY: currentRot + 180,
         duration: 1.2,
         ease: "back.out(1.2)",
+        overwrite: "auto"
       });
 
       // Schedule next flip between 1 and 3 seconds
@@ -66,6 +68,20 @@ export default function DiscographyClient() {
     }
 
   }, { scope: containerRef });
+
+  const handleMouseEnter = contextSafe((e: React.MouseEvent) => {
+    const card = e.currentTarget;
+    let currentRot = (gsap.getProperty(card, "rotationY") as number) || 0;
+    // Snap to nearest 180 degrees
+    currentRot = Math.round(currentRot / 180) * 180;
+    
+    gsap.to(card, {
+      rotationY: currentRot + 180,
+      duration: 0.8,
+      ease: "power2.out",
+      overwrite: "auto"
+    });
+  });
 
   const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/72c67918-0003-40b7-bc72-9e4ffe132051";
 
@@ -185,7 +201,11 @@ export default function DiscographyClient() {
               {frontCovers.map((frontRelease, i) => {
                 const backRelease = backCovers[i];
                 return (
-                  <div key={`flip-${frontRelease.id}`} className={`${styles.flipCard} flip-card-item`}>
+                  <div 
+                    key={`flip-${frontRelease.id}`} 
+                    className={`${styles.flipCard} flip-card-item`}
+                    onMouseEnter={handleMouseEnter}
+                  >
                     <div className={styles.flipCardFace}>
                       <Image src={frontRelease.cover} alt={frontRelease.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
                     </div>
