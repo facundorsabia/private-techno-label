@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import dynamic from 'next/dynamic';
 import styles from './FreeDownload.module.css';
-import ParticleSphere from '@/components/ui/ParticleSphere';
+const ParticleSphere = dynamic(() => import('@/components/ui/ParticleSphere'), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 

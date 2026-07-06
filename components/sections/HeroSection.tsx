@@ -3,8 +3,9 @@
 import React from 'react';
 import Image from 'next/image';
 import DiagramLines from '@/components/svg/DiagramLines';
+import dynamic from 'next/dynamic';
 import FuturisticShape from '@/components/ui/FuturisticShape';
-import ParticleSphere from '@/components/ui/ParticleSphere';
+const ParticleSphere = dynamic(() => import('@/components/ui/ParticleSphere'), { ssr: false });
 import CustomCursor from '@/components/ui/CustomCursor';
 import styles from './HeroSection.module.css';
 
