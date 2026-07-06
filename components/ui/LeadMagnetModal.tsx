@@ -71,7 +71,7 @@ export default function LeadMagnetModal() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !firstName) return;
+    if (!email) return;
 
     setStatus('loading');
     setErrorMessage('');
@@ -119,10 +119,9 @@ export default function LeadMagnetModal() {
         </button>
 
         <div className={styles.imageSection}>
-          <div className={styles.imageOverlay}></div>
           <Image 
-            src="/images/albumCovers/37-003.jpg" 
-            alt="Latest Release" 
+            src="/images/landing/free-download.jpg" 
+            alt="Underground Selection [WAV]" 
             fill 
             className={styles.coverImage}
           />
@@ -154,17 +153,6 @@ export default function LeadMagnetModal() {
             </div>
           ) : (
             <form className={styles.form} onSubmit={handleSubmit}>
-              <div className={styles.inputWrapper}>
-                <input
-                  type="text"
-                  placeholder="YOUR NAME"
-                  className={styles.input}
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  disabled={status === 'loading'}
-                  required
-                />
-              </div>
               <div className={styles.inputWrapper}>
                 <input
                   type="email"

@@ -8,7 +8,6 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './FreeDownload.module.css';
 import ParticleSphere from '@/components/ui/ParticleSphere';
-import CustomCursor from '@/components/ui/CustomCursor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,8 +92,7 @@ export default function FreeDownloadClient() {
       
       {/* BLOQUE 1: Hero & Captura */}
       <div className={styles.heroWrapper}>
-        <section className={styles.heroBlock} id="free-hero">
-          <CustomCursor targetId="free-hero" />
+        <section className={styles.heroBlock}>
           <div className={styles.imageSection}>
             <div className={styles.imageOverlay}></div>
             <div className={styles.particleContainer}>
@@ -171,38 +169,38 @@ export default function FreeDownloadClient() {
 
             <div className={styles.tracklist}>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ TRK_01 ]</span>
+                <div className={styles.trackNum}>[ TRK_01 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>Augusto Taito - Trust the Toms (Original Mix)</span>
                 </div>
               </div>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ TRK_02 ]</span>
+                <div className={styles.trackNum}>[ TRK_02 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>Bruno Caro - Norfolk (Original Mix)</span>
                 </div>
               </div>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ TRK_03 ]</span>
+                <div className={styles.trackNum}>[ TRK_03 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>SYNDRM - Airplane Security (Original Mix)</span>
                 </div>
               </div>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ TRK_04 ]</span>
+                <div className={styles.trackNum}>[ TRK_04 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>Black Crow - So Words For Crows (Original Mix)</span>
                 </div>
               </div>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ TRK_05 ]</span>
+                <div className={styles.trackNum}>[ TRK_05 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>Diofaro - Absolution (Original Mix)</span>
                 </div>
               </div>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ TRK_06 ]</span>
+                <div className={styles.trackNum}>[ TRK_06 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>Piero Ceraolo - 001 (Original Mix)</span>
                 </div>
               </div>
