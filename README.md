@@ -4,34 +4,36 @@
 
 ## █ INITIALIZING TRANSMISSION....
 
-> **WE ARE THE SIGNAL. UNDERGROUND.**
+**Private Techno** is an experimental techno record label operating from Buenos Aires, Argentina. It is a collective consciousness operating at the intersection of sound design, deep warehouse aesthetics, and digital frequencies.
 
-**Private Techno** is not just a record label - it is a collective consciousness operating at the intersection of sound design, depths of warehouses, and coded into digital frequencies.
-
-Every release is an artifact. Every track, a transmission from the future. We curate artists who push the boundaries of music into unexplored territories.
+This repository contains the **official digital frontend** for the label. Built as a high-performance, conversion-optimized web application, it serves as a gateway to the label's catalog, lead magnets, and full discography bundles.
 
 ### WΞ DØN’T RΞLΞΛSΞ MɄSIC. WΞ RΞLΞΛSΞ STΛTΞS.
 
 ---
 
-## █ SYSTEM.STATS 
-*Data nodes currently active:*
+## █ SYSTEM.ARCHITECTURE (TECH STACK)
 
-- `[ REL ]` **37 RELEASES** — Artifacts of raw sound.
-- `[ ART ]` **+50 ARTISTS** — Creators connected to the mainframe.
-- `[ FRQ ]` **∞ FREQUENCIES** — The signal never stops.
+The platform is engineered for extreme performance and visual impact, utilizing modern web standards and highly optimized rendering techniques:
+
+- **Core Framework:** Next.js (App Router) & React 18
+- **Styling:** Vanilla CSS Modules with a brutalist, high-contrast Dark Techno aesthetic.
+- **Animations:** **GSAP** (GreenSock) for fluid scroll-triggers, micro-interactions, and complex timeline sequences.
+- **3D Rendering (Zero-Dependencies):** Custom HTML5 Canvas 2D engine projecting math-based 3D particle spheres and sacred geometry without heavy libraries like Three.js.
+- **Performance Optimization:** Strict adherence to Core Web Vitals, utilizing Next.js `dynamic` imports to defer heavy math calculations and prioritize instantaneous LCP (Largest Contentful Paint).
 
 ---
 
-## █ CORE NODES (ARTISTS.DB)
+## █ CORE FEATURES
 
-**◆ BENAC** | `DJ / Producer`  
-A pillar of the Private Techno sound. His approach to techno is defined by mechanical precision, rhythmic complexity, and an unwavering commitment to the industrial aesthetic.
+### 1. `[ LEAD_MAGNET ]` The Underground Selection
+A high-converting, aggressively designed modal that offers an exclusive WAV selection in exchange for email sign-ups. Optimized with zero-margin full-bleed imagery and a frictionless single-input flow.
 
-**◆ DIOFARO** | `DJ / Producer / Sound Designer`  
-Operates at the intersection of mathematical precision and organic decay. A central figure in the collective, focusing on sound design and the emotional weight of industrial soundscapes.
+### 2. `[ CATALOG_VAULT ]` Infinite 3D Carousel
+The `Discography` section features a 3x3 GSAP-powered 3D flipping grid. Utilizing intelligent React state management, the hidden faces of the cards randomly cycle through the entire 37-release catalog on every flip, creating an infinite, lightweight showcase of the label's history.
 
-*Plus a global network of creators pushing the underground frequency.*
+### 3. `[ BUNDLE_CHECKOUT ]` Direct-to-Consumer
+Seamless integration with external checkout gateways (Lemon Squeezy) to offer the complete discography bundle, tracked via Meta/Facebook Pixel for conversion analytics.
 
 ---
 
