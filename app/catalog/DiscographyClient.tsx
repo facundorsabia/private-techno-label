@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RELEASES } from '@/data/releases';
+import dynamic from 'next/dynamic';
 import styles from './Discography.module.css';
-import ParticleSphere from '@/components/ui/ParticleSphere';
+const ParticleSphere = dynamic(() => import('@/components/ui/ParticleSphere'), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,7 +18,7 @@ export default function DiscographyClient() {
 
 
   // Animation for scrolling elements
-  useGSAP(() => {
+  const { contextSafe } = useGSAP(() => {
     const blocks = gsap.utils.toArray('.gsap-block');
     
     blocks.forEach((block: any) => {
@@ -46,13 +47,31 @@ export default function DiscographyClient() {
       const cardToFlip = gsap.utils.random(cards) as Element;
       if (!cardToFlip) return;
       
-      // Get current rotation to add 180 degrees
-      const currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
+      // Get current rotation and snap to nearest 180 degrees to prevent sideways stuck state
+      let currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
+      currentRot = Math.round(currentRot / 180) * 180;
       
       gsap.to(cardToFlip, {
         rotationY: currentRot + 180,
         duration: 1.2,
         ease: "back.out(1.2)",
+        overwrite: "auto",
+        onComplete: () => {
+          // Update the hidden face with a new random cover from the entire catalog
+          const index = parseInt(cardToFlip.getAttribute('data-index') || '0', 10);
+          const isShowingBack = ((currentRot + 180) / 180) % 2 !== 0;
+          const randomRelease = sortedReleases[Math.floor(Math.random() * sortedReleases.length)];
+          
+          setGridCards(prev => {
+            const newCards = [...prev];
+            if (isShowingBack) {
+              newCards[index] = { ...newCards[index], front: randomRelease };
+            } else {
+              newCards[index] = { ...newCards[index], back: randomRelease };
+            }
+            return newCards;
+          });
+        }
       });
 
       // Schedule next flip between 1 and 3 seconds
@@ -67,12 +86,46 @@ export default function DiscographyClient() {
 
   }, { scope: containerRef });
 
+  const handleMouseEnter = contextSafe((e: React.MouseEvent) => {
+    const card = e.currentTarget;
+    let currentRot = (gsap.getProperty(card, "rotationY") as number) || 0;
+    // Snap to nearest 180 degrees
+    currentRot = Math.round(currentRot / 180) * 180;
+    
+    gsap.to(card, {
+      rotationY: currentRot + 180,
+      duration: 0.8,
+      ease: "power2.out",
+      overwrite: "auto",
+      onComplete: () => {
+        const index = parseInt(card.getAttribute('data-index') || '0', 10);
+        const isShowingBack = ((currentRot + 180) / 180) % 2 !== 0;
+        const randomRelease = sortedReleases[Math.floor(Math.random() * sortedReleases.length)];
+        
+        setGridCards(prev => {
+          const newCards = [...prev];
+          if (isShowingBack) {
+            newCards[index] = { ...newCards[index], front: randomRelease };
+          } else {
+            newCards[index] = { ...newCards[index], back: randomRelease };
+          }
+          return newCards;
+        });
+      }
+    });
+  });
+
   const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/72c67918-0003-40b7-bc72-9e4ffe132051";
 
   // Prepare covers for the 3x3 grid (9 flip cards)
   const sortedReleases = [...RELEASES].sort((a, b) => b.id.localeCompare(a.id));
-  const frontCovers = sortedReleases.slice(0, 9);
-  const backCovers = sortedReleases.slice(9, 18);
+  
+  const [gridCards, setGridCards] = useState(() => {
+    return Array.from({ length: 9 }).map((_, i) => ({
+      front: sortedReleases[i],
+      back: sortedReleases[i + 9] || sortedReleases[i]
+    }));
+  });
 
   return (
     <div className={styles.container} ref={containerRef}>
@@ -182,17 +235,19 @@ export default function DiscographyClient() {
           <div className={styles.techImageWrapper}>
             <div className={styles.epCoverGlow}></div>
             <div className={styles.catalogGrid}>
-              {frontCovers.map((frontRelease, i) => {
-                const backRelease = backCovers[i];
+              {gridCards.map((card, i) => {
                 return (
-                  <div key={`flip-${frontRelease.id}`} className={`${styles.flipCard} flip-card-item`}>
+                  <div 
+                    key={`flip-slot-${i}`} 
+                    data-index={i}
+                    className={`${styles.flipCard} flip-card-item`}
+                    onMouseEnter={handleMouseEnter}
+                  >
                     <div className={styles.flipCardFace}>
-                      <Image src={frontRelease.cover} alt={frontRelease.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
+                      <Image src={card.front.cover} alt={card.front.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
                     </div>
                     <div className={`${styles.flipCardFace} ${styles.flipCardBack}`}>
-                      {backRelease && (
-                        <Image src={backRelease.cover} alt={backRelease.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
-                      )}
+                      <Image src={card.back.cover} alt={card.back.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
                     </div>
                   </div>
                 );
