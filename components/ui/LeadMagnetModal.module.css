@@ -56,22 +56,8 @@
   }
 }
 
-.imageOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(15,15,15,1) 0%, transparent 40%);
-  z-index: 1;
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .imageOverlay {
-    background: linear-gradient(to right, transparent 60%, rgba(15,15,15,1) 100%);
-  }
-}
-
 .coverImage {
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 15s ease-out;
   transform: scale(1.05);
 }
@@ -200,9 +186,9 @@
 }
 
 .submitBtn {
-  background: transparent;
-  color: var(--orange);
-  border: 1px solid var(--orange);
+  background: var(--orange);
+  color: var(--black);
+  border: none;
   padding: 18px;
   font-family: var(--font-heading);
   font-weight: 800;
@@ -216,9 +202,10 @@
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: var(--orange);
+  background: #ff6a1f;
   color: var(--black);
   box-shadow: 0 0 25px rgba(232, 85, 15, 0.4);
+  transform: translateY(-2px);
 }
 
 .submitBtn:disabled {

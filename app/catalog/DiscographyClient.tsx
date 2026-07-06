@@ -8,7 +8,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RELEASES } from '@/data/releases';
 import styles from './Discography.module.css';
 import ParticleSphere from '@/components/ui/ParticleSphere';
-import CustomCursor from '@/components/ui/CustomCursor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,18 +37,49 @@ export default function DiscographyClient() {
       );
     });
 
+    // Continuous Flipping Animation
+    const cards = gsap.utils.toArray('.flip-card-item');
+    
+    const flipRandomCard = () => {
+      if (cards.length === 0) return;
+      // Pick a random card
+      const cardToFlip = gsap.utils.random(cards) as Element;
+      if (!cardToFlip) return;
+      
+      // Get current rotation to add 180 degrees
+      const currentRot = gsap.getProperty(cardToFlip, "rotationY") as number || 0;
+      
+      gsap.to(cardToFlip, {
+        rotationY: currentRot + 180,
+        duration: 1.2,
+        ease: "back.out(1.2)",
+      });
+
+      // Schedule next flip between 1 and 3 seconds
+      gsap.delayedCall(gsap.utils.random(1, 3), flipRandomCard);
+    };
+
+    if (cards.length > 0) {
+      // Start two concurrent flip loops for more activity
+      gsap.delayedCall(1, flipRandomCard);
+      gsap.delayedCall(2.5, flipRandomCard);
+    }
 
   }, { scope: containerRef });
 
   const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/72c67918-0003-40b7-bc72-9e4ffe132051";
+
+  // Prepare covers for the 3x3 grid (9 flip cards)
+  const sortedReleases = [...RELEASES].sort((a, b) => b.id.localeCompare(a.id));
+  const frontCovers = sortedReleases.slice(0, 9);
+  const backCovers = sortedReleases.slice(9, 18);
 
   return (
     <div className={styles.container} ref={containerRef}>
       
       {/* BLOQUE 1: Hero & Checkout Area */}
       <div className={styles.heroWrapper}>
-        <section className={styles.heroBlock} id="catalog-hero">
-          <CustomCursor targetId="catalog-hero" />
+        <section className={styles.heroBlock}>
           <div className={styles.imageSection}>
             <div className={styles.imageOverlay}></div>
             <div className={styles.particleContainer}>
@@ -126,37 +156,48 @@ export default function DiscographyClient() {
 
             <div className={styles.tracklist}>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ ITEM_01 ]</span>
+                <div className={styles.trackNum}>[ ITEM_01 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>37 High-Impact Releases</span>
+                  <p className={styles.trackDesc}>The complete Private Techno catalog, from PRV001 to PRV037.</p>
                 </div>
-                <p className={styles.trackDesc}>The complete Private Techno catalog, from PRV001 to PRV037.</p>
               </div>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ ITEM_02 ]</span>
+                <div className={styles.trackNum}>[ ITEM_02 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>100+ Dancefloor Weapons</span>
+                  <p className={styles.trackDesc}>Original mixes and underground remixes crafted by global artists.</p>
                 </div>
-                <p className={styles.trackDesc}>Original mixes and underground remixes crafted by global artists.</p>
               </div>
               <div className={styles.trackItem}>
-                <div className={styles.trackInfo}>
-                  <span className={styles.trackNum}>[ ITEM_03 ]</span>
+                <div className={styles.trackNum}>[ ITEM_03 ]</div>
+                <div className={styles.trackContent}>
                   <span className={styles.trackTitle}>Lossless Quality</span>
+                  <p className={styles.trackDesc}>WAV 24-bit / 44.1kHz format ready for massive club systems.</p>
                 </div>
-                <p className={styles.trackDesc}>WAV 24-bit / 44.1kHz format ready for massive club systems.</p>
               </div>
             </div>
           </div>
           
           <div className={styles.techImageWrapper}>
-            <Image 
-              src="/images/landing/catalog-complete.jpg" 
-              alt="Complete Private Techno Catalog Bundle" 
-              fill 
-              className={styles.epCoverImage}
-            />
             <div className={styles.epCoverGlow}></div>
+            <div className={styles.catalogGrid}>
+              {frontCovers.map((frontRelease, i) => {
+                const backRelease = backCovers[i];
+                return (
+                  <div key={`flip-${frontRelease.id}`} className={`${styles.flipCard} flip-card-item`}>
+                    <div className={styles.flipCardFace}>
+                      <Image src={frontRelease.cover} alt={frontRelease.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
+                    </div>
+                    <div className={`${styles.flipCardFace} ${styles.flipCardBack}`}>
+                      {backRelease && (
+                        <Image src={backRelease.cover} alt={backRelease.title} fill className={styles.epCoverImage} sizes="(max-width: 768px) 100px, 150px" />
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
