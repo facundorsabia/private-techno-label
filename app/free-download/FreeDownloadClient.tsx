@@ -213,6 +213,7 @@ export default function FreeDownloadClient() {
               src="/images/landing/free-download.jpg" 
               alt="Underground Selection [WAV]" 
               fill 
+              sizes="(max-width: 768px) 100vw, 50vw"
               className={styles.epCoverImage}
             />
             <div className={styles.epCoverGlow}></div>

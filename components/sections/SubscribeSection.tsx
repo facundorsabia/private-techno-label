@@ -136,6 +136,7 @@ export default function SubscribeSection() {
                 src="/images/assets/subscribe assets/asset-s3.png"
                 alt="Terrain Wireframe"
                 fill
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className={styles.terrainImage}
               />
             </div>

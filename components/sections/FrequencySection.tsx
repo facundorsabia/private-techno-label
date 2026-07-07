@@ -116,6 +116,7 @@ export default function FrequencySection() {
                   src="/images/assets/subscribe assets/asset-s1.png"
                   alt="Divider Strip"
                   fill
+                  sizes="100vw"
                   style={{ objectFit: 'contain', objectPosition: 'left center' }}
                 />
               </div>
