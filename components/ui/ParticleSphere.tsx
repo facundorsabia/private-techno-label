@@ -20,10 +20,11 @@ export default function ParticleSphere() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   
   // Track mouse coordinates relative to canvas center
-  const mouseRef = useRef({ x: 0, y: 0, active: false });
+  const mouseRef = useRef({ x: 0, y: 0, active: false, blastMagnitude: 0, blastX: 0, blastY: 0 });
   
   // Scale of the sphere (updated on resize)
   const radiusRef = useRef(150);
+  const sizeRef = useRef({ width: 0, height: 0 }); // Cache for performance
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -96,6 +97,8 @@ export default function ParticleSphere() {
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
       
+      sizeRef.current = { width: rect.width, height: rect.height };
+      
       // Sphere base radius is scaled to the container (expanded for full-viewport backdrop)
       radiusRef.current = Math.min(rect.width, rect.height) * 0.34;
     };
@@ -119,6 +122,12 @@ export default function ParticleSphere() {
       mouseRef.current.active = true;
     };
 
+    const handleMouseDown = () => {
+      mouseRef.current.blastMagnitude = 1.0;
+      mouseRef.current.blastX = mouseRef.current.x;
+      mouseRef.current.blastY = mouseRef.current.y;
+    };
+
     const handleMouseLeave = () => {
       mouseRef.current.active = false;
     };
@@ -135,13 +144,21 @@ export default function ParticleSphere() {
       }
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      handleTouchMove(e);
+      mouseRef.current.blastMagnitude = 1.0;
+      mouseRef.current.blastX = mouseRef.current.x;
+      mouseRef.current.blastY = mouseRef.current.y;
+    };
+
     const handleTouchEnd = () => {
       mouseRef.current.active = false;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('touchstart', handleTouchMove, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchend', handleTouchEnd);
 
@@ -753,6 +770,38 @@ export default function ParticleSphere() {
             z = cosTheta * 0.05;
           }
           break;
+
+        case 20: // Double Helix DNA - State 20
+          {
+            const u = theta / Math.PI; // vertical position (0 to 1)
+            const yPos = (u * 2 - 1) * 0.95; // Y from -0.95 to 0.95
+            
+            // 4 full twists
+            const twist = u * Math.PI * 8; 
+            const rot = time * 0.8; // Spin the entire DNA slowly
+            
+            // Radius of the helix
+            const r = 0.45;
+            
+            // 1 in 8 particles become rungs connecting the two strands
+            const isRung = (i % 8 === 0);
+            
+            if (isRung) {
+              // Rung particle: distribute between strand 0 and strand 1
+              const v = (phi / (Math.PI * 2)) * 2 - 1; // -1 to 1
+              x = Math.cos(twist + rot) * r * v;
+              z = Math.sin(twist + rot) * r * v;
+              y = yPos;
+            } else {
+              // Backbone particle
+              const strand = i % 2;
+              const angle = twist + (strand * Math.PI) + rot;
+              x = Math.cos(angle) * r;
+              z = Math.sin(angle) * r;
+              y = yPos;
+            }
+          }
+          break;
       }
 
       return { x, y, z };
@@ -760,9 +809,10 @@ export default function ParticleSphere() {
 
     // Animation Loop
     const draw = () => {
-      const rect = canvas.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
+      const width = sizeRef.current.width;
+      const height = sizeRef.current.height;
+      if (width === 0) return; // Wait for initial resize
+
       const centerX = width / 2;
       const centerY = height / 2;
       const baseR = radiusRef.current;
@@ -772,39 +822,51 @@ export default function ParticleSphere() {
       angleY += 0.0012;
       angleX += 0.0004;
 
-      // Clear canvas
-      ctx.clearRect(0, 0, width, height);
+      // Absolute bulletproof canvas clear (resets transform to clear physical pixels)
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+
+      // Localized Blast Decay (Lower value = faster snap back)
+      mouseRef.current.blastMagnitude *= 0.82; // Faster exponential decay back to 0
 
       // ── DRAW TECHNO HUD GRID / RADAR SCAN (WIDESCREEN ELLIPSES) ──
       ctx.save();
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
       ctx.lineWidth = 1;
 
-      // Outer dashed boundary ellipse (stretched to 1.35x)
+      // Prevent ellipses from overflowing canvas horizontally on narrow screens (which creates vertical dotted line artifacts)
+      const maxRadiusX = centerX * 0.95;
+      const outerRadiusX = Math.min(baseR * 1.25 * 1.35, maxRadiusX);
+      const innerRadiusX = Math.min(baseR * 0.7 * 1.35, maxRadiusX * 0.85);
+
+      // Outer dashed boundary ellipse
       ctx.beginPath();
-      ctx.ellipse(centerX, centerY, baseR * 1.25 * 1.35, baseR * 1.25, 0, 0, Math.PI * 2);
+      ctx.ellipse(centerX, centerY, outerRadiusX, baseR * 1.25, 0, 0, Math.PI * 2);
       ctx.setLineDash([2, 16]);
       ctx.stroke();
 
       // Inner dashed target ellipse
       ctx.beginPath();
-      ctx.ellipse(centerX, centerY, baseR * 0.7 * 1.35, baseR * 0.7, 0, 0, Math.PI * 2);
+      ctx.ellipse(centerX, centerY, innerRadiusX, baseR * 0.7, 0, 0, Math.PI * 2);
       ctx.setLineDash([1, 20]);
       ctx.stroke();
 
-      // Horizontal and vertical axis lines (horizontal stretched)
+      // Horizontal and vertical axis lines
       ctx.beginPath();
       ctx.setLineDash([3, 14]);
-      ctx.moveTo(centerX - baseR * 1.4 * 1.35, centerY);
-      ctx.lineTo(centerX + baseR * 1.4 * 1.35, centerY);
+      const lineExtX = Math.min(baseR * 1.4 * 1.35, centerX * 0.98);
+      ctx.moveTo(centerX - lineExtX, centerY);
+      ctx.lineTo(centerX + lineExtX, centerY);
       ctx.moveTo(centerX, centerY - baseR * 1.3);
       ctx.lineTo(centerX, centerY + baseR * 1.3);
       ctx.stroke();
       ctx.restore();
 
       // ── 120-SECOND UNIFORM MORPHING TIMELINE ──
-      const loopDuration = 120; // seconds (2 minutes)
-      const numStates = 20;
+      const loopDuration = 126; // seconds (6 * 21 states)
+      const numStates = 21;
       const phaseDuration = loopDuration / numStates; // exactly 6.0 seconds per state phase
       
       const cycleTime = time % loopDuration;
@@ -827,6 +889,7 @@ export default function ParticleSphere() {
         z: number;
         size: number;
         isNearMouse: boolean;
+        blastIntensity: number;
         opacity: number;
       }> = [];
 
@@ -858,29 +921,64 @@ export default function ParticleSphere() {
 
         // Scale by radius + vibration
         // Stretched horizontally by 1.35 to increase horizontal prominence by 35%
-        const px = rx * currentR * 1.35;
-        const py = ry * currentR;
-        const pz = rz * currentR;
+        let px = rx * currentR * 1.35;
+        let py = ry * currentR;
+        let pz = rz * currentR;
 
         // 5. Perspective Projection
-        const scale = fov / (fov + pz);
+        // Prevent division by zero or negative scale (which flips particles to edges/infinity)
+        const safePz = Math.max(-fov + 10, pz);
+        const scale = fov / (fov + safePz);
         let screenX = centerX + px * scale;
         let screenY = centerY + py * scale;
 
-        // 6. Mouse Interactive Distortions
+        let blastIntensity = 0;
+
+        // Apply Localized Shoot/Dissipate Effect (OPTIMIZED)
+        if (mouseRef.current.blastMagnitude > 0.01) {
+          const dxBlast = screenX - (centerX + mouseRef.current.blastX);
+          const dyBlast = screenY - (centerY + mouseRef.current.blastY);
+          const distSq = dxBlast * dxBlast + dyBlast * dyBlast;
+          
+          if (distSq < 40000) { // 200 * 200
+            const distBlast = Math.sqrt(distSq);
+            const f = (200 - distBlast) * 0.005; // 1/200
+            blastIntensity = f * f * mouseRef.current.blastMagnitude;
+            
+            // Normalize vector to avoid atan2, cos, sin
+            const invDist = 1 / (distBlast || 1); // Avoid div by zero
+            const nx = dxBlast * invDist;
+            const ny = dyBlast * invDist;
+            
+            // Scatter chaotically using existing particle properties to avoid Math.sin inside loop
+            const scatter = p.speed * 0.4 + 0.6; // varies based on particle intrinsic speed
+            const pushMagnitude = blastIntensity * 380 * scatter;
+            
+            screenX += nx * pushMagnitude;
+            screenY += ny * pushMagnitude;
+          }
+        }
+
+        // 6. Mouse Interactive Distortions (OPTIMIZED)
         let isNearMouse = false;
         if (mouseRef.current.active) {
           const dx = screenX - (centerX + mouseRef.current.x);
           const dy = screenY - (centerY + mouseRef.current.y);
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < 95) {
+          if (distSq < 9025) { // 95 * 95
             isNearMouse = true;
-            const force = (95 - dist) / 95;
-            const angle = Math.atan2(dy, dx);
-            const push = force * 24; // Repulsion displacement
-            screenX += Math.cos(angle) * push;
-            screenY += Math.sin(angle) * push;
+            const dist = Math.sqrt(distSq);
+            const force = (95 - dist) * 0.010526; // 1/95
+            
+            // Normalize vector
+            const invDist = 1 / (dist || 1);
+            const nx = dx * invDist;
+            const ny = dy * invDist;
+            const push = force * 24; 
+            
+            screenX += nx * push;
+            screenY += ny * push;
           }
         }
 
@@ -893,6 +991,7 @@ export default function ParticleSphere() {
           z: pz,
           size,
           isNearMouse,
+          blastIntensity,
           opacity: p.opacity,
         });
       }
@@ -952,6 +1051,11 @@ export default function ParticleSphere() {
         if (p.isNearMouse) {
           fill = '#b74829'; // Solid design brand orange
           size = p.size * 1.2; // Slightly enlarge when near mouse
+        } else if (p.blastIntensity > 0.05) {
+          // Particles being blasted turn bright orange
+          const blastAlpha = Math.min(1, p.blastIntensity * 1.5 + finalOpacity);
+          fill = `rgba(232, 85, 15, ${blastAlpha})`; // Brighter design orange
+          size = p.size * (1 + p.blastIntensity);
         }
 
         ctx.fillStyle = fill;
@@ -960,7 +1064,7 @@ export default function ParticleSphere() {
         ctx.fill();
 
         // Glow halo
-        if (p.isNearMouse) {
+        if (p.isNearMouse || p.blastIntensity > 0.15) {
           ctx.fillStyle = 'rgba(183, 72, 41, 0.25)'; // Orange glow
           ctx.beginPath();
           ctx.arc(p.x, p.y, size * 3.5, 0, Math.PI * 2);
