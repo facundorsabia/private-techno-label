@@ -98,6 +98,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
                 src={release.cover}
                 alt={release.title}
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 style={{ objectFit: 'cover' }}
                 priority
               />

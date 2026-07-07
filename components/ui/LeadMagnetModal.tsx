@@ -126,6 +126,7 @@ export default function LeadMagnetModal() {
             src="/images/landing/free-download.jpg" 
             alt="Underground Selection [WAV]" 
             fill 
+            sizes="(max-width: 768px) 100vw, 50vw"
             className={styles.coverImage}
           />
         </div>

@@ -36,53 +36,64 @@ export default function FeaturedReleaseSection() {
   };
   useGSAP(() => {
     if (!sectionRef.current) return;
+    
+    let mm = gsap.matchMedia();
 
-    // Banner entrance animation (scale up slightly and fade in)
-    if (bannerRef.current) {
-      gsap.from(bannerRef.current, {
-        y: 80,
-        opacity: 0,
-        scale: 0.95,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-        }
-      });
-    }
+    mm.add("(min-width: 768px)", () => {
+      // Banner entrance animation (scale up slightly and fade in)
+      if (bannerRef.current) {
+        gsap.from(bannerRef.current, {
+          y: 80,
+          opacity: 0,
+          scale: 0.95,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          }
+        });
+      }
 
-    // Image Parallax & Entrance
-    if (imageRef.current) {
-      gsap.from(imageRef.current, {
-        scale: 1.1,
-        opacity: 0,
-        filter: 'brightness(2) blur(20px)',
-        duration: 1.5,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: imageRef.current,
-          start: 'top 85%',
-        }
-      });
-    }
+      // Image Parallax & Entrance
+      if (imageRef.current) {
+        gsap.from(imageRef.current, {
+          scale: 1.1,
+          opacity: 0,
+          filter: 'brightness(2) blur(20px)',
+          duration: 1.5,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: imageRef.current,
+            start: 'top 85%',
+          }
+        });
+      }
 
-    // Content elements stagger
-    if (contentRef.current) {
-      const elements = Array.from(contentRef.current.children);
-      gsap.from(elements, {
-        x: 40,
-        opacity: 0,
-        filter: 'blur(10px)',
-        duration: 1.2,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: bannerRef.current,
-          start: 'top 75%',
-        }
-      });
-    }
+      // Content elements stagger
+      if (contentRef.current) {
+        const elements = Array.from(contentRef.current.children);
+        gsap.from(elements, {
+          x: 40,
+          opacity: 0,
+          filter: 'blur(10px)',
+          duration: 1.2,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: bannerRef.current,
+            start: 'top 75%',
+          }
+        });
+      }
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      // Minimal mobile animations
+      if (bannerRef.current) gsap.from(bannerRef.current, { opacity: 0, duration: 0.8 });
+      if (contentRef.current) gsap.from(contentRef.current.children, { opacity: 0, stagger: 0.1, duration: 0.5 });
+    });
+
   }, { scope: sectionRef });
 
   const marqueeText = `/// LATEST RELEASE /// OUT NOW /// ${featuredRelease.catalog} /// ${featuredRelease.artist} - ${featuredRelease.title} `;
