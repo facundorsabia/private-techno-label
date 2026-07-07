@@ -11,7 +11,8 @@ export default function CustomCursor({ targetId }: { targetId?: string }) {
   useEffect(() => {
     // Detect touch device
     const checkTouch = () => {
-      return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      if (typeof window === 'undefined') return false;
+      return window.matchMedia('(pointer: coarse)').matches;
     };
     
     if (checkTouch()) {

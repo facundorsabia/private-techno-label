@@ -8,6 +8,7 @@ interface Particle {
   speed: number;  // individual vibration speed
   phase: number;  // individual vibration phase
   opacity: number;
+  isOrange?: boolean;
 }
 
 interface Connection {
@@ -47,12 +48,15 @@ export default function ParticleSphere() {
       const phi = Math.random() * 2 * Math.PI;
       const theta = Math.acos(cosTheta);
 
+      const isOrange = Math.random() < 0.07; // 7% of particles are orange
+
       particles.push({
         theta,
         phi,
         speed: 1.5 + Math.random() * 3.0,
         phase: Math.random() * Math.PI * 2,
         opacity: 0.25 + Math.random() * 0.55,
+        isOrange,
       });
 
       // Calculate initial XYZ (State 0: Sphere) for connection precalculation
@@ -929,26 +933,37 @@ export default function ParticleSphere() {
       // ── DRAW PARTICLES ──
       for (let i = 0; i < projected.length; i++) {
         const p = projected[i];
+        const orig = particles[i];
         
         // Depth-based opacity mapping
         const depthFactor = Math.max(0.04, Math.min(1, 1 - (p.z + baseR) / (baseR * 2)));
         let finalOpacity = p.opacity * depthFactor;
         let fill = `rgba(255, 255, 255, ${finalOpacity})`;
+        let size = p.size;
+
+        // Apply breathing orange effect if initialized as orange
+        if (orig.isOrange) {
+          const breath = Math.sin(time * 2.5 + orig.phase) * 0.5 + 0.5;
+          finalOpacity = (0.42 + breath * 0.48) * depthFactor;
+          fill = `rgba(232, 85, 15, ${finalOpacity})`; // Brighter design orange
+          size = Math.max(0.4, p.size * (1.1 + breath * 0.8));
+        }
 
         if (p.isNearMouse) {
-          fill = '#b74829'; // Orange color from design system
+          fill = '#b74829'; // Solid design brand orange
+          size = p.size * 1.2; // Slightly enlarge when near mouse
         }
 
         ctx.fillStyle = fill;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
         ctx.fill();
 
         // Glow halo
         if (p.isNearMouse) {
-          ctx.fillStyle = 'rgba(183, 72, 41, 0.22)'; // Orange glow
+          ctx.fillStyle = 'rgba(183, 72, 41, 0.25)'; // Orange glow
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 3.2, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, size * 3.5, 0, Math.PI * 2);
           ctx.fill();
         }
       }
