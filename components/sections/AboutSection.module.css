@@ -357,11 +357,17 @@
     gap: 5px;
   }
 
-  .weAre,
-  .signal {
-    font-size: 20vw;
+  .weAre {
+    font-size: clamp(2rem, 15.5vw, 5rem);
     line-height: 1;
-    white-space: normal;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .signal {
+    font-size: clamp(2.2rem, 15vw, 5.5rem);
+    line-height: 1;
+    white-space: nowrap;
     text-align: center;
   }
 

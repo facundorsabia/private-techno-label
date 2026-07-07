@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './LeadMagnetModal.module.css';
@@ -16,11 +17,13 @@ export default function LeadMagnetModal() {
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   
-  // We need usePathname to hide this modal on funnel pages
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const pathname = usePathname();
+  const isIgnoredPage = pathname === '/free-download' || pathname === '/catalog' || pathname === '/thank-you';
 
   // Auto-open after 5 seconds, or via custom event
   useEffect(() => {
+    if (isIgnoredPage) return;
+
     const timer = setTimeout(() => {
       // Check if user already subscribed safely (some Incognito modes block localStorage)
       let hasSubscribed = false;
@@ -42,7 +45,7 @@ export default function LeadMagnetModal() {
       clearTimeout(timer);
       window.removeEventListener('open-lead-magnet', handleOpenEvent);
     };
-  }, []);
+  }, [isIgnoredPage]);
 
   const { contextSafe } = useGSAP(() => {
     if (isOpen) {
@@ -104,8 +107,8 @@ export default function LeadMagnetModal() {
     }
   };
 
+  if (isIgnoredPage) return null;
   if (!isOpen && status === 'idle') return null;
-  if (pathname === '/free-download' || pathname === '/catalog') return null;
 
   return (
     <div 

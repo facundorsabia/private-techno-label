@@ -165,7 +165,7 @@ export default function DiscographyClient() {
               <div className={styles.pricing}>
                 <span className={styles.oldPrice}>$185.00</span>
                 <span className={styles.newPrice}>$49.00</span>
-                <span className={styles.discountTag}>[ SAVE 73% ]</span>
+                <span className={styles.discountTag}>[SAVE 73%]</span>
               </div>
               
               <a 
