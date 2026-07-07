@@ -18,7 +18,7 @@ export default function LeadMagnetModal() {
   const contentRef = useRef<HTMLDivElement>(null);
   
   const pathname = usePathname();
-  const isIgnoredPage = pathname === '/free-download' || pathname === '/catalog' || pathname === '/thank-you';
+  const isIgnoredPage = pathname.startsWith('/free-download') || pathname.startsWith('/catalog') || pathname.startsWith('/thank-you');
 
   // Auto-open after 5 seconds, or via custom event
   useEffect(() => {

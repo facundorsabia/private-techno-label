@@ -18,6 +18,14 @@
   animation: logoFadeIn 0.8s ease-out forwards;
   position: relative;
   z-index: 10;
+  width: 100%;
+  max-width: 290px;
+}
+
+@media (min-width: 768px) {
+  .logoWrapper {
+    max-width: 450px;
+  }
 }
 
 @keyframes logoFadeIn {
@@ -26,8 +34,9 @@
 }
 
 .logo {
-  max-width: 450px;
+  width: 100%;
   height: auto;
+  display: block;
 }
 
 .contentSection {
