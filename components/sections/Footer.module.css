@@ -284,7 +284,15 @@
   }
 
   .metadata {
-    flex-wrap: wrap;
-    gap: 15px 25px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .metaItem {
+    font-size: 8px;
   }
 }
