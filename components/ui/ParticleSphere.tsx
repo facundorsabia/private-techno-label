@@ -122,7 +122,12 @@ export default function ParticleSphere() {
       mouseRef.current.active = true;
     };
 
+    let lastTouchTime = 0;
+
     const handleMouseDown = () => {
+      // Prevent simulated mousedown after touch from firing a blast
+      if (Date.now() - lastTouchTime < 1000) return;
+      
       mouseRef.current.blastMagnitude = 1.0;
       mouseRef.current.blastX = mouseRef.current.x;
       mouseRef.current.blastY = mouseRef.current.y;
@@ -145,10 +150,10 @@ export default function ParticleSphere() {
     };
 
     const handleTouchStart = (e: TouchEvent) => {
+      lastTouchTime = Date.now();
       handleTouchMove(e);
-      mouseRef.current.blastMagnitude = 1.0;
-      mouseRef.current.blastX = mouseRef.current.x;
-      mouseRef.current.blastY = mouseRef.current.y;
+      // For mobile we omit the blast (blastMagnitude = 1.0) completely. 
+      // It will just smoothly track the finger and distort the particles gently.
     };
 
     const handleTouchEnd = () => {
