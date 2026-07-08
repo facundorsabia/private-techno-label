@@ -933,6 +933,9 @@ export default function ParticleSphere() {
         let screenY = centerY + py * scale;
 
         let blastIntensity = 0;
+        const isMobile = width < 768;
+        const blastRadius = isMobile ? 100 : 200;
+        const blastRadiusSq = blastRadius * blastRadius;
 
         // Apply Localized Shoot/Dissipate Effect (OPTIMIZED)
         if (mouseRef.current.blastMagnitude > 0.01) {
@@ -940,9 +943,9 @@ export default function ParticleSphere() {
           const dyBlast = screenY - (centerY + mouseRef.current.blastY);
           const distSq = dxBlast * dxBlast + dyBlast * dyBlast;
           
-          if (distSq < 40000) { // 200 * 200
+          if (distSq < blastRadiusSq) {
             const distBlast = Math.sqrt(distSq);
-            const f = (200 - distBlast) * 0.005; // 1/200
+            const f = (blastRadius - distBlast) / blastRadius;
             blastIntensity = f * f * mouseRef.current.blastMagnitude;
             
             // Normalize vector to avoid atan2, cos, sin
@@ -952,7 +955,7 @@ export default function ParticleSphere() {
             
             // Scatter chaotically using existing particle properties to avoid Math.sin inside loop
             const scatter = p.speed * 0.4 + 0.6; // varies based on particle intrinsic speed
-            const pushMagnitude = blastIntensity * 380 * scatter;
+            const pushMagnitude = blastIntensity * (isMobile ? 180 : 380) * scatter;
             
             screenX += nx * pushMagnitude;
             screenY += ny * pushMagnitude;

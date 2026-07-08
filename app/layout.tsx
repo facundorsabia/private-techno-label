@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
@@ -6,6 +6,12 @@ import NoiseBackground from '@/components/NoiseBackground';
 import InitialLoader from '@/components/ui/InitialLoader';
 import Navigation from '@/components/ui/Navigation';
 import LeadMagnetModal from '@/components/ui/LeadMagnetModal';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
 
