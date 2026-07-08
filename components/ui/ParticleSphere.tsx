@@ -934,7 +934,7 @@ export default function ParticleSphere() {
 
         let blastIntensity = 0;
         const isMobile = width < 768;
-        const blastRadius = isMobile ? 100 : 200;
+        const blastRadius = isMobile ? 60 : 200;
         const blastRadiusSq = blastRadius * blastRadius;
 
         // Apply Localized Shoot/Dissipate Effect (OPTIMIZED)
@@ -955,7 +955,7 @@ export default function ParticleSphere() {
             
             // Scatter chaotically using existing particle properties to avoid Math.sin inside loop
             const scatter = p.speed * 0.4 + 0.6; // varies based on particle intrinsic speed
-            const pushMagnitude = blastIntensity * (isMobile ? 180 : 380) * scatter;
+            const pushMagnitude = blastIntensity * (isMobile ? 70 : 380) * scatter;
             
             screenX += nx * pushMagnitude;
             screenY += ny * pushMagnitude;
