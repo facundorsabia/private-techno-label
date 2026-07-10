@@ -188,7 +188,7 @@ export default function DiscographyClient() {
                 SECURE FULL BUNDLE
               </a>
               <p className={styles.microCopy}>
-                Secure checkout via Lemon Squeezy. Instant WAV download.
+                Secure checkout via Lemon Squeezy. You will instantly receive a secure Access Key to our private vault to download the massive 12GB+ WAV catalog.
               </p>
             </div>
           </div>
