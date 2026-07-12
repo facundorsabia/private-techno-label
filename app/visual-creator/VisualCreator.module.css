@@ -1,0 +1,1235 @@
+/* ═══════════════════════════════════════════════════════════
+   VISUAL CREATOR — Cyberpunk Theme & Modular Styling
+   ═══════════════════════════════════════════════════════════ */
+
+.container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #050505;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ── Hero Viewport Section ── */
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(20px, 4vw, 60px);
+}
+
+.fullCanvasContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto; /* enable canvas mouse interactivity */
+}
+
+/* ── HUD Panel & Overlays ── */
+.topBar {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.topBar * {
+  pointer-events: auto; /* restore clicking for links */
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 16px;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--orange);
+  border-color: rgba(232, 85, 15, 0.35);
+  box-shadow: 0 0 15px rgba(232, 85, 15, 0.1);
+}
+
+.hudGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 4px;
+}
+
+.hudLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--white-dim);
+  opacity: 0.6;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.activeIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--orange);
+  letter-spacing: 0.15em;
+}
+
+.activeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+  animation: beacon 1.8s infinite alternate;
+}
+
+@keyframes beacon {
+  0% { opacity: 0.35; }
+  100% { opacity: 1.0; }
+}
+
+/* ── Content Title ── */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  z-index: 5;
+  pointer-events: none;
+  margin-bottom: 5vh;
+}
+
+.titleBlock {
+  max-width: 650px;
+}
+
+.logo {
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  opacity: 0.78;
+  display: block;
+}
+
+.tagline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white-dim);
+  opacity: 0.8;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-top: 18px;
+}
+
+.visualizerOverlay {
+  position: absolute;
+  bottom: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+}
+
+.statusText {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--white-dim);
+  opacity: 0.85;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.scrollIndicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 35px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+  animation: pulseLine 2s infinite ease-in-out;
+}
+
+@keyframes pulseLine {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.85; }
+}
+
+/* ── Cyberpunk Control Panel Section ── */
+.controlsSection {
+  position: relative;
+  width: 100%;
+  background-color: #030303;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 80px clamp(20px, 6vw, 120px) 100px;
+  z-index: 10;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 24px;
+  margin-bottom: 45px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.05em;
+}
+
+.sectionSubtitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white-dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ── Terminal Controls Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+}
+
+.card {
+  position: relative;
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  transition: border-color var(--transition-smooth);
+}
+
+.card:hover {
+  border-color: rgba(232, 85, 15, 0.18);
+}
+
+.cardTitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardTitle::after {
+  content: '⚡';
+  opacity: 0.45;
+}
+
+/* ── Card 1: Audio Setup & Player ── */
+.uploader {
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.01);
+  transition: all var(--transition-fast);
+}
+
+.uploader:hover {
+  border-color: var(--orange);
+  background: rgba(232, 85, 15, 0.02);
+}
+
+.uploadIcon {
+  font-size: 20px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.uploadText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.uploadSub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--white-dim);
+  opacity: 0.6;
+}
+
+.synthButton {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 12px 18px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 2px;
+  text-shadow: 0 0 6px rgba(232, 85, 15, 0.15);
+}
+
+.synthButton:hover {
+  background: var(--orange);
+  color: var(--white);
+  box-shadow: 0 0 20px var(--orange-glow);
+}
+
+.synthButtonActive {
+  background: var(--orange);
+  color: var(--white);
+  border-color: var(--orange);
+  box-shadow: 0 0 20px var(--orange-glow);
+}
+
+.fileInfo {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white-dim);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 12px;
+  border-radius: 2px;
+  border-left: 2px solid var(--orange);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fileName {
+  font-weight: bold;
+  color: var(--white);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playbackControls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.playPauseBtn {
+  width: 46px;
+  height: 46px;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.playPauseBtn:hover {
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.playIcon, .pauseIcon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.volumeContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.volumeLabel {
+  font-size: 9px;
+  color: var(--white-dim);
+}
+
+.slider {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 6px var(--orange);
+  transition: transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.progressContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.timeRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--white-dim);
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 6px var(--orange);
+}
+
+/* ── Card 2: Reaction Engines ── */
+.buttonGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.modeBtn {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--white-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 11px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+
+.modeBtn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--white);
+}
+
+.modeBtnActive {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(232, 85, 15, 0.06);
+  box-shadow: 0 0 12px rgba(232, 85, 15, 0.15);
+  text-shadow: 0 0 4px rgba(232, 85, 15, 0.3);
+}
+
+.statesGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.statesLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white-dim);
+  opacity: 0.8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.statesGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.stateBtn {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.01);
+  color: var(--white-dim);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  height: 26px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stateBtn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+.stateBtnActive {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(232, 85, 15, 0.08);
+  font-weight: bold;
+}
+
+.cycleBtn {
+  grid-column: span 6;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+/* ── Card 3: Calibration Sliders ── */
+.controlRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.controlLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controlName {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.controlValue {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--orange);
+  font-weight: bold;
+}
+
+.toggleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.01);
+  transition: border-color var(--transition-fast);
+}
+
+.toggleContainer:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.toggleLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--white);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.toggleSwitch {
+  width: 38px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.toggleSwitch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--white-dim);
+  transition: left var(--transition-fast), background var(--transition-fast);
+}
+
+.toggleSwitchActive {
+  background: var(--orange);
+}
+
+.toggleSwitchActive::after {
+  left: 22px;
+  background: var(--white);
+}
+
+/* ── Responsive Styling ── */
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .topBar {
+    padding: 0 10px;
+    top: 20px;
+  }
+  
+  .controlsSection {
+    padding: 60px 20px 80px;
+  }
+  
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+}
+
+/* ── Layout Selector & Dock Controls ── */
+.layoutSelector {
+  display: flex;
+  gap: 8px;
+}
+
+.layoutSelectorMini {
+  display: flex;
+  gap: 4px;
+}
+
+.layoutBtn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--white-dim);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+}
+
+.layoutBtn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+.layoutBtnActive {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(232, 85, 15, 0.06);
+}
+
+/* ── Sidebar Dock Layout ── */
+.sidebarDock {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 380px;
+  height: 100vh;
+  z-index: 100;
+  background: rgba(6, 6, 6, 0.82);
+  backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(232, 85, 15, 0.2);
+  padding: 30px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.sidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 15px;
+  margin-bottom: 5px;
+}
+
+.sidebarTitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.15em;
+}
+
+/* ── Floating Window Layout ── */
+.floatingWindow {
+  position: fixed;
+  width: 380px;
+  max-height: 85vh;
+  z-index: 100;
+  background: rgba(6, 6, 6, 0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(232, 85, 15, 0.32);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 4px;
+  transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floatingHeader {
+  padding: 12px 16px;
+  background: rgba(232, 85, 15, 0.08);
+  border-bottom: 1px solid rgba(232, 85, 15, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  user-select: none;
+}
+
+.floatingTitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.1em;
+}
+
+.floatingWindowActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.minimizeBtn {
+  background: transparent;
+  border: none;
+  color: var(--white-dim);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color var(--transition-fast);
+}
+
+.minimizeBtn:hover {
+  color: var(--orange);
+}
+
+.floatingMinimized {
+  max-height: 43px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Content Grid Overrides for Sidebar/Floating ── */
+.gridLeft,
+.gridFloating {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 15px 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.gridLeft::-webkit-scrollbar,
+.gridFloating::-webkit-scrollbar {
+  width: 4px;
+}
+
+.gridLeft::-webkit-scrollbar-thumb,
+.gridFloating::-webkit-scrollbar-thumb {
+  background: rgba(232, 85, 15, 0.3);
+  border-radius: 2px;
+}
+
+.gridLeft::-webkit-scrollbar-thumb:hover,
+.gridFloating::-webkit-scrollbar-thumb:hover {
+  background: var(--orange);
+}
+
+/* ── Center monitor area wrapping container ── */
+.monitorArea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  transition: padding-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+@media (min-width: 769px) {
+  .monitorAreaDocked {
+    padding-left: 380px;
+  }
+}
+
+/* ── Section styles ────────────────────────────────────── */
+.section-container {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 80px);
+}
+
+/* ── Geometric Corners ───────────────────── */
+.geoCorner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.geoTL {
+  top: 20px;
+  left: 20px;
+  border-top: 1px solid rgba(232, 85, 15, 0.25);
+  border-left: 1px solid rgba(232, 85, 15, 0.25);
+}
+
+.geoTR {
+  top: 20px;
+  right: 20px;
+  border-top: 1px solid rgba(232, 85, 15, 0.25);
+  border-right: 1px solid rgba(232, 85, 15, 0.25);
+}
+
+.geoBL {
+  bottom: 20px;
+  left: 20px;
+  border-bottom: 1px solid rgba(232, 85, 15, 0.25);
+  border-left: 1px solid rgba(232, 85, 15, 0.25);
+}
+
+.geoBR {
+  bottom: 20px;
+  right: 20px;
+  border-bottom: 1px solid rgba(232, 85, 15, 0.25);
+  border-right: 1px solid rgba(232, 85, 15, 0.25);
+}
+
+/* ── Floating Decorative Shapes ──────────── */
+.decorationContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shapeHero1 {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  opacity: 0.12;
+  transform: rotate(15deg);
+}
+
+.shapeHero2 {
+  position: absolute;
+  bottom: 80px;
+  right: 15%;
+  opacity: 0.15;
+}
+
+.shapeHero3 {
+  position: absolute;
+  top: 35%;
+  left: 20px;
+  opacity: 0.1;
+  transform: rotate(-10deg);
+}
+
+.shapeHero4 {
+  position: absolute;
+  top: 60%;
+  right: 100px;
+  opacity: 0.08;
+  transform: rotate(45deg);
+}
+
+.shapeHero5 {
+  position: absolute;
+  bottom: 20%;
+  left: 5%;
+  opacity: 0.1;
+}
+
+.shapeHero7 {
+  position: absolute;
+  top: 75%;
+  left: 25%;
+  opacity: 0.05;
+  transform: rotate(-15deg);
+}
+
+.shapeHero8 {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  opacity: 0.07;
+  transform: rotate(10deg);
+}
+
+.shapeHero9 {
+  position: absolute;
+  bottom: 10%;
+  left: 40%;
+  opacity: 0.08;
+}
+
+/* ── Recording Studio Monitor & Aspect Ratios ── */
+.screenContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  background: transparent;
+  z-index: 1;
+}
+
+/* Fullscreen mode matches parent hero section size */
+.screenContainer.full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  box-shadow: none;
+}
+
+/* Landscape 16:9 monitor frame */
+.screenContainer.ratio169 {
+  width: 92%;
+  max-width: 1050px;
+  max-height: calc(100vh - 160px);
+  aspect-ratio: 16 / 9;
+  height: auto;
+  flex-shrink: 0;
+  border: 1px solid rgba(232, 85, 15, 0.35);
+  background: #020202;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(232, 85, 15, 0.05);
+}
+
+/* Vertical 9:16 mobile monitor frame */
+.screenContainer.ratio916 {
+  height: 75vh;
+  max-height: 740px;
+  max-width: 90%;
+  aspect-ratio: 9 / 16;
+  width: auto;
+  flex-shrink: 0;
+  border: 1px solid rgba(232, 85, 15, 0.35);
+  background: #020202;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(232, 85, 15, 0.05);
+}
+
+/* Square 1:1 post monitor frame */
+.screenContainer.ratio11 {
+  height: 70vh;
+  max-height: 600px;
+  max-width: 90%;
+  aspect-ratio: 1 / 1;
+  width: auto;
+  flex-shrink: 0;
+  border: 1px solid rgba(232, 85, 15, 0.35);
+  background: #020202;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(232, 85, 15, 0.05);
+}
+
+.canvasWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Contained title and logos scale inside the monitor wrapper */
+.canvasOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* VIEWPORT VIEW FINDER CORNERS OVERLAYS */
+.screenFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border: 8px solid rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+}
+
+.screenFrame::before,
+.screenFrame::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}
+
+/* Viewfinder crosshairs */
+.screenFrame::before {
+  top: 10px;
+  left: 10px;
+  border-top: 1px solid rgba(232, 85, 15, 0.7);
+  border-left: 1px solid rgba(232, 85, 15, 0.7);
+}
+
+.screenFrame::after {
+  bottom: 10px;
+  right: 10px;
+  border-bottom: 1px solid rgba(232, 85, 15, 0.7);
+  border-right: 1px solid rgba(232, 85, 15, 0.7);
+}
+
+.frameLabel {
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--orange);
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+.frameResolution {
+  position: absolute;
+  bottom: 12px;
+  left: 20px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--white-dim);
+  letter-spacing: 0.1em;
+}
+
+/* REC blinking indicator */
+.recBadge {
+  color: #ff3333;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-shadow: 0 0 6px rgba(255, 51, 51, 0.4);
+  animation: blinkRec 1.2s steps(2, start) infinite;
+}
+
+@keyframes blinkRec {
+  to { opacity: 0; }
+}
+
+.recordBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #ff3333;
+  color: #ff3333;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 12px 18px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-radius: 2px;
+  text-shadow: 0 0 6px rgba(255, 51, 51, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.recordBtn:hover {
+  background: #ff3333;
+  color: var(--white);
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
+}
+
+.recordBtnActive {
+  background: #ff3333;
+  color: var(--white);
+  border-color: #ff3333;
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
+}
+
+.studioContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  margin-top: 5px;
+}
+
+.aspectSelector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.aspectBtn {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.01);
+  color: var(--white-dim);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  padding: 6px 0;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aspectBtn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+.aspectBtnActive {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(232, 85, 15, 0.08);
+  font-weight: 700;
+}
+
+/* Custom Background Image & Studio Default Overlays */
+.screenBgImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.defaultHeroBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bgDiagramLines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.bgDecorationContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+
+
