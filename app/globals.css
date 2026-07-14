@@ -221,3 +221,21 @@ a:hover {
     padding: 0 20px;
   }
 }
+
+/* Override Lemon Squeezy Modal & Loader */
+.lemonsqueezy-modal {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.lemonsqueezy-loader * {
+  stroke: var(--orange) !important;
+  color: var(--orange) !important;
+  border-color: var(--orange) !important;
+  border-top-color: transparent !important; /* For CSS spinners */
+}
+
+/* Force override of hardcoded LemonSqueezy purple pulse loader (#7047EB) */
+body div.lemonsqueezy-loader main div {
+  background-color: #b74829 !important;
+}

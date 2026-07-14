@@ -124,7 +124,7 @@ export default function DiscographyClient() {
     });
   });
 
-  const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/787ad184-0f95-4625-be73-15e25174bc07?embed=1";
+  const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/787ad184-0f95-4625-be73-15e25174bc07?embed=1&dark=1";
 
   // Prepare covers for the 3x3 grid (9 flip cards)
   const sortedReleases = [...RELEASES].sort((a, b) => b.id.localeCompare(a.id));

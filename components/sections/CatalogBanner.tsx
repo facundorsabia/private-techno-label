@@ -39,7 +39,7 @@ export default function CatalogBanner() {
     }
   }, { scope: containerRef });
 
-  const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/787ad184-0f95-4625-be73-15e25174bc07?embed=1";
+  const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/787ad184-0f95-4625-be73-15e25174bc07?embed=1&dark=1";
 
   return (
     <div className={styles.bannerWrapper} ref={containerRef}>
