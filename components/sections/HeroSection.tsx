@@ -24,7 +24,8 @@ export default function HeroSection() {
   const [currentTrack, setCurrentTrack] = useState(TRANSMISSION_TRACKS[0]);
 
   useEffect(() => {
-    audioManager.subscribe((playing) => setIsPlaying(playing));
+    const unsubscribe = audioManager.subscribe((playing) => setIsPlaying(playing));
+    return () => unsubscribe();
   }, []);
 
   const getTrackName = (url: string) => {

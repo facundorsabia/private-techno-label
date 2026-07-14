@@ -6,7 +6,7 @@ class AudioManager {
   private dataArray: Uint8Array | null = null;
 
   public isPlaying = false;
-  private onStateChange: ((isPlaying: boolean) => void) | null = null;
+  private listeners = new Set<(isPlaying: boolean) => void>();
 
   constructor() {
     if (typeof window !== 'undefined') {
@@ -38,17 +38,17 @@ class AudioManager {
 
       this.audioElement.onended = () => {
         this.isPlaying = false;
-        if (this.onStateChange) this.onStateChange(false);
+        this.listeners.forEach(listener => listener(false));
       };
       
       this.audioElement.onplay = () => {
         this.isPlaying = true;
-        if (this.onStateChange) this.onStateChange(true);
+        this.listeners.forEach(listener => listener(true));
       };
 
       this.audioElement.onpause = () => {
         this.isPlaying = false;
-        if (this.onStateChange) this.onStateChange(false);
+        this.listeners.forEach(listener => listener(false));
       };
     }
 
@@ -86,7 +86,9 @@ class AudioManager {
   }
 
   subscribe(callback: (isPlaying: boolean) => void) {
-    this.onStateChange = callback;
+    this.listeners.add(callback);
+    callback(this.isPlaying); // Immediately sync state
+    return () => { this.listeners.delete(callback); };
   }
 
   // Returns normalized values between 0 and 1

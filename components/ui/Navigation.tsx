@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { audioManager } from '@/utils/audioManager';
 import styles from './Navigation.module.css';
 
 const NAV_LINKS = [
@@ -17,8 +18,15 @@ export default function Navigation() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const [isVisible, setIsVisible] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const lastScrollYRef = useRef(0);
   const isNavigatingRef = useRef(false);
+
+  useEffect(() => {
+    const unsubscribe = audioManager.subscribe((playing) => setIsPlaying(playing));
+    return () => unsubscribe();
+  }, []);
 
   // Scroll spy to detect active section
   useEffect(() => {
@@ -45,6 +53,7 @@ export default function Navigation() {
       setIsVisible(currentIdx > 0);
       const currentScrollY = window.scrollY;
       lastScrollYRef.current = currentScrollY;
+      setIsScrolled(currentScrollY > 100);
 
       // Check if user is at the very bottom of the page
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
@@ -69,8 +78,23 @@ export default function Navigation() {
     return null;
   }
 
+  const showFloatingStop = isPlaying && isVisible;
+
   return (
     <>
+      {showFloatingStop && (
+        <button 
+          className={styles.floatingStopBtn} 
+          onClick={() => audioManager.stop()}
+          title="Stop Transmission"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+             <path d="M6 6h12v12H6z" />
+          </svg>
+          <span className={styles.floatingStopText}>STOP TRANSMISSION</span>
+        </button>
+      )}
+
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <span className="ui-label">SYS.001</span>

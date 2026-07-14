@@ -189,9 +189,7 @@ export default function ReleaseDetail({ release }: ReleaseDetailProps) {
                 src={`https://bandcamp.com/EmbeddedPlayer/album=${release.bandcampId}/size=large/bgcol=333333/linkcol=b74829/artwork=small/transparent=true/`}
                 seamless
                 title={`Bandcamp player for ${release.title}`}
-              >
-                <a href="https://privatetechno.bandcamp.com">{release.title} by {release.artist}</a>
-              </iframe>
+              />
             </div>
           </div>
         </div>
