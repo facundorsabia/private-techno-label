@@ -8,6 +8,17 @@ class AudioManager {
   public isPlaying = false;
   private onStateChange: ((isPlaying: boolean) => void) | null = null;
 
+  constructor() {
+    if (typeof window !== 'undefined') {
+      // Automatically stop background audio if the user clicks any iframe (e.g., Bandcamp player)
+      window.addEventListener('blur', () => {
+        if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+          this.stop();
+        }
+      });
+    }
+  }
+
   init(url: string) {
     if (!this.audioContext) {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();

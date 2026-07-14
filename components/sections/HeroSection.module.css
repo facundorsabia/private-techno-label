@@ -259,6 +259,55 @@
   50% { opacity: 1; }
 }
 
+/* ── Now Playing Info ──────────────────────── */
+.trackInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  margin-right: 12px;
+  padding-right: 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  animation: fadeInSlide 0.5s ease forwards;
+}
+
+@keyframes fadeInSlide {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.trackLabel {
+  color: var(--orange);
+  opacity: 0.8;
+}
+
+.trackTitleWrapper {
+  overflow: hidden;
+  max-width: 100px;
+  display: flex;
+  position: relative;
+  white-space: nowrap;
+}
+
+.marqueeInner {
+  display: flex;
+  animation: marquee 14s linear infinite;
+  width: max-content;
+}
+
+.trackTitle {
+  display: inline-block;
+  padding-right: 15px;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 .transmissionBtnTop:hover {
   animation: none;
   opacity: 1;
@@ -419,5 +468,11 @@
   .transmissionIcon {
     width: 20px;
     height: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .trackTitleWrapper {
+    max-width: 220px;
   }
 }

@@ -27,6 +27,16 @@ export default function HeroSection() {
     audioManager.subscribe((playing) => setIsPlaying(playing));
   }, []);
 
+  const getTrackName = (url: string) => {
+    try {
+      const decoded = decodeURI(url);
+      const filename = decoded.split('/').pop() || '';
+      return filename.replace('.mp3', '').toUpperCase();
+    } catch {
+      return 'UNKNOWN TRACK';
+    }
+  };
+
   const toggleTransmission = () => {
     if (!isPlaying) {
       const randomTrack = TRANSMISSION_TRACKS[Math.floor(Math.random() * TRANSMISSION_TRACKS.length)];
@@ -57,6 +67,21 @@ export default function HeroSection() {
       {/* ── Top Bar ─────────────────────────────── */}
       <div className={styles.topBar}>
         <div className={styles.topBarRight}>
+          {isPlaying && (
+            <div className={styles.trackInfo}>
+              <span className={styles.trackLabel}>TRK_</span>
+              <div className={styles.trackTitleWrapper}>
+                <div className={styles.marqueeInner}>
+                  <span className={styles.trackTitle} title={getTrackName(currentTrack)}>
+                    {getTrackName(currentTrack)} &nbsp;•&nbsp;
+                  </span>
+                  <span className={styles.trackTitle} aria-hidden="true">
+                    {getTrackName(currentTrack)} &nbsp;•&nbsp;
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
           <button 
             className={`${styles.transmissionBtnTop} ${isPlaying ? styles.playing : ''}`} 
             onClick={toggleTransmission}
