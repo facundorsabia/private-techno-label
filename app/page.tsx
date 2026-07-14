@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 
 import HeroSection from '@/components/sections/HeroSection';
+import CatalogBanner from '@/components/sections/CatalogBanner';
 import ReleasesSection from '@/components/sections/ReleasesSection';
 import FeaturedReleaseSection from '@/components/sections/FeaturedReleaseSection';
 import AboutSection from '@/components/sections/AboutSection';
@@ -34,6 +35,7 @@ export default function Home() {
       <ManifestoSection />
       <FeaturedReleaseSection />
       <ReleasesSection />
+      <CatalogBanner />
       <FrequencySection />
       {/* <RosterSection /> */}
       <SubscribeSection />
