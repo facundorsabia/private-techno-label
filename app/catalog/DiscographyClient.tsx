@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect } from 'react';
+import Script from 'next/script';
 import { RELEASES } from '@/data/releases';
 import dynamic from 'next/dynamic';
 import styles from './Discography.module.css';
@@ -16,6 +18,13 @@ export default function DiscographyClient() {
   const containerRef = useRef<HTMLDivElement>(null);
 
 
+
+  // Initialize Lemon Squeezy Overlay
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).createLemonSqueezy) {
+      (window as any).createLemonSqueezy();
+    }
+  }, []);
 
   // Animation for scrolling elements
   const { contextSafe } = useGSAP(() => {
@@ -115,7 +124,7 @@ export default function DiscographyClient() {
     });
   });
 
-  const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/787ad184-0f95-4625-be73-15e25174bc07";
+  const checkoutLink = "https://private-techno-catalog.lemonsqueezy.com/checkout/buy/787ad184-0f95-4625-be73-15e25174bc07?embed=1";
 
   // Prepare covers for the 3x3 grid (9 flip cards)
   const sortedReleases = [...RELEASES].sort((a, b) => b.id.localeCompare(a.id));
@@ -129,6 +138,15 @@ export default function DiscographyClient() {
 
   return (
     <div className={styles.container} ref={containerRef}>
+      <Script 
+        src="https://assets.lemonsqueezy.com/lemon.js" 
+        strategy="afterInteractive"
+        onLoad={() => {
+          if (typeof window !== 'undefined' && (window as any).createLemonSqueezy) {
+            (window as any).createLemonSqueezy();
+          }
+        }}
+      />
       
       {/* BLOQUE 1: Hero & Checkout Area */}
       <div className={styles.heroWrapper}>
@@ -170,9 +188,7 @@ export default function DiscographyClient() {
               
               <a 
                 href={checkoutLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.submitBtn}
+                className={`${styles.submitBtn} lemonsqueezy-button`}
                 style={{ textAlign: 'center', display: 'block', textDecoration: 'none' }}
                 onClick={() => {
                   if (typeof window !== 'undefined' && (window as any).fbq) {
@@ -293,9 +309,7 @@ export default function DiscographyClient() {
         <h2 className={styles.closingTitle}>THE DANCEFLOOR WON&apos;T WAIT.</h2>
         <a 
           href={checkoutLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.ctaBtnLarge}
+          className={`${styles.ctaBtnLarge} lemonsqueezy-button`}
           style={{ textDecoration: 'none' }}
           onClick={() => {
             if (typeof window !== 'undefined' && (window as any).fbq) {
