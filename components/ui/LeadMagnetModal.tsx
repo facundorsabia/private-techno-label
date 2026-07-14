@@ -151,7 +151,7 @@ export default function LeadMagnetModal() {
               <div className={styles.successBody}>
                 <p>The <strong>Underground Selection [WAV]</strong> has been successfully transmitted to your email.</p>
                 <div className={styles.spamAlert}>
-                  /// NOTE: Please verify your spam/junk folder if the transmission is not visible within a few minutes.
+                  /// NOTE: The transmission may take 1-2 minutes to arrive. Please be patient and verify your spam folder.
                 </div>
               </div>
             </div>

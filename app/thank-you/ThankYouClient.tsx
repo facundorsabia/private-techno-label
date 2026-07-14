@@ -42,7 +42,7 @@ export default function ThankYouClient() {
             The download link for <strong>Underground Selection [WAV]</strong> has been successfully transmitted directly to your email inbox.
           </p>
           <div className={styles.spamAlert}>
-            /// NOTE: If you do not see the transmission within a few minutes, please verify your spam/junk folder.
+            /// NOTE: The transmission may take 1-2 minutes to arrive. Please be patient and verify your spam folder.
           </div>
         </div>
 
