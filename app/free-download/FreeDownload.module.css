@@ -407,7 +407,10 @@
 
 .trackContent {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   gap: 10px;
 }
 
@@ -425,6 +428,31 @@
   font-size: 13px;
   line-height: 1.6;
   margin: 0;
+}
+
+.playTrackBtn {
+  background: transparent;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  padding: 0.4rem 1rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-family: var(--font-mono);
+  margin-left: auto;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 105px;
+}
+
+.playTrackBtn:hover {
+  background: var(--orange);
+  color: var(--black);
+  box-shadow: 0 0 10px rgba(232, 85, 15, 0.4);
 }
 
 @media (max-width: 768px) {

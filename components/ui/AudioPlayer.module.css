@@ -1,0 +1,139 @@
+.playerContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 68, 0, 0.3);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.8);
+  transform: translateY(100%); /* For GSAP animation */
+}
+
+.trackInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 30%;
+  min-width: 250px;
+}
+
+.trackNum {
+  font-family: 'Space Mono', monospace;
+  color: var(--orange);
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.trackTitle {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.controlsContainer {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+  max-width: 600px;
+}
+
+.playPauseBtn {
+  background: transparent;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.playPauseBtn:hover {
+  background: var(--orange);
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 68, 0, 0.5);
+}
+
+.progressContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.time {
+  font-family: 'Space Mono', monospace;
+  color: #888;
+  font-size: 0.8rem;
+  min-width: 45px;
+}
+
+.progressBarWrapper {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--orange);
+  width: 0%;
+  border-radius: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 10px rgba(255, 68, 0, 0.8);
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0.5rem;
+}
+
+.closeBtn:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .playerContainer {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .trackInfo {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .controlsContainer {
+    width: 100%;
+  }
+}

@@ -9,6 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 import styles from './FreeDownload.module.css';
 const ParticleSphere = dynamic(() => import('@/components/ui/ParticleSphere'), { ssr: false });
+import AudioPlayer from '@/components/ui/AudioPlayer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,8 +18,18 @@ export default function FreeDownloadClient() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [currentTrack, setCurrentTrack] = useState<{title: string, num: string, url: string} | null>(null);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const TRACKS = [
+    { num: 'TRK_01', title: 'Benac - Destroy Conformism (Original Mix)', url: encodeURI('/audio/previews/Benac - Destroy Conformism (Original Mix).mp3') },
+    { num: 'TRK_02', title: 'Diofaro - Absolution (Original Mix)', url: encodeURI('/audio/previews/Diofaro - Absolution (Original Mix).mp3') },
+    { num: 'TRK_03', title: 'H-R-Z - Hypnagogic (Original Mix)', url: encodeURI('/audio/previews/H-R-Z - Hypnagogic (Original Mix).mp3') },
+    { num: 'TRK_04', title: 'Mauri Mastra - Monolith (Original Mix)', url: encodeURI('/audio/previews/Mauri Mastra - Monolith (Original Mix).mp3') },
+    { num: 'TRK_05', title: 'Piero Ceraolo - 001 (Original Mix)', url: encodeURI('/audio/previews/Piero Ceraolo - 001 (Original Mix).mp3') },
+    { num: 'TRK_06', title: 'SYNDRM - Airplane Security (Original Mix)', url: encodeURI('/audio/previews/SYNDRM - Airplane Security (Original Mix).mp3') }
+  ];
 
   // Animation for scrolling elements
   useGSAP(() => {
@@ -169,42 +180,34 @@ export default function FreeDownloadClient() {
             </p>
 
             <div className={styles.tracklist}>
-              <div className={styles.trackItem}>
-                <div className={styles.trackNum}>[ TRK_01 ]</div>
-                <div className={styles.trackContent}>
-                  <span className={styles.trackTitle}>Augusto Taito - Trust the Toms (Original Mix)</span>
+              {TRACKS.map((track) => (
+                <div className={styles.trackItem} key={track.num}>
+                  <div className={styles.trackNum}>[{track.num}]</div>
+                  <div className={styles.trackContent}>
+                    <span className={styles.trackTitle}>{track.title}</span>
+                    <button 
+                      className={styles.playTrackBtn} 
+                      onClick={() => setCurrentTrack(currentTrack?.num === track.num ? null : track)}
+                    >
+                      {currentTrack?.num === track.num ? (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M6 6h12v12H6z" />
+                          </svg>
+                          <span>STOP</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                          <span>PREVIEW</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.trackItem}>
-                <div className={styles.trackNum}>[ TRK_02 ]</div>
-                <div className={styles.trackContent}>
-                  <span className={styles.trackTitle}>Bruno Caro - Norfolk (Original Mix)</span>
-                </div>
-              </div>
-              <div className={styles.trackItem}>
-                <div className={styles.trackNum}>[ TRK_03 ]</div>
-                <div className={styles.trackContent}>
-                  <span className={styles.trackTitle}>SYNDRM - Airplane Security (Original Mix)</span>
-                </div>
-              </div>
-              <div className={styles.trackItem}>
-                <div className={styles.trackNum}>[ TRK_04 ]</div>
-                <div className={styles.trackContent}>
-                  <span className={styles.trackTitle}>Black Crow - So Words For Crows (Original Mix)</span>
-                </div>
-              </div>
-              <div className={styles.trackItem}>
-                <div className={styles.trackNum}>[ TRK_05 ]</div>
-                <div className={styles.trackContent}>
-                  <span className={styles.trackTitle}>Diofaro - Absolution (Original Mix)</span>
-                </div>
-              </div>
-              <div className={styles.trackItem}>
-                <div className={styles.trackNum}>[ TRK_06 ]</div>
-                <div className={styles.trackContent}>
-                  <span className={styles.trackTitle}>Piero Ceraolo - 001 (Original Mix)</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           
@@ -264,6 +267,22 @@ export default function FreeDownloadClient() {
         </div>
       </section>
 
+      <AudioPlayer 
+        currentTrack={currentTrack} 
+        onClose={() => setCurrentTrack(null)} 
+        onNext={() => {
+          if (!currentTrack) return;
+          const currentIndex = TRACKS.findIndex(t => t.num === currentTrack.num);
+          const nextIndex = (currentIndex + 1) % TRACKS.length;
+          setCurrentTrack(TRACKS[nextIndex]);
+        }}
+        onPrev={() => {
+          if (!currentTrack) return;
+          const currentIndex = TRACKS.findIndex(t => t.num === currentTrack.num);
+          const prevIndex = (currentIndex - 1 + TRACKS.length) % TRACKS.length;
+          setCurrentTrack(TRACKS[prevIndex]);
+        }}
+      />
     </div>
   );
 }
