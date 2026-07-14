@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import { audioManager } from '@/utils/audioManager';
 
 interface Particle {
   theta: number; // polar angle (0 to PI)
@@ -823,8 +824,17 @@ export default function ParticleSphere() {
       const baseR = radiusRef.current;
       const time = Date.now() * 0.001;
 
+      // Audio reactivity
+      const audioReact = audioManager.getReactivity();
+      const bassReact = audioReact.bass; // 0 to 1
+      const midReact = audioReact.mid;
+      const highReact = audioReact.high;
+      
+      // Bass pumps the overall radius
+      const audioRadiusBoost = baseR * (bassReact * 0.25);
+
       // Slow rotation (mostly Y-axis spin to preserve horizontal wave alignment)
-      angleY += 0.0012;
+      angleY += 0.0012 + (bassReact * 0.005);
       angleX += 0.0004;
 
       // Absolute bulletproof canvas clear (resets transform to clear physical pixels)
@@ -832,6 +842,17 @@ export default function ParticleSphere() {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.restore();
+
+      // Audio beat flash & Shockwave
+      if (bassReact > 0.8) {
+        // Shockwave explosion from center
+        mouseRef.current.blastMagnitude = Math.min(1.0, mouseRef.current.blastMagnitude + (bassReact - 0.75) * 0.7);
+        mouseRef.current.blastX = 0;
+        mouseRef.current.blastY = 0;
+        
+        ctx.fillStyle = `rgba(232, 85, 15, ${(bassReact - 0.8) * 0.15})`; // Subtle orange strobe flash
+        ctx.fillRect(0, 0, width, height);
+      }
 
       // Localized Blast Decay (Lower value = faster snap back)
       mouseRef.current.blastMagnitude *= 0.82; // Faster exponential decay back to 0
@@ -898,7 +919,7 @@ export default function ParticleSphere() {
         opacity: number;
       }> = [];
 
-      const fov = 350; // Camera focal length
+      const fov = 350 - (bassReact * 50); // Camera focal length (zooms in on bass)
 
       for (let i = 0; i < numParticles; i++) {
         const p = particles[i];
@@ -920,9 +941,9 @@ export default function ParticleSphere() {
         rz = uy * Math.sin(angleX) + rz * Math.cos(angleX);
 
         // 4. Frequency vibrations
-        const wave = Math.sin(ux * 4 + uy * 4 + time * 3.0) * 4.5;
-        const individualVib = Math.sin(time * p.speed + p.phase) * 1.8;
-        const currentR = baseR + wave + individualVib;
+        const wave = Math.sin(ux * 4 + uy * 4 + time * 3.0) * (4.5 + midReact * 12);
+        const individualVib = Math.sin(time * p.speed * (1 + highReact * 3) + p.phase) * (1.8 + highReact * 5);
+        const currentR = baseR + audioRadiusBoost + wave + individualVib;
 
         // Scale by radius + vibration
         // Stretched horizontally by 1.35 to increase horizontal prominence by 35%
@@ -1019,15 +1040,19 @@ export default function ParticleSphere() {
         const avgZ = (p1.z + p2.z) / 2;
         const depthFactor = Math.max(0, Math.min(1, 1 - (avgZ + baseR) / (baseR * 2)));
 
-        let opacity = 0.05 * depthFactor;
+        let opacity = (0.05 + midReact * 0.15) * depthFactor;
         let color = `rgba(255, 255, 255, ${opacity})`;
 
         if (p1.isNearMouse || p2.isNearMouse) {
           opacity = 0.36 * depthFactor;
           color = `rgba(183, 72, 41, ${opacity})`; // Orange tint from design
           ctx.lineWidth = 0.55;
+        } else if (bassReact > 0.7) {
+          // Connections pulse orange on strong bass hits
+          color = `rgba(232, 85, 15, ${Math.min(1, opacity * (1 + bassReact * 1.5))})`;
+          ctx.lineWidth = 0.3 + bassReact * 0.4;
         } else {
-          ctx.lineWidth = 0.2;
+          ctx.lineWidth = 0.2 + midReact * 0.2;
         }
 
         ctx.strokeStyle = color;
@@ -1045,15 +1070,24 @@ export default function ParticleSphere() {
         // Depth-based opacity mapping
         const depthFactor = Math.max(0.04, Math.min(1, 1 - (p.z + baseR) / (baseR * 2)));
         let finalOpacity = p.opacity * depthFactor;
+        
+        // Audio reactive global pulse on beat
+        if (bassReact > 0.65) {
+           finalOpacity = Math.min(1, finalOpacity + (bassReact - 0.65) * 0.6);
+        }
+
         let fill = `rgba(255, 255, 255, ${finalOpacity})`;
         let size = p.size;
 
-        // Apply breathing orange effect if initialized as orange
-        if (orig.isOrange) {
+        // Audio reactive sparkles (hi-hats/snares)
+        const isSparkle = highReact > 0.45 && Math.random() < (highReact * 0.08);
+
+        // Apply breathing orange effect or sparkle
+        if (orig.isOrange || isSparkle) {
           const breath = Math.sin(time * 2.5 + orig.phase) * 0.5 + 0.5;
-          finalOpacity = (0.42 + breath * 0.48) * depthFactor;
-          fill = `rgba(232, 85, 15, ${finalOpacity})`; // Brighter design orange
-          size = Math.max(0.4, p.size * (1.1 + breath * 0.8));
+          finalOpacity = isSparkle ? Math.random() * 0.5 + 0.5 : ((0.42 + breath * 0.48) * depthFactor);
+          fill = isSparkle ? '#ffffff' : `rgba(232, 85, 15, ${finalOpacity})`; // Brighter design orange
+          size = isSparkle ? Math.max(0.8, p.size * (2.5 + highReact * 2)) : Math.max(0.4, p.size * (1.1 + breath * 0.8));
         }
 
         if (p.isNearMouse) {

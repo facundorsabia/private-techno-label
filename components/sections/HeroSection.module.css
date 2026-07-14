@@ -88,11 +88,11 @@
 /* ── Top Bar ─────────────────────────────── */
 .topBar {
   position: absolute;
-  top: 30px;
+  top: 50px;
   left: 30px;
   right: 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   z-index: 2;
 }
@@ -235,6 +235,53 @@
   }
 }
 
+/* ── Top Transmission Button ─────────────────── */
+.transmissionBtnTop {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  padding: 6px 14px;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  z-index: 10;
+  text-transform: uppercase;
+  animation: pulseBtn 3s infinite ease-in-out;
+}
+
+@keyframes pulseBtn {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.transmissionBtnTop:hover {
+  animation: none;
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.transmissionBtnTop.playing {
+  animation: none;
+  opacity: 1;
+  color: var(--orange);
+  text-shadow: 0 0 8px rgba(232, 85, 15, 0.5);
+}
+
+.btnText {
+  display: inline;
+}
+
+.transmissionIcon {
+  width: 12px;
+  height: 12px;
+  transition: all 0.3s ease;
+}
+
 /* ── Floating Labels ─────────────────────── */
 .floatingLabel {
   position: absolute;
@@ -363,5 +410,14 @@
   .hero {
     justify-content: flex-start;
     padding-top: 13vh;
+  }
+
+  .btnText {
+    display: none;
+  }
+
+  .transmissionIcon {
+    width: 20px;
+    height: 20px;
   }
 }

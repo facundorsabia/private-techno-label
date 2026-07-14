@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { audioManager } from '@/utils/audioManager';
 import Image from 'next/image';
 import DiagramLines from '@/components/svg/DiagramLines';
 import dynamic from 'next/dynamic';
@@ -9,7 +10,33 @@ const ParticleSphere = dynamic(() => import('@/components/ui/ParticleSphere'), {
 import CustomCursor from '@/components/ui/CustomCursor';
 import styles from './HeroSection.module.css';
 
+const TRANSMISSION_TRACKS = [
+  encodeURI('/audio/previews/Benac - Destroy Conformism (Original Mix).mp3'),
+  encodeURI('/audio/previews/Diofaro - Absolution (Original Mix).mp3'),
+  encodeURI('/audio/previews/H-R-Z - Hypnagogic (Original Mix).mp3'),
+  encodeURI('/audio/previews/Mauri Mastra - Monolith (Original Mix).mp3'),
+  encodeURI('/audio/previews/Piero Ceraolo - 001 (Original Mix).mp3'),
+  encodeURI('/audio/previews/SYNDRM - Airplane Security (Original Mix).mp3')
+];
+
 export default function HeroSection() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(TRANSMISSION_TRACKS[0]);
+
+  useEffect(() => {
+    audioManager.subscribe((playing) => setIsPlaying(playing));
+  }, []);
+
+  const toggleTransmission = () => {
+    if (!isPlaying) {
+      const randomTrack = TRANSMISSION_TRACKS[Math.floor(Math.random() * TRANSMISSION_TRACKS.length)];
+      setCurrentTrack(randomTrack);
+      audioManager.togglePlay(randomTrack);
+    } else {
+      audioManager.togglePlay(currentTrack);
+    }
+  };
+
   return (
     <section className={styles.hero} id="hero">
       <CustomCursor targetId="hero" />
@@ -26,6 +53,27 @@ export default function HeroSection() {
       </div>
 
       <DiagramLines />
+
+      {/* ── Top Bar ─────────────────────────────── */}
+      <div className={styles.topBar}>
+        <div className={styles.topBarRight}>
+          <button 
+            className={`${styles.transmissionBtnTop} ${isPlaying ? styles.playing : ''}`} 
+            onClick={toggleTransmission}
+          >
+            {isPlaying ? (
+              <svg className={styles.transmissionIcon} viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 6h12v12H6z" />
+              </svg>
+            ) : (
+              <svg className={styles.transmissionIcon} viewBox="0 0 24 24" fill="var(--orange)">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+              </svg>
+            )}
+            <span className={styles.btnText}>{isPlaying ? 'STOP TRANSMISSION' : 'INIT TRANSMISSION'}</span>
+          </button>
+        </div>
+      </div>
 
       {/* Background Canvas */}
       <div className={styles.fullCanvasContainer}>

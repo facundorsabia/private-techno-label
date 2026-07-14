@@ -56,6 +56,9 @@ export default function FreeDownloadClient() {
   // Handle hidden audio playback
   useEffect(() => {
     if (currentTrack && audioRef.current) {
+      import('@/utils/audioManager').then(({ audioManager }) => {
+        if (audioManager.isPlaying) audioManager.stop();
+      });
       audioRef.current.src = currentTrack.url;
       audioRef.current.play().catch(e => console.log('Audio playback failed', e));
     } else if (!currentTrack && audioRef.current) {
