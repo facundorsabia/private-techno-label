@@ -73,12 +73,8 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Only show navigation on the home page
-  if (pathname !== '/') {
-    return null;
-  }
-
-  const showFloatingStop = isPlaying && isVisible;
+  const isHome = pathname === '/';
+  const showFloatingStop = isPlaying && (!isHome || isScrolled);
 
   return (
     <>
@@ -95,54 +91,58 @@ export default function Navigation() {
         </button>
       )}
 
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <span className="ui-label">SYS.001</span>
-          <span className={styles.divider} />
-          <span className="ui-label">FREQ.140BPM</span>
-        </div>
-        <div className={styles.headerRight}>
-          <div className={styles.globe}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" width="18" height="18">
-              <circle cx="12" cy="12" r="10" />
-              <ellipse cx="12" cy="12" rx="4" ry="10" />
-              <line x1="2" y1="12" x2="22" y2="12" />
-            </svg>
-          </div>
-          <span className="ui-label">48.8566° N, 2.3522° E</span>
-        </div>
-      </header>
+      {isHome && (
+        <>
+          <header className={styles.header}>
+            <div className={styles.headerLeft}>
+              <span className="ui-label">SYS.001</span>
+              <span className={styles.divider} />
+              <span className="ui-label">FREQ.140BPM</span>
+            </div>
+            <div className={styles.headerRight}>
+              <div className={styles.globe}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" width="18" height="18">
+                  <circle cx="12" cy="12" r="10" />
+                  <ellipse cx="12" cy="12" rx="4" ry="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                </svg>
+              </div>
+              <span className="ui-label">48.8566° N, 2.3522° E</span>
+            </div>
+          </header>
 
-      <div className={`${styles.timelineContainer} ${!isVisible ? styles.hidden : ''}`}>
-        <div className={styles.timelineAxis} />
-        <nav className={styles.timelineNav}>
-          {NAV_LINKS.map((link, index) => {
-            const isActive = index === activeIndex;
-            return (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-                onClick={() => {
-                  setActiveIndex(index);
-                  isNavigatingRef.current = true;
-                  setTimeout(() => {
-                    isNavigatingRef.current = false;
-                  }, 1200);
-                }}
-              >
-                <div className={styles.labelContainer}>
-                  <span className={styles.itemNumber}>0{index + 1}</span>
-                  <span className={styles.itemText}>{link.name}</span>
-                </div>
-                <div className={styles.node}>
-                  {isActive && <div className={styles.activeGlow} />}
-                </div>
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
+          <div className={`${styles.timelineContainer} ${!isVisible ? styles.hidden : ''}`}>
+            <div className={styles.timelineAxis} />
+            <nav className={styles.timelineNav}>
+              {NAV_LINKS.map((link, index) => {
+                const isActive = index === activeIndex;
+                return (
+                  <Link 
+                    key={link.name} 
+                    href={link.href} 
+                    className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                    onClick={() => {
+                      setActiveIndex(index);
+                      isNavigatingRef.current = true;
+                      setTimeout(() => {
+                        isNavigatingRef.current = false;
+                      }, 1200);
+                    }}
+                  >
+                    <div className={styles.labelContainer}>
+                      <span className={styles.itemNumber}>0{index + 1}</span>
+                      <span className={styles.itemText}>{link.name}</span>
+                    </div>
+                    <div className={styles.node}>
+                      {isActive && <div className={styles.activeGlow} />}
+                    </div>
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </>
+      )}
     </>
   );
 }
