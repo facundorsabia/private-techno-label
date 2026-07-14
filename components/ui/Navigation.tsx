@@ -88,7 +88,7 @@ export default function Navigation() {
           onClick={() => audioManager.stop()}
           title="Stop Transmission"
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
              <path d="M6 6h12v12H6z" />
           </svg>
           <span className={styles.floatingStopText}>STOP TRANSMISSION</span>
