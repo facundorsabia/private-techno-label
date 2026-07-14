@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
@@ -9,7 +9,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 import styles from './FreeDownload.module.css';
 const ParticleSphere = dynamic(() => import('@/components/ui/ParticleSphere'), { ssr: false });
-import AudioPlayer from '@/components/ui/AudioPlayer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +20,7 @@ export default function FreeDownloadClient() {
   const [currentTrack, setCurrentTrack] = useState<{title: string, num: string, url: string} | null>(null);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const TRACKS = [
     { num: 'TRK_01', title: 'Benac - Destroy Conformism (Original Mix)', url: encodeURI('/audio/previews/Benac - Destroy Conformism (Original Mix).mp3') },
@@ -52,6 +52,16 @@ export default function FreeDownloadClient() {
       );
     });
   }, { scope: containerRef });
+
+  // Handle hidden audio playback
+  useEffect(() => {
+    if (currentTrack && audioRef.current) {
+      audioRef.current.src = currentTrack.url;
+      audioRef.current.play().catch(e => console.log('Audio playback failed', e));
+    } else if (!currentTrack && audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, [currentTrack]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -267,21 +277,10 @@ export default function FreeDownloadClient() {
         </div>
       </section>
 
-      <AudioPlayer 
-        currentTrack={currentTrack} 
-        onClose={() => setCurrentTrack(null)} 
-        onNext={() => {
-          if (!currentTrack) return;
-          const currentIndex = TRACKS.findIndex(t => t.num === currentTrack.num);
-          const nextIndex = (currentIndex + 1) % TRACKS.length;
-          setCurrentTrack(TRACKS[nextIndex]);
-        }}
-        onPrev={() => {
-          if (!currentTrack) return;
-          const currentIndex = TRACKS.findIndex(t => t.num === currentTrack.num);
-          const prevIndex = (currentIndex - 1 + TRACKS.length) % TRACKS.length;
-          setCurrentTrack(TRACKS[prevIndex]);
-        }}
+      <audio 
+        ref={audioRef} 
+        onEnded={() => setCurrentTrack(null)} 
+        style={{ display: 'none' }} 
       />
     </div>
   );
