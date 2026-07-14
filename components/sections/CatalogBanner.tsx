@@ -62,22 +62,25 @@ export default function CatalogBanner() {
           <span className={styles.subtitle}>37 RELEASES // 100+ WEAPONS // 12GB+ WAV</span>
         </div>
         
-        <a 
-          href={checkoutLink}
-          className={`${styles.ctaBtn} lemonsqueezy-button`}
-          onClick={() => {
-            if (typeof window !== 'undefined' && (window as any).fbq) {
-              (window as any).fbq('track', 'InitiateCheckout', {
-                content_name: 'Private Techno Full Catalog Bundle',
-                content_category: 'bundle',
-                value: 49.00,
-                currency: 'USD'
-              });
-            }
-          }}
-        >
-          SECURE BUNDLE [$49]
-        </a>
+        <div className={styles.ctaWrapper}>
+          <a 
+            href={checkoutLink}
+            className={`${styles.ctaBtn} lemonsqueezy-button`}
+            onClick={() => {
+              if (typeof window !== 'undefined' && (window as any).fbq) {
+                (window as any).fbq('track', 'InitiateCheckout', {
+                  content_name: 'Private Techno Full Catalog Bundle',
+                  content_category: 'bundle',
+                  value: 49.00,
+                  currency: 'USD'
+                });
+              }
+            }}
+          >
+            SECURE BUNDLE [$49]
+          </a>
+          <span className={styles.discountBadge}>SAVE 73%</span>
+        </div>
       </div>
     </div>
   );

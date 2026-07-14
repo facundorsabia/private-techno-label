@@ -18,22 +18,30 @@ export default function LeadMagnetModal() {
   const contentRef = useRef<HTMLDivElement>(null);
   
   const pathname = usePathname();
-  const isIgnoredPage = pathname.startsWith('/free-download') || pathname.startsWith('/catalog') || pathname.startsWith('/thank-you');
+  const isHomePage = pathname === '/';
 
   // Auto-open after 5 seconds, or via custom event
   useEffect(() => {
-    if (isIgnoredPage) return;
+    if (!isHomePage) return;
 
     const timer = setTimeout(() => {
       // Check if user already subscribed safely (some Incognito modes block localStorage)
       let hasSubscribed = false;
+      let shouldShow = true;
       try {
         hasSubscribed = !!localStorage.getItem('pt_lead_magnet_subscribed');
+        const lastSeen = localStorage.getItem('pt_lead_magnet_last_seen');
+        if (lastSeen) {
+          const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+          if (Date.now() - parseInt(lastSeen) < thirtyDays) {
+            shouldShow = false;
+          }
+        }
       } catch (err) {
         console.warn('localStorage not accessible in this browser mode');
       }
       
-      if (!hasSubscribed) {
+      if (!hasSubscribed && shouldShow) {
         setIsOpen(true);
       }
     }, 5000);
@@ -45,7 +53,7 @@ export default function LeadMagnetModal() {
       clearTimeout(timer);
       window.removeEventListener('open-lead-magnet', handleOpenEvent);
     };
-  }, [isIgnoredPage]);
+  }, [isHomePage]);
 
   const { contextSafe } = useGSAP(() => {
     if (isOpen) {
@@ -70,6 +78,11 @@ export default function LeadMagnetModal() {
       opacity: 0, duration: 0.3, delay: 0.1, ease: 'power2.in',
       onComplete: () => setIsOpen(false)
     });
+    
+    // Save last seen time so it doesn't bother them for 30 days
+    try {
+      localStorage.setItem('pt_lead_magnet_last_seen', Date.now().toString());
+    } catch(err) {}
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -107,7 +120,7 @@ export default function LeadMagnetModal() {
     }
   };
 
-  if (isIgnoredPage) return null;
+  if (!isHomePage) return null;
   if (!isOpen && status === 'idle') return null;
 
   return (
