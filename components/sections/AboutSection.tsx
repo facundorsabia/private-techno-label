@@ -15,6 +15,18 @@ gsap.registerPlugin(ScrollTrigger);
 export default function AboutSection() {
   const { ref } = useScrollAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(e => {
+        // Autoplay prevented by browser (e.g., Low Power Mode)
+        console.log("Autoplay prevented:", e);
+      });
+    }
+  }, []);
 
   useGSAP(() => {
     let mm = gsap.matchMedia();
@@ -77,6 +89,7 @@ export default function AboutSection() {
         {/* Rows 1/2 Right: Abstract Video (replacing Waveform) */}
         <div className={`${styles.gridItem} ${styles.boxWaveform}`}>
           <video
+            ref={videoRef}
             src="/videos/abstract-background.mp4"
             autoPlay
             loop

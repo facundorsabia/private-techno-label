@@ -13,6 +13,16 @@ export default function FrequencySection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  React.useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(e => {
+        console.log("Autoplay prevented on FrequencySection:", e);
+      });
+    }
+  }, []);
+
   const { contextSafe } = useGSAP(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
