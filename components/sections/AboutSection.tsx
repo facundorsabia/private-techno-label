@@ -29,44 +29,40 @@ export default function AboutSection() {
   }, []);
 
   useGSAP(() => {
-    let mm = gsap.matchMedia();
-
-    mm.add("(min-width: 768px)", () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        }
-      });
-
-      tl.from(`.${styles.weAre}`, {
-        opacity: 0,
-        y: 40,
-        duration: 0.7,
-        ease: 'power3.out'
-      })
-        .from(`.${styles.signal}`, {
-          opacity: 0,
-          scale: 1.4,
-          filter: 'blur(15px)',
-          duration: 1,
-          ease: 'expo.out'
-        }, "-=0.4")
-        .from('.underground-char', {
-          opacity: 0,
-          z: -800,
-          y: 80,
-          scale: 0.2,
-          rotationX: -90,
-          duration: 2.4,
-          stagger: {
-            each: 0.12,
-            from: 'start'
-          },
-          ease: 'back.out(2)'
-        }, "-=0.7");
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      }
     });
+
+    tl.from(`.${styles.weAre}`, {
+      opacity: 0,
+      y: 40,
+      duration: 0.7,
+      ease: 'power3.out'
+    })
+      .from(`.${styles.signal}`, {
+        opacity: 0,
+        scale: 1.4,
+        filter: 'blur(15px)',
+        duration: 1,
+        ease: 'expo.out'
+      }, "-=0.4")
+      .from('.underground-char', {
+        opacity: 0,
+        z: -800,
+        y: 80,
+        scale: 0.2,
+        rotationX: -90,
+        duration: 2.4,
+        stagger: {
+          each: 0.12,
+          from: 'start'
+        },
+        ease: 'back.out(2)'
+      }, "-=0.7");
   }, { scope: containerRef });
 
   return (
