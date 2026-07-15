@@ -286,7 +286,7 @@
 
 .trackTitleWrapper {
   overflow: hidden;
-  max-width: 100px;
+  max-width: 180px;
   display: flex;
   position: relative;
   white-space: nowrap;
