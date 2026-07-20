@@ -131,7 +131,7 @@ export default function Footer() {
           <div className={styles.brandColumn}>
             <p className={styles.brandDescription}>
               EXTRACTING RHYTHMS FROM THE VOID.<br />
-              BUENOS AIRES // EST. 2024
+              BUENOS AIRES // EST. 2020
             </p>
 
             <div className={styles.logoWrapper}>
