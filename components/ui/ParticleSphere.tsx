@@ -777,35 +777,104 @@ export default function ParticleSphere() {
           }
           break;
 
-        case 20: // Double Helix DNA - State 20
+        case 20: // Quantum Torus Knot - State 20
           {
-            const u = theta / Math.PI; // vertical position (0 to 1)
-            const yPos = (u * 2 - 1) * 0.95; // Y from -0.95 to 0.95
+            const u = (theta / Math.PI) * 2 * Math.PI; // 0 to 2PI
+            const p = 3;
+            const q = 8;
+            const R = 0.65;
+            const rTube = 0.25;
             
-            // 4 full twists
-            const twist = u * Math.PI * 8; 
-            const rot = time * 0.8; // Spin the entire DNA slowly
+            const t = time * 0.4;
+            const phase = u + t;
+
+            // Core Knot Path
+            const cx = (R + rTube * Math.cos(q * phase)) * Math.cos(p * phase);
+            const cy = (R + rTube * Math.cos(q * phase)) * Math.sin(p * phase);
+            const cz = rTube * Math.sin(q * phase);
+
+            // Add volume/thickness to the knot
+            const noise = Math.sin(phi * 5 + time) * 0.05;
+            const thickness = 0.12 + noise;
             
-            // Radius of the helix
-            const r = 0.45;
+            x = cx + Math.cos(phi) * thickness * sinTheta;
+            y = cy + Math.sin(phi) * thickness * sinTheta;
+            z = cz + cosTheta * thickness;
             
-            // 1 in 8 particles become rungs connecting the two strands
-            const isRung = (i % 8 === 0);
+            // Add a slight tilt so it looks better from the front
+            const tilt = 0.3;
+            const tempY = y * Math.cos(tilt) - z * Math.sin(tilt);
+            const tempZ = y * Math.sin(tilt) + z * Math.cos(tilt);
+            y = tempY;
+            z = tempZ;
+          }
+          break;
+
+        case 21: // Alien Face - State 21
+          {
+            // Base radius
+            let r = 0.7;
+            const yPos = cosTheta;
             
-            if (isRung) {
-              // Rung particle: distribute between strand 0 and strand 1
-              const v = (phi / (Math.PI * 2)) * 2 - 1; // -1 to 1
-              x = Math.cos(twist + rot) * r * v;
-              z = Math.sin(twist + rot) * r * v;
-              y = yPos;
+            // Cranium (top) is wider and taller, jaw (bottom) is narrow and pointy
+            if (yPos > 0) {
+              r += Math.pow(yPos, 1.5) * 0.25; 
             } else {
-              // Backbone particle
-              const strand = i % 2;
-              const angle = twist + (strand * Math.PI) + rot;
-              x = Math.cos(angle) * r;
-              z = Math.sin(angle) * r;
-              y = yPos;
+              r -= Math.pow(Math.abs(yPos), 1.2) * 0.4;
             }
+            
+            // Flatten the face
+            const zFront = Math.sin(phi);
+            if (zFront > 0) {
+              r -= zFront * 0.1;
+            }
+            
+            x = r * sinTheta * Math.cos(phi);
+            y = r * cosTheta;
+            z = r * sinTheta * Math.sin(phi);
+            
+            // Front is phi = PI/2
+            const phiFront = phi - Math.PI / 2;
+            const eyeSpacing = 0.32;
+            const eyeHeight = 0.2;
+            
+            // Almond slanting
+            const slant = 0.5;
+            const dy = yPos - eyeHeight;
+            const dxL = phiFront - eyeSpacing;
+            const dxR = phiFront + eyeSpacing;
+            
+            const distL = Math.sqrt(Math.pow(dxL + dy * slant, 2) * 2.5 + Math.pow(dy, 2) * 4.5);
+            const distR = Math.sqrt(Math.pow(dxR - dy * slant, 2) * 2.5 + Math.pow(dy, 2) * 4.5);
+            
+            const eyeSize = 0.45;
+            
+            // Indent eye sockets deeply
+            if (distL < eyeSize) {
+              z -= (eyeSize - distL) * 1.2;
+            }
+            if (distR < eyeSize) {
+              z -= (eyeSize - distR) * 1.2;
+            }
+            
+            // Hollow cheeks
+            const cheekDist = Math.sqrt(Math.pow(Math.abs(phiFront) - 0.45, 2) + Math.pow(yPos + 0.15, 2));
+            if (cheekDist < 0.35) {
+              z -= (0.35 - cheekDist) * 0.5;
+            }
+            
+            // Small mouth slit
+            const mouthDist = Math.sqrt(Math.pow(phiFront, 2) * 4 + Math.pow(yPos + 0.55, 2) * 20);
+            if (mouthDist < 0.25) {
+              z -= (0.25 - mouthDist) * 0.6;
+            }
+            
+            // Smoothly look left and right
+            const rotY = Math.sin(time * 0.3) * 0.4;
+            const tempX = x * Math.cos(rotY) - z * Math.sin(rotY);
+            const tempZ = x * Math.sin(rotY) + z * Math.cos(rotY);
+            x = tempX;
+            z = tempZ;
           }
           break;
       }
@@ -892,7 +961,7 @@ export default function ParticleSphere() {
 
       // ── 120-SECOND UNIFORM MORPHING TIMELINE ──
       const loopDuration = 126; // seconds (6 * 21 states)
-      const numStates = 21;
+      const numStates = 22;
       const phaseDuration = loopDuration / numStates; // exactly 6.0 seconds per state phase
       
       const cycleTime = time % loopDuration;
