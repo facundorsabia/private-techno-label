@@ -16,6 +16,52 @@ interface Connection {
   j: number;
 }
 
+interface PaletteColors {
+  accentRGB: string;
+  mouseRGB: string;
+  mouseHex: string;
+  baseRGB: string;
+}
+
+const PALETTES: Record<string, PaletteColors> = {
+  orange: {
+    accentRGB: '232, 85, 15',
+    mouseRGB: '183, 72, 41',
+    mouseHex: '#b74829',
+    baseRGB: '255, 255, 255',
+  },
+  acid: {
+    accentRGB: '57, 255, 20',
+    mouseRGB: '39, 219, 12',
+    mouseHex: '#27db0c',
+    baseRGB: '255, 255, 255',
+  },
+  cyan: {
+    accentRGB: '0, 240, 255',
+    mouseRGB: '0, 180, 220',
+    mouseHex: '#00b4dc',
+    baseRGB: '255, 255, 255',
+  },
+  crimson: {
+    accentRGB: '255, 10, 40',
+    mouseRGB: '200, 5, 30',
+    mouseHex: '#c8051e',
+    baseRGB: '255, 255, 255',
+  },
+  amber: {
+    accentRGB: '255, 176, 0',
+    mouseRGB: '215, 140, 0',
+    mouseHex: '#d78c00',
+    baseRGB: '255, 255, 255',
+  },
+  monochrome: {
+    accentRGB: '255, 255, 255',
+    mouseRGB: '180, 180, 180',
+    mouseHex: '#b4b4b4',
+    baseRGB: '100, 100, 100',
+  }
+};
+
 interface AudioReactiveSphereProps {
   analyserRef: React.MutableRefObject<AnalyserNode | null>;
   canvasRef?: React.RefObject<HTMLCanvasElement | null>;
@@ -27,6 +73,7 @@ interface AudioReactiveSphereProps {
   titleScale?: number;
   showLogo?: boolean;
   showTitleText?: boolean;
+  colorPalette?: string;
   showHudGrid?: boolean;
   sensitivity?: number;
   bassMultiplier?: number;
@@ -37,6 +84,7 @@ interface AudioReactiveSphereProps {
   reactiveColor?: boolean;
   reactionMode?: 'pulse' | 'deform' | 'orbit' | 'explode';
   lockedState?: number | null;
+  cameraEffects?: boolean;
 }
 
 export default function AudioReactiveSphere({
@@ -50,6 +98,7 @@ export default function AudioReactiveSphere({
   titleScale = 1.0,
   showLogo = true,
   showTitleText = true,
+  colorPalette = 'orange',
   showHudGrid = true,
   sensitivity = 1,
   bassMultiplier = 1,
@@ -60,6 +109,7 @@ export default function AudioReactiveSphere({
   reactiveColor = true,
   reactionMode = 'deform',
   lockedState = null,
+  cameraEffects = true,
 }: AudioReactiveSphereProps) {
   const internalCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasRef = externalCanvasRef || internalCanvasRef;
@@ -122,6 +172,8 @@ export default function AudioReactiveSphere({
     showLogo,
     showTitleText,
     showHudGrid,
+    colorPalette,
+    cameraEffects,
   });
 
   useEffect(() => {
@@ -144,6 +196,8 @@ export default function AudioReactiveSphere({
       showLogo,
       showTitleText,
       showHudGrid,
+      colorPalette,
+      cameraEffects,
     };
   }, [
     sensitivity,
@@ -164,6 +218,8 @@ export default function AudioReactiveSphere({
     showLogo,
     showTitleText,
     showHudGrid,
+    colorPalette,
+    cameraEffects,
   ]);
 
   useEffect(() => {
@@ -976,7 +1032,11 @@ export default function AudioReactiveSphere({
         reactiveColor,
         reactionMode,
         lockedState,
+        colorPalette = 'orange',
+        cameraEffects = true,
       } = propsRef.current;
+
+      const palette = PALETTES[colorPalette] || PALETTES.orange;
 
       // ── EXTRACT AUDIO DATA ──
       let bass = 0;
@@ -1040,6 +1100,14 @@ export default function AudioReactiveSphere({
       const audioSpinX = 0.0004 + (hasAudio ? effVolume * 0.004 * rotationMultiplier : 0);
       angleY += audioSpinY;
       angleX += audioSpinX;
+
+      // ── CAMERA DYNAMICS (3D PANNING & ZOOM) ──
+      const timeSec = time * 0.001;
+      const autoZoom = cameraEffects ? (1.0 + Math.sin(timeSec * 0.15) * 0.14) : 1.0;
+      const beatZoom = cameraEffects ? (1.0 + (hasAudio ? effBass * 0.16 : 0)) : 1.0;
+      const cameraZoom = autoZoom * beatZoom;
+      const camPanX = cameraEffects ? Math.sin(timeSec * 0.22) * 0.14 : 0;
+      const camPanY = cameraEffects ? Math.cos(timeSec * 0.18) * 0.08 : 0;
 
       // Absolute canvas clear with solid black background to ensure high-quality, artifact-free video renders
       ctx.save();
@@ -1224,13 +1292,18 @@ export default function AudioReactiveSphere({
         const audioBassPulse = hasAudio ? effBass * baseR * 0.28 : 0;
         const currentR = baseR + wave + individualVib + audioBassPulse;
 
-        let px = rx * currentR * 1.35;
-        let py = ry * currentR;
-        let pz = rz * currentR;
+        // Shift points by camera pan offsets for 3D parallax
+        let cx = rx + camPanX;
+        let cy = ry + camPanY;
+        let cz = rz;
 
-        // 5. Perspective Projection
+        let px = cx * currentR * 1.35;
+        let py = cy * currentR;
+        let pz = cz * currentR;
+
+        // 5. Perspective Projection with Cinematic Zoom
         const safePz = Math.max(-fov + 10, pz);
-        const scale = fov / (fov + safePz);
+        const scale = (fov * cameraZoom) / (fov + safePz);
         let screenX = centerX + px * scale;
         let screenY = centerY + py * scale;
 
@@ -1311,29 +1384,29 @@ export default function AudioReactiveSphere({
         
         const depthFactor = Math.max(0.04, Math.min(1, 1 - (p.z + baseR) / (baseR * 2)));
         let finalOpacity = p.opacity * depthFactor;
-        let fill = `rgba(255, 255, 255, ${finalOpacity})`;
+        let fill = `rgba(${palette.baseRGB}, ${finalOpacity})`;
         let size = p.size;
 
-        // Apply breathing orange effect if initialized as orange
+        // Apply breathing accent effect if initialized as accent
         if (orig.isOrange) {
           const breath = Math.sin(time * 2.5 + orig.phase) * 0.5 + 0.5;
           finalOpacity = (0.42 + breath * 0.48) * depthFactor;
           
-          let orangeColorVal = finalOpacity;
+          let accentColorVal = finalOpacity;
           if (reactiveColor && hasAudio) {
             // Flash brighter with treble energy
-            orangeColorVal = Math.min(1.0, finalOpacity + effTreble * 0.6);
+            accentColorVal = Math.min(1.0, finalOpacity + effTreble * 0.6);
           }
-          fill = `rgba(232, 85, 15, ${orangeColorVal})`;
+          fill = `rgba(${palette.accentRGB}, ${accentColorVal})`;
           size = Math.max(0.4, p.size * (1.1 + breath * 0.8 + (reactiveColor && hasAudio ? effTreble * 1.6 : 0)));
         }
 
         if (p.isNearMouse) {
-          fill = '#b74829';
+          fill = palette.mouseHex;
           size = p.size * 1.2;
         } else if (p.blastIntensity > 0.05) {
           const blastAlpha = Math.min(1, p.blastIntensity * 1.5 + finalOpacity);
-          fill = `rgba(232, 85, 15, ${blastAlpha})`;
+          fill = `rgba(${palette.accentRGB}, ${blastAlpha})`;
           size = p.size * (1 + p.blastIntensity);
         }
 
@@ -1344,7 +1417,7 @@ export default function AudioReactiveSphere({
 
         // Glow halo
         if (p.isNearMouse || p.blastIntensity > 0.15) {
-          ctx.fillStyle = 'rgba(183, 72, 41, 0.25)';
+          ctx.fillStyle = `rgba(${palette.mouseRGB}, 0.25)`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, size * 3.5, 0, Math.PI * 2);
           ctx.fill();

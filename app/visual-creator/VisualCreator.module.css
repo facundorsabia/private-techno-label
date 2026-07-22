@@ -46,6 +46,7 @@
   align-items: center;
   z-index: 10;
   pointer-events: none;
+  transition: padding-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .topBar * {
@@ -152,11 +153,13 @@
 
 .visualizerOverlay {
   position: absolute;
-  bottom: 12vh;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   text-align: center;
+  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
 }
 
 .statusText {
@@ -839,6 +842,13 @@
   .monitorAreaDocked {
     padding-left: 380px;
   }
+  .monitorAreaDocked .screenContainer.full {
+    left: 380px;
+    width: calc(100% - 380px);
+  }
+  .visualizerOverlayDocked {
+    left: calc(50% + 190px) !important;
+  }
 }
 
 /* ── Section styles ────────────────────────────────────── */
@@ -1135,9 +1145,11 @@
 }
 
 .recordBtn:hover {
-  background: #ff3333;
-  color: var(--white);
-  box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
+  background: rgba(255, 51, 51, 0.08);
+  color: #ff3333;
+  border-color: #ff5555;
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.25);
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
 }
 
 .recordBtnActive {

@@ -194,7 +194,9 @@ export default function VisualCreatorPage() {
   const [particleSizeMultiplier, setParticleSizeMultiplier] = useState(1.0);
   const [reactiveColor, setReactiveColor] = useState(true);
   const [reactionMode, setReactionMode] = useState<'pulse' | 'deform' | 'orbit' | 'explode'>('deform');
+  const [colorPalette, setColorPalette] = useState<'orange' | 'acid' | 'cyan' | 'crimson' | 'amber' | 'monochrome'>('orange');
   const [lockedState, setLockedState] = useState<number | null>(null);
+  const [cameraEffects, setCameraEffects] = useState(true);
 
   // --- Custom Title text and position/scale ---
   const [customTitle, setCustomTitle] = useState('');
@@ -880,6 +882,55 @@ export default function VisualCreatorPage() {
             </button>
           </div>
 
+          {/* Color Palettes */}
+          <div className={styles.statesGroup} style={{ marginTop: '16px', marginBottom: '8px' }}>
+            <span className={styles.statesLabel}>COLOR PALETTE PRESET</span>
+            <div className={styles.aspectSelector} style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+              <button
+                className={`${styles.aspectBtn} ${colorPalette === 'orange' ? styles.aspectBtnActive : ''}`}
+                onClick={() => setColorPalette('orange')}
+                style={colorPalette === 'orange' ? { borderColor: '#e8550f', color: '#e8550f', boxShadow: '0 0 10px rgba(232,85,15,0.15)' } : {}}
+              >
+                ORANGE
+              </button>
+              <button
+                className={`${styles.aspectBtn} ${colorPalette === 'acid' ? styles.aspectBtnActive : ''}`}
+                onClick={() => setColorPalette('acid')}
+                style={colorPalette === 'acid' ? { borderColor: '#39ff14', color: '#39ff14', boxShadow: '0 0 10px rgba(57,255,20,0.15)' } : {}}
+              >
+                ACID GREEN
+              </button>
+              <button
+                className={`${styles.aspectBtn} ${colorPalette === 'cyan' ? styles.aspectBtnActive : ''}`}
+                onClick={() => setColorPalette('cyan')}
+                style={colorPalette === 'cyan' ? { borderColor: '#00f0ff', color: '#00f0ff', boxShadow: '0 0 10px rgba(0,240,255,0.15)' } : {}}
+              >
+                CYAN BLUE
+              </button>
+              <button
+                className={`${styles.aspectBtn} ${colorPalette === 'crimson' ? styles.aspectBtnActive : ''}`}
+                onClick={() => setColorPalette('crimson')}
+                style={colorPalette === 'crimson' ? { borderColor: '#ff0a28', color: '#ff0a28', boxShadow: '0 0 10px rgba(255,10,40,0.15)' } : {}}
+              >
+                CRIMSON RED
+              </button>
+              <button
+                className={`${styles.aspectBtn} ${colorPalette === 'amber' ? styles.aspectBtnActive : ''}`}
+                onClick={() => setColorPalette('amber')}
+                style={colorPalette === 'amber' ? { borderColor: '#ffb000', color: '#ffb000', boxShadow: '0 0 10px rgba(255,176,0,0.15)' } : {}}
+              >
+                AMBER GOLD
+              </button>
+              <button
+                className={`${styles.aspectBtn} ${colorPalette === 'monochrome' ? styles.aspectBtnActive : ''}`}
+                onClick={() => setColorPalette('monochrome')}
+                style={colorPalette === 'monochrome' ? { borderColor: '#ffffff', color: '#ffffff', boxShadow: '0 0 10px rgba(255,255,255,0.15)' } : {}}
+              >
+                BERLIN MONO
+              </button>
+            </div>
+          </div>
+
           <div className={styles.statesGroup}>
             <span className={styles.statesLabel}>
               {lockedState !== null 
@@ -989,11 +1040,21 @@ export default function VisualCreatorPage() {
               </button>
             </div>
 
+            {/* Cinematic Camera Toggle */}
+            <div 
+              className={styles.toggleContainer} 
+              onClick={() => setCameraEffects(!cameraEffects)}
+              style={{ marginTop: '10px', padding: '10px 0', borderTop: '1px dashed rgba(255,255,255,0.06)' }}
+            >
+              <span className={styles.toggleLabel}>CINEMATIC 3D CAMERA</span>
+              <div className={`${styles.toggleSwitch} ${cameraEffects ? styles.toggleSwitchActive : ''}`} />
+            </div>
+
             {/* Automatic recording toggle switch */}
             <div 
               className={styles.toggleContainer} 
               onClick={() => setAutoRecordMode(!autoRecordMode)}
-              style={{ marginTop: '5px', padding: '10px 0', borderTop: '1px dashed rgba(255,255,255,0.06)' }}
+              style={{ padding: '10px 0', borderTop: '1px dashed rgba(255,255,255,0.06)' }}
             >
               <span className={styles.toggleLabel}>AUTO-RECORD ON PLAYBACK</span>
               <div className={`${styles.toggleSwitch} ${autoRecordMode ? styles.toggleSwitchActive : ''}`} />
@@ -1397,7 +1458,7 @@ export default function VisualCreatorPage() {
 
       {/* ── Viewport Visualizer (Landing Page Hero Clone) ── */}
       <section className={styles.heroSection}>
-        <header className={styles.topBar}>
+        <header className={`${styles.topBar} ${controlLayout === 'left' ? styles.monitorAreaDocked : ''}`}>
           <Link href="/" className={styles.backLink}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
               <line x1="19" y1="12" x2="5" y2="12" />
@@ -1464,6 +1525,8 @@ export default function VisualCreatorPage() {
                 reactiveColor={reactiveColor}
                 reactionMode={reactionMode}
                 lockedState={lockedState}
+                colorPalette={colorPalette}
+                cameraEffects={cameraEffects}
               />
             </div>
 
@@ -1474,7 +1537,7 @@ export default function VisualCreatorPage() {
                   {aspectRatio === 'ratio169' ? 'REC_MON // 16:9 LANDSCAPE' : aspectRatio === 'ratio916' ? 'REC_MON // 9:16 VERTICAL' : 'REC_MON // 1:1 SQUARE'}
                 </div>
                 <div className={styles.frameResolution}>
-                  {aspectRatio === 'ratio169' ? '1920 x 1080 [30FPS]' : aspectRatio === 'ratio916' ? '1080 x 1920 [30FPS]' : '1080 x 1080 [30FPS]'}
+                  {aspectRatio === 'ratio169' ? `1920 x 1080 [${recordFps}FPS]` : aspectRatio === 'ratio916' ? `1080 x 1920 [${recordFps}FPS]` : `1080 x 1080 [${recordFps}FPS]`}
                 </div>
               </div>
             )}
@@ -1482,7 +1545,7 @@ export default function VisualCreatorPage() {
         </div>
 
         {/* Visualizer Status & REC Indicator overlay */}
-        <div className={`${styles.visualizerOverlay} ${controlLayout === 'left' ? styles.monitorAreaDocked : ''}`}>
+        <div className={`${styles.visualizerOverlay} ${controlLayout === 'left' ? styles.visualizerOverlayDocked : ''}`}>
           {isRecording && (
             <div className={styles.recBadge} style={{ marginBottom: '8px', display: 'block' }}>
               🔴 REC [{formatRecordTime(recordTime)}]
