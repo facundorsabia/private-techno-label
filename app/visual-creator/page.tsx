@@ -200,6 +200,9 @@ export default function VisualCreatorPage() {
   const [customTitle, setCustomTitle] = useState('');
   const [titleYOffset, setTitleYOffset] = useState(0);
   const [titleScale, setTitleScale] = useState(1.0);
+  const [showLogo, setShowLogo] = useState(true);
+  const [showTitleText, setShowTitleText] = useState(true);
+  const [showHudGrid, setShowHudGrid] = useState(true);
 
   // --- Custom Background Image ---
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
@@ -503,6 +506,7 @@ export default function VisualCreatorPage() {
 
       synthRef.current?.start();
       setSynthActive(true);
+      setCustomTitle('');
       setFileName('INTERNAL SYNTH SIGNAL (LOOP - 135 BPM)');
       
       // Delay recording starting a tiny bit to let nodes connect
@@ -570,6 +574,7 @@ export default function VisualCreatorPage() {
       const objectURL = URL.createObjectURL(file);
       audio.src = objectURL;
       audio.load();
+      setCustomTitle('');
       setFileName(file.name);
 
       audio.play().then(() => {
@@ -1116,27 +1121,75 @@ export default function VisualCreatorPage() {
 
           {/* Title Text & Positioning */}
           <div className={styles.studioContainer} style={{ borderTop: '1px dashed rgba(255, 255, 255, 0.1)', paddingTop: '20px', marginTop: '15px' }}>
-            <span className={styles.statesLabel}>TITLE OVERLAY SYSTEM</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className={styles.statesLabel}>TITLE & LOGO OVERLAYS</span>
+              <button
+                className={styles.synthButton}
+                onClick={() => {
+                  const hide = showLogo || showTitleText;
+                  setShowLogo(!hide);
+                  setShowTitleText(!hide);
+                }}
+                style={{
+                  fontSize: '8px',
+                  padding: '3px 8px',
+                  margin: 0,
+                  borderColor: (!showLogo && !showTitleText) ? 'var(--orange)' : 'rgba(255,255,255,0.2)',
+                  color: (!showLogo && !showTitleText) ? 'var(--orange)' : 'var(--white)',
+                }}
+              >
+                {(!showLogo && !showTitleText) ? '✓ CLEAN EXPORT ACTIVE' : '⚡ CLEAN EXPORT (HIDE ALL)'}
+              </button>
+            </div>
+
+            <div 
+              className={styles.toggleContainer} 
+              onClick={() => setShowLogo(!showLogo)}
+              style={{ marginTop: '10px' }}
+            >
+              <span className={styles.toggleLabel}>SHOW BRAND LOGO OVERLAY</span>
+              <div className={`${styles.toggleSwitch} ${showLogo ? styles.toggleSwitchActive : ''}`} />
+            </div>
+
+            <div 
+              className={styles.toggleContainer} 
+              onClick={() => setShowTitleText(!showTitleText)}
+              style={{ marginBottom: '15px' }}
+            >
+              <span className={styles.toggleLabel}>SHOW TITLE / TRACK TEXT</span>
+              <div className={`${styles.toggleSwitch} ${showTitleText ? styles.toggleSwitchActive : ''}`} />
+            </div>
             
             <div className={styles.controlRow}>
               <span className={styles.controlName}>CUSTOM TEXT OVERLAY</span>
-              <input
-                type="text"
-                placeholder="TYPE CUSTOM TEXT HERE..."
-                value={customTitle}
-                onChange={(e) => setCustomTitle(e.target.value)}
-                style={{
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  color: 'var(--white)',
-                  padding: '10px 14px',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '9px',
-                  outline: 'none',
-                  borderRadius: '2px',
-                  width: '100%',
-                }}
-              />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <input
+                  type="text"
+                  placeholder="TYPE CUSTOM TEXT HERE..."
+                  value={customTitle}
+                  onChange={(e) => setCustomTitle(e.target.value)}
+                  style={{
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    color: 'var(--white)',
+                    padding: '10px 14px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '9px',
+                    outline: 'none',
+                    borderRadius: '2px',
+                    flex: 1,
+                  }}
+                />
+                {customTitle && (
+                  <button
+                    className={styles.synthButton}
+                    onClick={() => setCustomTitle('')}
+                    style={{ width: 'auto', padding: '0 12px', fontSize: '8px', margin: 0, borderColor: '#ff3333', color: '#ff3333' }}
+                  >
+                    CLEAR
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className={styles.controlRow}>
@@ -1399,6 +1452,9 @@ export default function VisualCreatorPage() {
                 activeTitleText={activeTitleText}
                 titleYOffset={titleYOffset}
                 titleScale={titleScale}
+                showLogo={showLogo}
+                showTitleText={showTitleText}
+                showHudGrid={showHudGrid}
                 sensitivity={sensitivity}
                 bassMultiplier={bassMultiplier}
                 midMultiplier={midMultiplier}

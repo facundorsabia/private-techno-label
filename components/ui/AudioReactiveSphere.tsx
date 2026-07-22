@@ -25,6 +25,9 @@ interface AudioReactiveSphereProps {
   activeTitleText?: string;
   titleYOffset?: number;
   titleScale?: number;
+  showLogo?: boolean;
+  showTitleText?: boolean;
+  showHudGrid?: boolean;
   sensitivity?: number;
   bassMultiplier?: number;
   midMultiplier?: number;
@@ -45,6 +48,9 @@ export default function AudioReactiveSphere({
   activeTitleText = '',
   titleYOffset = 0,
   titleScale = 1.0,
+  showLogo = true,
+  showTitleText = true,
+  showHudGrid = true,
   sensitivity = 1,
   bassMultiplier = 1,
   midMultiplier = 1,
@@ -113,6 +119,9 @@ export default function AudioReactiveSphere({
     activeTitleText,
     titleYOffset,
     titleScale,
+    showLogo,
+    showTitleText,
+    showHudGrid,
   });
 
   useEffect(() => {
@@ -132,6 +141,9 @@ export default function AudioReactiveSphere({
       activeTitleText,
       titleYOffset,
       titleScale,
+      showLogo,
+      showTitleText,
+      showHudGrid,
     };
   }, [
     sensitivity,
@@ -149,6 +161,9 @@ export default function AudioReactiveSphere({
     activeTitleText,
     titleYOffset,
     titleScale,
+    showLogo,
+    showTitleText,
+    showHudGrid,
   ]);
 
   useEffect(() => {
@@ -213,18 +228,29 @@ export default function AudioReactiveSphere({
       if (connections.length >= 3200 || checkedPairs > 200000) break;
     }
 
-    // Handle Resize (with device pixel ratio support for sharp rendering)
+    // Handle Resize (with device pixel ratio support & ResizeObserver for exact aspect ratio captures)
     const handleResize = () => {
       const baseDpr = window.devicePixelRatio || 1;
       const dpr = baseDpr * (propsRef.current.resolutionMultiplier || 1.0);
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      const targetElement = canvas.parentElement || canvas;
+      const rect = targetElement.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
       ctx.scale(dpr, dpr);
       
       sizeRef.current = { width: rect.width, height: rect.height };
       radiusRef.current = Math.min(rect.width, rect.height) * 0.34;
     };
+
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
 
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -233,6 +259,15 @@ export default function AudioReactiveSphere({
     let angleY = 0;
     let angleX = 0;
     let animFrameId = 0;
+
+    // Smooth manual transition tracking variables
+    let lastTargetState: number | null = null;
+    let manualFromState = 0;
+    let manualToState = 0;
+    let manualMorphProgress = 1.0;
+    let lastTime = Date.now();
+
+    // Mathematical definition for target positions of each state
 
     // Mouse position listeners
     const handleMouseMove = (e: MouseEvent) => {
@@ -1006,10 +1041,11 @@ export default function AudioReactiveSphere({
       angleY += audioSpinY;
       angleX += audioSpinX;
 
-      // Absolute canvas clear
+      // Absolute canvas clear with solid black background to ensure high-quality, artifact-free video renders
       ctx.save();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.restore();
 
       // 1. Draw custom background image or tactical lines inside the canvas context
@@ -1036,44 +1072,6 @@ export default function AudioReactiveSphere({
         
         ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, sizeRef.current.width, sizeRef.current.height);
         ctx.restore();
-      } else {
-        // Draw aesthetic vector grids/diagram lines directly on canvas!
-        ctx.save();
-        ctx.strokeStyle = 'rgba(232, 232, 232, 0.035)';
-        ctx.lineWidth = 0.5;
-        
-        const w = sizeRef.current.width;
-        const h = sizeRef.current.height;
-        
-        ctx.beginPath();
-        // vertical boundaries
-        ctx.moveTo(w * 0.08, 0);
-        ctx.lineTo(w * 0.08, h);
-        ctx.moveTo(w * 0.92, 0);
-        ctx.lineTo(w * 0.92, h);
-        // horizontal boundaries
-        ctx.moveTo(0, h * 0.12);
-        ctx.lineTo(w, h * 0.12);
-        ctx.moveTo(0, h * 0.88);
-        ctx.lineTo(w, h * 0.88);
-        ctx.stroke();
-
-        // Diagonal connector
-        ctx.strokeStyle = 'rgba(232, 85, 15, 0.025)';
-        ctx.beginPath();
-        ctx.moveTo(w * 0.16, h * 0.15);
-        ctx.lineTo(w * 0.84, h * 0.85);
-        ctx.stroke();
-
-        // Center crosshair
-        ctx.strokeStyle = 'rgba(232, 85, 15, 0.12)';
-        ctx.beginPath();
-        ctx.moveTo(w / 2 - 6, h / 2);
-        ctx.lineTo(w / 2 + 6, h / 2);
-        ctx.moveTo(w / 2, h / 2 - 6);
-        ctx.lineTo(w / 2, h / 2 + 6);
-        ctx.stroke();
-        ctx.restore();
       }
 
       // Localized Blast Decay
@@ -1088,38 +1086,6 @@ export default function AudioReactiveSphere({
         }
       }
 
-      // ── DRAW TECHNO HUD GRID / RADAR SCAN ──
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
-      ctx.lineWidth = 1;
-
-      const maxRadiusX = centerX * 0.95;
-      const outerRadiusX = Math.min(baseR * 1.25 * 1.35, maxRadiusX);
-      const innerRadiusX = Math.min(baseR * 0.7 * 1.35, maxRadiusX * 0.85);
-
-      // Outer dashed boundary ellipse
-      ctx.beginPath();
-      ctx.ellipse(centerX, centerY, outerRadiusX, baseR * 1.25, 0, 0, Math.PI * 2);
-      ctx.setLineDash([2, 16]);
-      ctx.stroke();
-
-      // Inner dashed target ellipse
-      ctx.beginPath();
-      ctx.ellipse(centerX, centerY, innerRadiusX, baseR * 0.7, 0, 0, Math.PI * 2);
-      ctx.setLineDash([1, 20]);
-      ctx.stroke();
-
-      // Horizontal and vertical axis lines
-      ctx.beginPath();
-      ctx.setLineDash([3, 14]);
-      const lineExtX = Math.min(baseR * 1.4 * 1.35, centerX * 0.98);
-      ctx.moveTo(centerX - lineExtX, centerY);
-      ctx.lineTo(centerX + lineExtX, centerY);
-      ctx.moveTo(centerX, centerY - baseR * 1.3);
-      ctx.lineTo(centerX, centerY + baseR * 1.3);
-      ctx.stroke();
-      ctx.restore();
-
       // ── 120-SECOND UNIFORM MORPHING TIMELINE ──
       const loopDuration = 126;
       const numStates = 21;
@@ -1130,17 +1096,56 @@ export default function AudioReactiveSphere({
       const phaseTime = cycleTime % phaseDuration;
 
       const transitionDuration = 1.8;
-      let morphWeight = Math.min(1, phaseTime / transitionDuration);
-      morphWeight = morphWeight * morphWeight * (3 - 2 * morphWeight);
+      let autoMorphWeight = Math.min(1, phaseTime / transitionDuration);
+      autoMorphWeight = autoMorphWeight * autoMorphWeight * (3 - 2 * autoMorphWeight);
+
+      // Compute delta time for smooth manual morphing
+      const now = Date.now();
+      const dt = Math.min(0.1, (now - lastTime) * 0.001);
+      lastTime = now;
 
       let prevState = (phaseIndex - 1 + numStates) % numStates;
       let currState = phaseIndex;
-      let morphWeightVal = morphWeight;
+      let morphWeightVal = autoMorphWeight;
 
-      if (lockedState !== null && lockedState !== undefined) {
-        prevState = lockedState;
-        currState = lockedState;
-        morphWeightVal = 1.0;
+      // Handle smooth transition when user locks a shape or switches locked shape
+      const targetLock = (lockedState !== null && lockedState !== undefined) ? lockedState : null;
+      
+      if (targetLock !== lastTargetState) {
+        let currentEffectiveFrom = currState;
+        if (manualMorphProgress < 1.0) {
+          currentEffectiveFrom = manualToState;
+        } else if (lastTargetState !== null) {
+          currentEffectiveFrom = lastTargetState;
+        } else {
+          currentEffectiveFrom = phaseIndex;
+        }
+
+        manualFromState = currentEffectiveFrom;
+        manualToState = targetLock !== null ? targetLock : phaseIndex;
+        manualMorphProgress = 0.0;
+        lastTargetState = targetLock;
+      }
+
+      if (targetLock !== null) {
+        if (manualMorphProgress < 1.0) {
+          manualMorphProgress = Math.min(1.0, manualMorphProgress + dt / 1.4); // 1.4s smooth cubic morph
+        }
+        const p = manualMorphProgress;
+        const smoothP = p * p * (3 - 2 * p); // Cubic ease-in-out
+        
+        prevState = manualFromState;
+        currState = manualToState;
+        morphWeightVal = smoothP;
+      } else if (manualMorphProgress < 1.0) {
+        // Transition back to auto cycle timeline smoothly
+        manualMorphProgress = Math.min(1.0, manualMorphProgress + dt / 1.4);
+        const p = manualMorphProgress;
+        const smoothP = p * p * (3 - 2 * p);
+
+        prevState = manualFromState;
+        currState = phaseIndex;
+        morphWeightVal = smoothP;
       }
 
       // ── PROJECT PARTICLES ──
@@ -1294,36 +1299,7 @@ export default function AudioReactiveSphere({
         });
       }
 
-      // ── DRAW CONNECTIONS (LINES) ──
-      ctx.lineWidth = 0.2;
-      for (let c = 0; c < connections.length; c++) {
-        const { i, j } = connections[c];
-        const p1 = projected[i];
-        const p2 = projected[j];
-
-        const sDist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-        if (sDist > baseR * 1.15) continue;
-
-        const avgZ = (p1.z + p2.z) / 2;
-        const depthFactor = Math.max(0, Math.min(1, 1 - (avgZ + baseR) / (baseR * 2)));
-
-        let opacity = 0.05 * depthFactor;
-        let color = `rgba(255, 255, 255, ${opacity})`;
-
-        if (p1.isNearMouse || p2.isNearMouse) {
-          opacity = 0.36 * depthFactor;
-          color = `rgba(183, 72, 41, ${opacity})`;
-          ctx.lineWidth = 0.55;
-        } else {
-          ctx.lineWidth = 0.2;
-        }
-
-        ctx.strokeStyle = color;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
-      }
+      // Connection lines removed for clean particles-only visualization
 
       // ── DRAW PARTICLES (WITH DEPTH SORTING FOR HYPER-3D perspective occlusion) ──
       const renderList = projected.map((p, idx) => ({ p, orig: particles[idx] }));
@@ -1376,7 +1352,9 @@ export default function AudioReactiveSphere({
       }
 
       // 2. Draw Logo & Subtitle Text overlays on top of the particles inside the canvas context
-      if (logoImageRef.current) {
+      const { titleYOffset = 0, titleScale = 1.0, activeTitleText = '', showLogo = true, showTitleText = true } = propsRef.current;
+
+      if ((showLogo && logoImageRef.current) || (showTitleText && activeTitleText)) {
         ctx.save();
         
         const logoImg = logoImageRef.current;
@@ -1385,10 +1363,8 @@ export default function AudioReactiveSphere({
         const centerX = w / 2;
         const centerY = h / 2;
         
-        const { titleYOffset = 0, titleScale = 1.0, activeTitleText = '' } = propsRef.current;
-        
         const baseLogoWidth = Math.min(w * 0.45, 380);
-        const baseLogoHeight = baseLogoWidth * (logoImg.height / logoImg.width);
+        const baseLogoHeight = logoImg ? baseLogoWidth * (logoImg.height / logoImg.width) : 50;
         
         const drawLogoWidth = baseLogoWidth * titleScale;
         const drawLogoHeight = baseLogoHeight * titleScale;
@@ -1397,16 +1373,18 @@ export default function AudioReactiveSphere({
         const baseLogoY = centerY - drawLogoHeight / 2 - 25;
         const logoY = baseLogoY + titleYOffset;
         
-        ctx.drawImage(logoImg, logoX, logoY, drawLogoWidth, drawLogoHeight);
+        if (showLogo && logoImg) {
+          ctx.drawImage(logoImg, logoX, logoY, drawLogoWidth, drawLogoHeight);
+        }
         
-        if (activeTitleText) {
+        if (showTitleText && activeTitleText) {
           const fontSize = Math.max(9, Math.round(11 * titleScale));
           ctx.font = `bold ${fontSize}px monospace`;
           ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
           ctx.textAlign = 'center';
           
           let spacedTitle = activeTitleText.split('').join(' ');
-          const taglineY = logoY + drawLogoHeight + 22;
+          const taglineY = showLogo && logoImg ? logoY + drawLogoHeight + 22 : centerY + titleYOffset;
           ctx.fillText(spacedTitle, centerX, taglineY);
         }
         
@@ -1421,6 +1399,7 @@ export default function AudioReactiveSphere({
     // Clean up events and animation loop on unmount
     return () => {
       cancelAnimationFrame(animFrameId);
+      resizeObserver.disconnect();
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
