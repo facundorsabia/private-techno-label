@@ -92,6 +92,7 @@ export default function AboutSection() {
             muted
             playsInline
             className={styles.gridVideo}
+            poster="/videos/abstract-poster.png"
           />
         </div>
 

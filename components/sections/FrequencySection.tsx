@@ -146,6 +146,7 @@ export default function FrequencySection() {
                   muted
                   playsInline
                   preload="auto"
+                  poster="/images/assets/subscribe assets/world-poster.png"
                 >
                   <source src="/images/assets/subscribe assets/world.webm" type="video/webm" />
                 </video>
