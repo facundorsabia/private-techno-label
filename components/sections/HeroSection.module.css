@@ -466,8 +466,12 @@
   }
 
   .transmissionIcon {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .transmissionBtnTop {
+    padding: 8px 12px;
   }
 }
 

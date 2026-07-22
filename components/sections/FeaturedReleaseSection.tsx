@@ -96,7 +96,7 @@ export default function FeaturedReleaseSection() {
 
   }, { scope: sectionRef });
 
-  const marqueeText = `/// LATEST RELEASE /// OUT NOW /// ${featuredRelease.catalog} /// ${featuredRelease.artist} - ${featuredRelease.title} `;
+  const marqueeText = `/// NEXT RELEASE /// COMING SOON /// ${featuredRelease.catalog} /// ${featuredRelease.artist} - ${featuredRelease.title} `;
 
   return (
     <section className={styles.featuredSection} id="featured-release-1" ref={sectionRef}>
@@ -167,7 +167,7 @@ export default function FeaturedReleaseSection() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%', position: 'relative', zIndex: 10 }}>
             <div className={styles.badge}>
               <span className={styles.badgeDot} />
-              LATEST RELEASE
+              NEXT RELEASE
             </div>
             <div className={styles.imageWrapper} ref={imageRef}>
               <Image
