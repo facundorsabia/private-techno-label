@@ -16,14 +16,17 @@ export default function AboutSection() {
   const { ref } = useScrollAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
   React.useEffect(() => {
     if (videoRef.current) {
       videoRef.current.defaultMuted = true;
       videoRef.current.muted = true;
-      videoRef.current.play().catch(e => {
-        // Autoplay prevented by browser (e.g., Low Power Mode)
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(e => {
         console.log("Autoplay prevented:", e);
+        setIsPlaying(false);
       });
     }
   }, []);
@@ -84,6 +87,23 @@ export default function AboutSection() {
 
         {/* Rows 1/2 Right: Abstract Video (replacing Waveform) */}
         <div className={`${styles.gridItem} ${styles.boxWaveform}`}>
+          <Image
+            src="/videos/abstract-poster.png"
+            alt="Abstract Frequency Background"
+            fill
+            sizes="33vw"
+            className={styles.coverImg}
+            style={{
+              opacity: isPlaying ? 0 : 1,
+              transition: 'opacity 0.6s ease',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
           <video
             ref={videoRef}
             src="/videos/abstract-background.mp4"
@@ -91,8 +111,16 @@ export default function AboutSection() {
             loop
             muted
             playsInline
+            onPlay={() => setIsPlaying(true)}
+            onPlaying={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onError={() => setIsPlaying(false)}
             className={styles.gridVideo}
-            poster="/videos/abstract-poster.png"
+            style={{
+              opacity: isPlaying ? 1 : 0,
+              pointerEvents: isPlaying ? 'auto' : 'none',
+              transition: 'opacity 0.6s ease',
+            }}
           />
         </div>
 

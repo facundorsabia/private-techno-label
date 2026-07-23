@@ -12,13 +12,17 @@ gsap.registerPlugin(ScrollTrigger);
 export default function FrequencySection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
   React.useEffect(() => {
     if (videoRef.current) {
       videoRef.current.defaultMuted = true;
       videoRef.current.muted = true;
-      videoRef.current.play().catch(e => {
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(e => {
         console.log("Autoplay prevented on FrequencySection:", e);
+        setIsPlaying(false);
       });
     }
   }, []);
@@ -138,6 +142,20 @@ export default function FrequencySection() {
 
             <div className={`${styles.colCenter} fade-up`}>
               <div className={styles.videoWrapper}>
+                <Image
+                  src="/images/assets/subscribe assets/world-poster.png"
+                  alt="Wireframe Globe"
+                  width={400}
+                  height={400}
+                  priority
+                  className={styles.globeVideo}
+                  style={{
+                    opacity: isPlaying ? 0 : 0.9,
+                    transition: 'opacity 0.5s ease',
+                    position: isPlaying ? 'absolute' : 'relative',
+                    pointerEvents: 'none',
+                  }}
+                />
                 <video
                   ref={videoRef}
                   className={styles.globeVideo}
@@ -146,7 +164,16 @@ export default function FrequencySection() {
                   muted
                   playsInline
                   preload="auto"
-                  poster="/images/assets/subscribe assets/world-poster.png"
+                  onPlay={() => setIsPlaying(true)}
+                  onPlaying={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onError={() => setIsPlaying(false)}
+                  style={{
+                    opacity: isPlaying ? 0.9 : 0,
+                    transition: 'opacity 0.5s ease',
+                    position: isPlaying ? 'relative' : 'absolute',
+                    pointerEvents: isPlaying ? 'auto' : 'none',
+                  }}
                 >
                   <source src="/images/assets/subscribe assets/world.webm" type="video/webm" />
                 </video>
