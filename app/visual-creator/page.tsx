@@ -1754,7 +1754,7 @@ export default function VisualCreatorPage() {
                 midMultiplier={midMultiplier}
                 trebleMultiplier={trebleMultiplier}
                 rotationMultiplier={rotationMultiplier}
-                particleSizeMultiplier={particleSizeMultiplier}
+                  particleSizeMultiplier={particleSizeMultiplier}
                 reactiveColor={reactiveColor}
                 reactionMode={reactionMode}
                 lockedState={lockedState}

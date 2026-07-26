@@ -1451,8 +1451,6 @@ export default function AudioReactiveSphere({
         });
       }
 
-      // Connection lines removed for clean particles-only visualization
-
       // ── DRAW PARTICLES (WITH DEPTH SORTING FOR HYPER-3D perspective occlusion) ──
       const renderList = projected.map((p, idx) => ({ p, orig: particles[idx] }));
       renderList.sort((a, b) => b.p.z - a.p.z); // descending (largest z (back) drawn first, smallest z (front) drawn last)
