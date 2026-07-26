@@ -14,26 +14,29 @@ const AudioReactiveSphere = dynamic(() => import('@/components/ui/AudioReactiveS
 
 const MORPH_STATES = [
   { id: 0, name: 'Magnetic Hourglass' },
-  { id: 1, name: 'Triangular Dome' },
-  { id: 2, name: 'Merkaba Geometry' },
-  { id: 3, name: 'Star Prism' },
-  { id: 4, name: 'Metatron Cube' },
-  { id: 5, name: 'Labyrinth Grid' },
-  { id: 6, name: 'Star Pyramid' },
-  { id: 7, name: 'Sri Yantra' },
-  { id: 8, name: 'Vortex Spiral' },
-  { id: 9, name: 'Stellated Octahedron' },
-  { id: 10, name: 'Escher Cube' },
-  { id: 11, name: 'Spiked Mine' },
-  { id: 12, name: '64-Star Cluster' },
-  { id: 13, name: 'Compound Cluster' },
-  { id: 14, name: '3D Cube Solid' },
-  { id: 15, name: 'Oscilloscope Wave' },
-  { id: 16, name: 'Radar concentric' },
-  { id: 17, name: 'Warp Tunnel' },
-  { id: 18, name: 'Seed of Life' },
-  { id: 19, name: 'Flower of Life' },
-  { id: 20, name: 'Double Helix DNA' }
+  { id: 1, name: 'Merkaba Geometry' },
+  { id: 2, name: 'Metatron Cube' },
+  { id: 3, name: 'Labyrinth Grid' },
+  { id: 4, name: 'Sri Yantra' },
+  { id: 5, name: 'Vortex Spiral' },
+  { id: 6, name: 'Stellated Octahedron' },
+  { id: 7, name: 'Escher Cube' },
+  { id: 8, name: '64-Star Cluster' },
+  { id: 9, name: '3D Cube Solid' },
+  { id: 10, name: 'Oscilloscope Wave' },
+  { id: 11, name: 'Flower of Life' },
+  { id: 12, name: 'Double Helix DNA' },
+  { id: 13, name: 'Biolum Jellyfish' },
+  { id: 14, name: 'Möbius Strip' },
+  { id: 15, name: 'Torus Knot' },
+  { id: 16, name: 'Black Hole' },
+  { id: 17, name: '3D Spectrum Ring' },
+  { id: 18, name: 'Turbulent Nebula' },
+  { id: 19, name: 'Alien Kraken' },
+  { id: 20, name: 'Lorenz Attractor' },
+  { id: 21, name: 'Hyperboloid Tower' },
+  { id: 22, name: 'Helical Tunnel' },
+  { id: 23, name: 'Super-Ellipsoid' }
 ];
 
 // ── Built-in Hypnotic Techno Beat Sequencer ──
@@ -197,6 +200,7 @@ export default function VisualCreatorPage() {
   const [colorPalette, setColorPalette] = useState<'orange' | 'acid' | 'cyan' | 'crimson' | 'amber' | 'monochrome'>('orange');
   const [lockedState, setLockedState] = useState<number | null>(null);
   const [cameraEffects, setCameraEffects] = useState(true);
+  const [autoCycleDuration, setAutoCycleDuration] = useState(120);
 
   // --- Custom Title text and position/scale ---
   const [customTitle, setCustomTitle] = useState('');
@@ -209,6 +213,17 @@ export default function VisualCreatorPage() {
   // --- Custom Background Image ---
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const [bgOpacity, setBgOpacity] = useState(0.2);
+  const [customLogo, setCustomLogo] = useState<string | null>(null);
+  const [trimStart, setTrimStart] = useState(0);
+  const [trimEnd, setTrimEnd] = useState(30);
+
+  const trimStartRef = useRef(0);
+  const trimEndRef = useRef(30);
+
+  useEffect(() => {
+    trimStartRef.current = trimStart;
+    trimEndRef.current = trimEnd;
+  }, [trimStart, trimEnd]);
 
   // --- Resolution Rendering Multiplier & Frame Rate ---
   const [resolutionMultiplier, setResolutionMultiplier] = useState(1.5); // Default HD (1.5x dpr)
@@ -246,8 +261,11 @@ export default function VisualCreatorPage() {
   
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const bgFileInputRef = useRef<HTMLInputElement | null>(null);
+  const logoFileInputRef = useRef<HTMLInputElement | null>(null);
+  const logoSetupInputRef = useRef<HTMLInputElement | null>(null);
   const dragRef = useRef<{ startX: number; startY: number; posX: number; posY: number } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const progressBarRef = useRef<HTMLDivElement | null>(null);
   
   const recordedChunksRef = useRef<Blob[]>([]);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -413,10 +431,24 @@ export default function VisualCreatorPage() {
       audioElementRef.current = audio;
 
       audio.ontimeupdate = () => {
-        setCurrentTime(audio.currentTime);
+        const time = audio.currentTime;
+        setCurrentTime(time);
+        
+        // Auto-stop recording if we reached/exceeded trimEnd
+        if (time >= trimEndRef.current) {
+          audio.pause();
+          audio.currentTime = trimStartRef.current;
+          setCurrentTime(trimStartRef.current);
+          setIsPlaying(false);
+          if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+            stopRecordingRef.current();
+          }
+        }
       };
       audio.onloadedmetadata = () => {
         setDuration(audio.duration);
+        setTrimStart(0);
+        setTrimEnd(audio.duration);
       };
       audio.onended = () => {
         setIsPlaying(false);
@@ -450,7 +482,15 @@ export default function VisualCreatorPage() {
     if (isRecording) {
       stopRecording();
     } else {
+      const audio = audioElementRef.current;
+      if (audio) {
+        audio.currentTime = trimStart;
+        setCurrentTime(trimStart);
+      }
       startRecording();
+      if (audio && audio.src && !isPlaying && !synthActive) {
+        audio.play().then(() => setIsPlaying(true));
+      }
     }
   };
 
@@ -544,6 +584,11 @@ export default function VisualCreatorPage() {
         setSynthActive(false);
       }
 
+      if (audio.currentTime < trimStart || audio.currentTime >= trimEnd) {
+        audio.currentTime = trimStart;
+        setCurrentTime(trimStart);
+      }
+
       audio.play().then(() => {
         setIsPlaying(true);
         if (autoRecordRef.current && !mediaRecorderRef.current) {
@@ -600,6 +645,100 @@ export default function VisualCreatorPage() {
 
   const handleClearBg = () => {
     setBackgroundImage(null);
+  };
+
+  // Handle custom white-label logo upload
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const objectURL = URL.createObjectURL(file);
+    setCustomLogo(objectURL);
+  };
+
+  const handleClearLogo = () => {
+    setCustomLogo(null);
+  };
+
+  // Drag handles for the start / end brackets on the progress timeline
+  const handleDragBracket = (type: 'start' | 'end', e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const updateValue = (clientX: number) => {
+      const container = progressBarRef.current;
+      if (!container || !duration) return;
+
+      const rect = container.getBoundingClientRect();
+      const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const val = percentage * duration;
+
+      if (type === 'start') {
+        setTrimStart(val);
+        if (val > trimEnd) {
+          setTrimEnd(val);
+        }
+        const audio = audioElementRef.current;
+        if (audio) {
+          audio.currentTime = val;
+          setCurrentTime(val);
+        }
+      } else {
+        setTrimEnd(Math.max(val, trimStart));
+      }
+    };
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      updateValue(moveEvent.clientX);
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleTouchBracket = (type: 'start' | 'end', e: React.TouchEvent) => {
+    e.stopPropagation();
+
+    const updateValue = (clientX: number) => {
+      const container = progressBarRef.current;
+      if (!container || !duration) return;
+
+      const rect = container.getBoundingClientRect();
+      const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const val = percentage * duration;
+
+      if (type === 'start') {
+        setTrimStart(val);
+        if (val > trimEnd) {
+          setTrimEnd(val);
+        }
+        const audio = audioElementRef.current;
+        if (audio) {
+          audio.currentTime = val;
+          setCurrentTime(val);
+        }
+      } else {
+        setTrimEnd(Math.max(val, trimStart));
+      }
+    };
+
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      if (moveEvent.touches[0]) {
+        updateValue(moveEvent.touches[0].clientX);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd);
   };
 
   // Dragging handlers for Floating Layout
@@ -786,18 +925,56 @@ export default function VisualCreatorPage() {
             </div>
           )}
 
-          {/* Track Progress Bar */}
+          {/* Track Progress / Trim Bar */}
           {!synthActive && fileName && duration > 0 && (
             <div className={styles.progressContainer}>
-              <div className={styles.progressBar} onClick={handleProgressBarClick}>
+              <span className={styles.statesLabel}>
+                TRACK TIMELINE // CLIP DURATION: {formatTime(trimEnd - trimStart)}
+              </span>
+              <div 
+                ref={progressBarRef}
+                className={`${styles.progressBar} ${styles.progressBarTrimmed}`} 
+                onClick={handleProgressBarClick}
+              >
+                {/* Selected trim range backdrop */}
                 <div 
-                  className={styles.progressFill} 
-                  style={{ width: `${(currentTime / duration) * 100}%` }}
+                  className={styles.trimRangeFill} 
+                  style={{ 
+                    left: `${(trimStart / duration) * 100}%`, 
+                    width: `${((trimEnd - trimStart) / duration) * 100}%` 
+                  }} 
                 />
+                
+                {/* Playhead */}
+                <div 
+                  className={styles.playhead} 
+                  style={{ left: `${(currentTime / duration) * 100}%` }} 
+                />
+
+                {/* Start bracket */}
+                <div 
+                  className={styles.bracketLeft} 
+                  onMouseDown={(e) => handleDragBracket('start', e)} 
+                  onTouchStart={(e) => handleTouchBracket('start', e)} 
+                  style={{ left: `${(trimStart / duration) * 100}%` }}
+                >
+                  [
+                </div>
+
+                {/* End bracket */}
+                <div 
+                  className={styles.bracketRight} 
+                  onMouseDown={(e) => handleDragBracket('end', e)} 
+                  onTouchStart={(e) => handleTouchBracket('end', e)} 
+                  style={{ left: `${(trimEnd / duration) * 100}%` }}
+                >
+                  ]
+                </div>
               </div>
               <div className={styles.timeRow}>
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
+                <span>START: {formatTime(trimStart)}</span>
+                <span style={{ color: 'var(--orange)', fontWeight: 'bold' }}>PLAYHEAD: {formatTime(currentTime)}</span>
+                <span>END: {formatTime(trimEnd)}</span>
               </div>
             </div>
           )}
@@ -1155,16 +1332,31 @@ export default function VisualCreatorPage() {
               className={styles.slider}
             />
           </div>
+          <div className={styles.controlRow}>
+            <div className={styles.controlLabelRow}>
+              <span className={styles.controlName}>AUTO-CYCLE SPEED (TIEMPO DE CICLO)</span>
+              <span className={styles.controlValue}>{(autoCycleDuration / 24).toFixed(1)}s/shape</span>
+            </div>
+            <input
+              type="range"
+              min="24"
+              max="240"
+              step="12"
+              value={autoCycleDuration}
+              onChange={(e) => setAutoCycleDuration(parseInt(e.target.value))}
+              className={styles.slider}
+            />
+          </div>
 
           <div className={styles.controlRow}>
             <div className={styles.controlLabelRow}>
-              <span className={styles.controlName}>PARTICLE GLOWSIZE</span>
+              <span className={styles.controlName}>PARTICLE SIZE (TAMAÑO)</span>
               <span className={styles.controlValue}>{particleSizeMultiplier.toFixed(1)}x</span>
             </div>
             <input
               type="range"
               min="0.4"
-              max="2.5"
+              max="3.5"
               step="0.1"
               value={particleSizeMultiplier}
               onChange={(e) => setParticleSizeMultiplier(parseFloat(e.target.value))}
@@ -1182,26 +1374,7 @@ export default function VisualCreatorPage() {
 
           {/* Title Text & Positioning */}
           <div className={styles.studioContainer} style={{ borderTop: '1px dashed rgba(255, 255, 255, 0.1)', paddingTop: '20px', marginTop: '15px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className={styles.statesLabel}>TITLE & LOGO OVERLAYS</span>
-              <button
-                className={styles.synthButton}
-                onClick={() => {
-                  const hide = showLogo || showTitleText;
-                  setShowLogo(!hide);
-                  setShowTitleText(!hide);
-                }}
-                style={{
-                  fontSize: '8px',
-                  padding: '3px 8px',
-                  margin: 0,
-                  borderColor: (!showLogo && !showTitleText) ? 'var(--orange)' : 'rgba(255,255,255,0.2)',
-                  color: (!showLogo && !showTitleText) ? 'var(--orange)' : 'var(--white)',
-                }}
-              >
-                {(!showLogo && !showTitleText) ? '✓ CLEAN EXPORT ACTIVE' : '⚡ CLEAN EXPORT (HIDE ALL)'}
-              </button>
-            </div>
+            <span className={styles.statesLabel}>TITLE & LOGO OVERLAYS</span>
 
             <div 
               className={styles.toggleContainer} 
@@ -1219,6 +1392,36 @@ export default function VisualCreatorPage() {
             >
               <span className={styles.toggleLabel}>SHOW TITLE / TRACK TEXT</span>
               <div className={`${styles.toggleSwitch} ${showTitleText ? styles.toggleSwitchActive : ''}`} />
+            </div>
+
+            {/* Custom Logo Upload */}
+            <div className={styles.studioContainer} style={{ borderTop: '1px dashed rgba(255, 255, 255, 0.1)', paddingTop: '12px', marginTop: '10px', marginBottom: '12px' }}>
+              <span className={styles.statesLabel}>WHITE-LABEL CUSTOM LOGO (PNG/SVG)</span>
+              <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+                <button 
+                  className={styles.synthButton} 
+                  onClick={() => logoFileInputRef.current?.click()}
+                  style={{ flex: 1, margin: 0 }}
+                >
+                  {customLogo ? 'LOGO LOADED ✓' : 'LOAD CUSTOM LOGO'}
+                </button>
+                {customLogo && (
+                  <button 
+                    className={styles.synthButton} 
+                    onClick={handleClearLogo}
+                    style={{ borderColor: '#ff3333', color: '#ff3333', margin: 0 }}
+                  >
+                    RESET
+                  </button>
+                )}
+              </div>
+              <input
+                ref={logoFileInputRef}
+                type="file"
+                accept="image/png, image/svg+xml, image/jpeg"
+                onChange={handleLogoUpload}
+                style={{ display: 'none' }}
+              />
             </div>
             
             <div className={styles.controlRow}>
@@ -1435,6 +1638,36 @@ export default function VisualCreatorPage() {
               />
             </div>
 
+            {/* Custom Logo Upload in Setup */}
+            <div className={styles.studioContainer} style={{ marginTop: '10px' }}>
+              <span className={styles.statesLabel}>WHITE-LABEL CUSTOM LOGO (OPTIONAL)</span>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button 
+                  className={styles.synthButton} 
+                  onClick={() => logoSetupInputRef.current?.click()}
+                  style={{ flex: 1, margin: 0 }}
+                >
+                  {customLogo ? 'LOGO LOADED ✓' : 'LOAD CUSTOM LOGO'}
+                </button>
+                {customLogo && (
+                  <button 
+                    className={styles.synthButton} 
+                    onClick={handleClearLogo}
+                    style={{ borderColor: '#ff3333', color: '#ff3333', margin: 0 }}
+                  >
+                    CLEAR
+                  </button>
+                )}
+              </div>
+              <input
+                ref={logoSetupInputRef}
+                type="file"
+                accept="image/png, image/svg+xml, image/jpeg"
+                onChange={handleLogoUpload}
+                style={{ display: 'none' }}
+              />
+            </div>
+
             <button
               className={styles.recordBtn}
               style={{ borderColor: 'var(--orange)', color: 'var(--orange)', marginTop: '25px', width: '100%' }}
@@ -1527,6 +1760,8 @@ export default function VisualCreatorPage() {
                 lockedState={lockedState}
                 colorPalette={colorPalette}
                 cameraEffects={cameraEffects}
+                customLogo={customLogo}
+                autoCycleDuration={autoCycleDuration}
               />
             </div>
 

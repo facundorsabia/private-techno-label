@@ -17,48 +17,48 @@ interface Connection {
 }
 
 interface PaletteColors {
-  accentRGB: string;
-  mouseRGB: string;
+  accentRGB: [number, number, number];
+  mouseRGB: [number, number, number];
   mouseHex: string;
-  baseRGB: string;
+  baseRGB: [number, number, number];
 }
 
 const PALETTES: Record<string, PaletteColors> = {
   orange: {
-    accentRGB: '232, 85, 15',
-    mouseRGB: '183, 72, 41',
+    accentRGB: [232, 85, 15],
+    mouseRGB: [183, 72, 41],
     mouseHex: '#b74829',
-    baseRGB: '255, 255, 255',
+    baseRGB: [255, 255, 255],
   },
   acid: {
-    accentRGB: '57, 255, 20',
-    mouseRGB: '39, 219, 12',
+    accentRGB: [57, 255, 20],
+    mouseRGB: [39, 219, 12],
     mouseHex: '#27db0c',
-    baseRGB: '255, 255, 255',
+    baseRGB: [255, 255, 255],
   },
   cyan: {
-    accentRGB: '0, 240, 255',
-    mouseRGB: '0, 180, 220',
+    accentRGB: [0, 240, 255],
+    mouseRGB: [0, 180, 220],
     mouseHex: '#00b4dc',
-    baseRGB: '255, 255, 255',
+    baseRGB: [255, 255, 255],
   },
   crimson: {
-    accentRGB: '255, 10, 40',
-    mouseRGB: '200, 5, 30',
+    accentRGB: [255, 10, 40],
+    mouseRGB: [200, 5, 30],
     mouseHex: '#c8051e',
-    baseRGB: '255, 255, 255',
+    baseRGB: [255, 255, 255],
   },
   amber: {
-    accentRGB: '255, 176, 0',
-    mouseRGB: '215, 140, 0',
+    accentRGB: [255, 176, 0],
+    mouseRGB: [215, 140, 0],
     mouseHex: '#d78c00',
-    baseRGB: '255, 255, 255',
+    baseRGB: [255, 255, 255],
   },
   monochrome: {
-    accentRGB: '255, 255, 255',
-    mouseRGB: '180, 180, 180',
+    accentRGB: [255, 255, 255],
+    mouseRGB: [180, 180, 180],
     mouseHex: '#b4b4b4',
-    baseRGB: '100, 100, 100',
+    baseRGB: [100, 100, 100],
   }
 };
 
@@ -85,6 +85,8 @@ interface AudioReactiveSphereProps {
   reactionMode?: 'pulse' | 'deform' | 'orbit' | 'explode';
   lockedState?: number | null;
   cameraEffects?: boolean;
+  customLogo?: string | null;
+  autoCycleDuration?: number;
 }
 
 export default function AudioReactiveSphere({
@@ -110,6 +112,8 @@ export default function AudioReactiveSphere({
   reactionMode = 'deform',
   lockedState = null,
   cameraEffects = true,
+  customLogo = null,
+  autoCycleDuration = 120,
 }: AudioReactiveSphereProps) {
   const internalCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasRef = externalCanvasRef || internalCanvasRef;
@@ -125,14 +129,14 @@ export default function AudioReactiveSphere({
   const logoImageRef = useRef<HTMLImageElement | null>(null);
   const bgImageRef = useRef<HTMLImageElement | null>(null);
 
-  // Pre-load static brand logo
+  // Pre-load static brand logo or uploaded custom logo
   useEffect(() => {
     const img = new Image();
-    img.src = '/images/logos/private-rebranding-logo-no-bg.png';
+    img.src = customLogo || '/images/logos/private-rebranding-logo-no-bg.png';
     img.onload = () => {
       logoImageRef.current = img;
     };
-  }, []);
+  }, [customLogo]);
 
   // Pre-load uploaded custom background image
   useEffect(() => {
@@ -174,6 +178,7 @@ export default function AudioReactiveSphere({
     showHudGrid,
     colorPalette,
     cameraEffects,
+    customLogo,
   });
 
   useEffect(() => {
@@ -198,6 +203,7 @@ export default function AudioReactiveSphere({
       showHudGrid,
       colorPalette,
       cameraEffects,
+      customLogo,
     };
   }, [
     sensitivity,
@@ -220,6 +226,7 @@ export default function AudioReactiveSphere({
     showHudGrid,
     colorPalette,
     cameraEffects,
+    customLogo,
   ]);
 
   useEffect(() => {
@@ -316,6 +323,11 @@ export default function AudioReactiveSphere({
     let angleX = 0;
     let animFrameId = 0;
 
+    // Smooth color palette transition tracking variables
+    let curAccentRGB: [number, number, number] = [232, 85, 15];
+    let curMouseRGB: [number, number, number] = [183, 72, 41];
+    let curBaseRGB: [number, number, number] = [255, 255, 255];
+
     // Smooth manual transition tracking variables
     let lastTargetState: number | null = null;
     let manualFromState = 0;
@@ -385,7 +397,10 @@ export default function AudioReactiveSphere({
       time: number,
       timeDataCached: any,
       sensitivityVal: number,
-      effMidVal: number
+      effMidVal: number,
+      effTrebleVal: number = 0,
+      effBassVal: number = 0,
+      freqData: any = null
     ) => {
       let x = 0;
       let y = 0;
@@ -404,40 +419,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 1: // Renahedron 1: Pointed Triangular Dome
-          {
-            const u = theta / Math.PI;
-            const v = phi / (2 * Math.PI);
-            const face = i % 4;
-            const p1x = 0, p1y = -0.95, p1z = 0;
-            let p2x, p2y = 0.65, p2z;
-            let p3x, p3y = 0.65, p3z;
-            
-            if (face === 0) {
-              p2x = 0.95; p2z = 0;
-              p3x = -0.475; p3z = 0.8227;
-            } else if (face === 1) {
-              p2x = -0.475; p2z = 0.8227;
-              p3x = -0.475; p3z = -0.8227;
-            } else if (face === 2) {
-              p2x = -0.475; p2z = -0.8227;
-              p3x = 0.95; p3z = 0;
-            } else {
-              p2x = 0.95; p2z = 0;
-              p3x = -0.475; p3z = 0.8227;
-              x = (1 - u) * (-0.475) + u * ((1 - v) * p2x + v * p3x);
-              y = 0.65;
-              z = (1 - u) * (-0.8227) + u * ((1 - v) * p2z + v * p3z);
-              break;
-            }
-            
-            x = (1 - u) * p1x + u * ((1 - v) * p2x + v * p3x);
-            y = (1 - u) * p1y + u * ((1 - v) * p2y + v * p3y);
-            z = (1 - u) * p1z + u * ((1 - v) * p2z + v * p3z);
-          }
-          break;
-
-        case 2: // Merkaba (Star Tetrahedron)
+        case 1: // Merkaba (Star Tetrahedron)
           {
             const u = theta / Math.PI;
             const edgeIndex = i % 12;
@@ -486,34 +468,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 3: // Renahedron 2: Y-Star Prism
-          {
-            const u = theta / Math.PI;
-            const v = phi / (2 * Math.PI);
-            const face = i % 6;
-            const p1x = 0;
-            const p1y = face < 3 ? 0.85 : -0.9;
-            const p1z = 0;
-            const fIdx = face < 3 ? face : face - 3;
-            const nextIdx = face < 3 ? (face + 1) % 3 : (face - 2) % 3;
-            let p2x, p2y = 0.25, p2z;
-            let p3x, p3y = 0.25, p3z;
-            
-            if (fIdx === 0) { p2x = 1.05; p2z = 0; }
-            else if (fIdx === 1) { p2x = -0.525; p2z = 0.9093; }
-            else { p2x = -0.525; p2z = -0.9093; }
-            
-            if (nextIdx === 0) { p3x = 1.05; p3z = 0; }
-            else if (nextIdx === 1) { p3x = -0.525; p3z = 0.9093; }
-            else { p3x = -0.525; p3z = -0.9093; }
-
-            x = (1 - u) * p1x + u * ((1 - v) * p2x + v * p3x);
-            y = (1 - u) * p1y + u * ((1 - v) * p2y + v * p3y);
-            z = (1 - u) * p1z + u * ((1 - v) * p2z + v * p3z);
-          }
-          break;
-
-        case 4: // Metatron's Cube
+        case 2: // Metatron's Cube
           {
             const nodeIndex = i % 13;
             let cx = 0, cy = 0, cz = 0;
@@ -534,7 +489,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 5: // 3D Maze Orthogonal Grid
+        case 3: // 3D Maze Orthogonal Grid
           {
             const corridor = i % 3;
             const gridVal1 = (((Math.floor(i / 3) % 4) - 1.5) * 0.52);
@@ -551,38 +506,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 6: // Renahedron 3: Indented Star Pyramid
-          {
-            const u = theta / Math.PI;
-            const v = phi / (2 * Math.PI);
-            const face = i % 6;
-            const p1x = 0;
-            const p1y = face < 3 ? 0.95 : -0.95;
-            const p1z = 0;
-            const fIdx = face < 3 ? face : face - 3;
-            const nextIdx = face < 3 ? (face + 1) % 3 : (face - 2) % 3;
-            let p2x, p2z;
-            let p3x, p3z;
-            
-            if (fIdx === 0) { p2x = 1.0; p2z = 0; }
-            else if (fIdx === 1) { p2x = -0.5; p2z = 0.866; }
-            else { p2x = -0.5; p2z = -0.866; }
-            
-            if (nextIdx === 0) { p3x = 1.0; p3z = 0; }
-            else if (nextIdx === 1) { p3x = -0.5; p3z = 0.866; }
-            else { p3x = -0.5; p3z = -0.866; }
-
-            const tx = (1 - u) * p1x + u * ((1 - v) * p2x + v * p3x);
-            const tz = (1 - u) * p1z + u * ((1 - v) * p2z + v * p3z);
-            const indent = 1 - 0.28 * Math.sin(u * Math.PI) * Math.sin(v * Math.PI);
-            
-            x = tx * indent;
-            y = ((1 - u) * p1y) * indent;
-            z = tz * indent;
-          }
-          break;
-
-        case 7: // Sri Yantra (9 Interlocking Triangles)
+        case 4: // Sri Yantra (9 Interlocking Triangles)
           {
             const edgeIndex = i % 27;
             const tIndex = Math.floor(edgeIndex / 3);
@@ -618,7 +542,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 8: // Spiral Star Vortex
+        case 5: // Spiral Star Vortex
           {
             const layer = i % 10;
             const edge = Math.floor(i / 10) % 12;
@@ -651,7 +575,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 9: // Renahedron 4: Stellated Octahedron
+        case 6: // Renahedron 4: Stellated Octahedron
           {
             const u = theta / Math.PI;
             const v = phi / (2 * Math.PI);
@@ -681,7 +605,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 10: // Escher's Cube Compound
+        case 7: // Escher's Cube Compound
           {
             const group = i % 14;
             const u1 = cosTheta;
@@ -731,52 +655,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 11: // Renahedron 5: Spiked Mine / 20-Point Star
-          {
-            const u = theta / Math.PI;
-            const spikeIndex = i % 20;
-            let vx = 1, vy = 1, vz = 1;
-            const phiG = 1.61803398875;
-            const invPhi = 0.61803398875;
-            
-            if (spikeIndex === 0) { vx = 1; vy = 1; vz = 1; }
-            else if (spikeIndex === 1) { vx = -1; vy = 1; vz = 1; }
-            else if (spikeIndex === 2) { vx = 1; vy = -1; vz = 1; }
-            else if (spikeIndex === 3) { vx = -1; vy = -1; vz = 1; }
-            else if (spikeIndex === 4) { vx = 1; vy = 1; vz = -1; }
-            else if (spikeIndex === 5) { vx = -1; vy = 1; vz = -1; }
-            else if (spikeIndex === 6) { vx = 1; vy = -1; vz = -1; }
-            else if (spikeIndex === 7) { vx = -1; vy = -1; vz = -1; }
-            else if (spikeIndex === 8) { vx = 0; vy = invPhi; vz = phiG; }
-            else if (spikeIndex === 9) { vx = 0; vy = -invPhi; vz = phiG; }
-            else if (spikeIndex === 10) { vx = 0; vy = invPhi; vz = -phiG; }
-            else if (spikeIndex === 11) { vx = 0; vy = -invPhi; vz = -phiG; }
-            else if (spikeIndex === 12) { vx = invPhi; vy = phiG; vz = 0; }
-            else if (spikeIndex === 13) { vx = -invPhi; vy = phiG; vz = 0; }
-            else if (spikeIndex === 14) { vx = invPhi; vy = -phiG; vz = 0; }
-            else if (spikeIndex === 15) { vx = -invPhi; vy = -phiG; vz = 0; }
-            else if (spikeIndex === 16) { vx = phiG; vy = 0; vz = invPhi; }
-            else if (spikeIndex === 17) { vx = -phiG; vy = 0; vz = invPhi; }
-            else if (spikeIndex === 18) { vx = phiG; vy = 0; vz = -invPhi; }
-            else { vx = -phiG; vy = 0; vz = -invPhi; }
-
-            const len = Math.sqrt(vx * vx + vy * vy + vz * vz);
-            const nx = vx / len;
-            const ny = vy / len;
-            const nz = vz / len;
-            const rayPos = 0.22 + u * 0.72;
-            const rx = nx * rayPos;
-            const ry = ny * rayPos;
-            const rz = nz * rayPos;
-            const thickness = (0.94 - rayPos) * 0.28;
-            
-            x = rx + thickness * Math.cos(phi);
-            y = ry + thickness * Math.sin(phi);
-            z = rz + thickness * Math.cos(phi + Math.PI / 2);
-          }
-          break;
-
-        case 12: // 64-Star Tetrahedron Cluster
+        case 8: // 64-Star Tetrahedron Cluster
           {
             const clusterIndex = i % 8;
             const cx = ((clusterIndex % 2) * 2 - 1) * 0.42;
@@ -829,45 +708,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 13: // Renahedron 6: Compound Cluster
-          {
-            const group = i % 14;
-            const u = theta / Math.PI;
-            
-            if (group < 6) {
-              let px = 0, py = 0, pz = 0;
-              const dist = 0.95;
-              if (group === 0) px = dist;
-              else if (group === 1) px = -dist;
-              else if (group === 2) py = dist;
-              else if (group === 3) py = -dist;
-              else if (group === 4) pz = dist;
-              else pz = -dist;
-              
-              x = px * u;
-              y = py * u;
-              z = pz * u;
-              
-              const thickness = (1 - u) * 0.3;
-              x += thickness * Math.cos(phi);
-              y += thickness * Math.sin(phi);
-            } else {
-              const pIndex = group - 6;
-              const sx = (pIndex % 2) * 2 - 1;
-              const sy = (Math.floor(pIndex / 2) % 2) * 2 - 1;
-              const sz = (Math.floor(pIndex / 4) % 2) * 2 - 1;
-              const cx = sx * 0.45;
-              const cy = sy * 0.45;
-              const cz = sz * 0.45;
-
-              x = cx + sinTheta * Math.cos(phi) * 0.16;
-              y = cy + sinTheta * Math.sin(phi) * 0.16;
-              z = cz + cosTheta * 0.16;
-            }
-          }
-          break;
-
-        case 14: // Hexaedro (3D Cube)
+        case 9: // Hexaedro (3D Cube)
           {
             const u1 = cosTheta;
             const u2 = phi / Math.PI - 1;
@@ -890,7 +731,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 15: // Horizontal Synthesizer Oscilloscope Wave
+        case 10: // Horizontal Synthesizer Oscilloscope Wave
           {
             const normX = (phi / Math.PI - 1) * 1.15;
             x = normX;
@@ -910,53 +751,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 16: // Wide Concentric Radar Ripple Disk
-          {
-            const diskR = sinTheta * 1.1;
-            x = diskR * Math.cos(phi);
-            z = diskR * Math.sin(phi);
-            
-            let audioRipple = 0;
-            if (timeDataCached) {
-              audioRipple = 0.18 * Math.sin(diskR * 12 - time * 6.5) * (1.0 + effMidVal * 2.8);
-            } else {
-              audioRipple = 0.18 * Math.sin(diskR * 12 - time * 6.5);
-            }
-            y = audioRipple;
-          }
-          break;
-
-        case 17: // Digital Warp Tunnel
-          {
-            const baseZ = (theta / Math.PI) * 2 - 1;
-            let zDepth = baseZ - (time * 0.4) % 2.0;
-            if (zDepth < -1) zDepth += 2.0;
-            
-            x = 0.7 * Math.cos(phi);
-            z = 0.7 * Math.sin(phi);
-            y = zDepth;
-          }
-          break;
-
-        case 18: // Seed of Life Mandala
-          {
-            const circleIndex = i % 7;
-            const rCircle = 0.5;
-            let cx = 0, cy = 0;
-            
-            if (circleIndex < 6) {
-              const angle = (circleIndex * Math.PI) / 3;
-              cx = Math.cos(angle) * 0.45;
-              cy = Math.sin(angle) * 0.45;
-            }
-            
-            x = cx + rCircle * Math.cos(phi);
-            y = cy + rCircle * Math.sin(phi);
-            z = cosTheta * 0.05;
-          }
-          break;
-
-        case 19: // Flower of Life
+        case 11: // Flower of Life
           {
             const circleIndex = i % 19;
             const rCircle = 0.45;
@@ -982,7 +777,7 @@ export default function AudioReactiveSphere({
           }
           break;
 
-        case 20: // Double Helix DNA
+        case 12: // Double Helix DNA
           {
             const u = theta / Math.PI;
             const yPos = (u * 2 - 1) * 0.95;
@@ -1002,6 +797,272 @@ export default function AudioReactiveSphere({
               x = Math.cos(angle) * r;
               z = Math.sin(angle) * r;
               y = yPos;
+            }
+          }
+          break;
+
+        case 13: // Bioluminescent Jellyfish (Medusa)
+          {
+            const bellRatio = 0.48; // 48% of particles for the umbrella bell
+            const splitIndex = Math.floor(numParticles * bellRatio);
+            
+            // Swim pulse rate
+            const swimCycle = time * 3.5;
+            // Pulsation contraction/expansion reactive to bass
+            const contraction = 1.0 + Math.sin(swimCycle) * 0.18 * (1.0 + effBassVal * 0.45);
+
+            if (i < splitIndex) {
+              // 1. Jellyfish Bell (wide hollow mushroom dome)
+              const v = (theta / Math.PI) * (Math.PI * 0.58);
+              const u = phi;
+              
+              const rBell = 0.65 * contraction;
+              x = rBell * Math.sin(v) * Math.cos(u) * 1.15;
+              z = rBell * Math.sin(v) * Math.sin(u) * 1.15;
+              
+              const rimCurve = Math.sin(v * 2.0) * 0.08;
+              y = rBell * Math.cos(v) * 0.45 + rimCurve + 0.35; // Positioned high
+            } else {
+              // 2. Trailing Tentacles (fine curtain of vertical threads)
+              const threadIdx = i % 48; // 48 fine threads
+              const baseAngle = (threadIdx / 48) * Math.PI * 2;
+              
+              // Position along the length of the thread (0 at top, 1 at bottom tip)
+              const t = ((i - splitIndex) / (numParticles - splitIndex));
+              
+              // Threads start at the bell rim radius and hang down
+              const rBase = 0.28 + 0.12 * Math.sin(threadIdx * 4.3);
+              
+              // Wave propagation moving downwards
+              const wavePhase = t * 9.0 - swimCycle * 1.5;
+              const waveAmp = (0.04 + effMidVal * 0.08) * (t + 0.12);
+              
+              x = rBase * Math.cos(baseAngle) + Math.sin(wavePhase) * waveAmp;
+              z = rBase * Math.sin(baseAngle) + Math.cos(wavePhase) * waveAmp;
+              
+              // Vertical position dangling down
+              y = 0.25 - t * 1.38 + Math.sin(wavePhase) * 0.03;
+            }
+            
+            // Orient head up, tentacles down on screen
+            y = -y;
+          }
+          break;
+
+        case 14: // Möbius Strip
+          {
+            const u = phi; // 0 to 2*PI
+            const v = (theta / Math.PI) * 0.85 - 0.425; // -0.425 to 0.425
+            
+            const r = 0.85 + v * Math.cos(u * 0.5);
+            x = r * Math.cos(u);
+            z = r * Math.sin(u);
+            y = v * Math.sin(u * 0.5);
+          }
+          break;
+
+        case 15: // Torus Knot (3, 8)
+          {
+            const u = phi + (theta / Math.PI) * 0.05;
+            const p = 3;
+            const q = 8;
+            
+            const r = 0.75 + 0.28 * Math.cos(q * u);
+            x = r * Math.cos(p * u);
+            z = r * Math.sin(p * u);
+            y = 0.28 * Math.sin(q * u);
+          }
+          break;
+
+        case 16: // Black Hole Singularity
+          {
+            // Accretion disk radius from 0.08 to 1.35
+            const r = 0.08 + (theta / Math.PI) * 1.27;
+            const twistAngle = phi + r * 3.5 - time * 1.5;
+            
+            x = r * Math.cos(twistAngle);
+            z = r * Math.sin(twistAngle);
+            // Funnel plunges deep near the center
+            y = -0.065 / (r + 0.035);
+          }
+          break;
+
+        case 17: // 3D Spectrum Ring (Equalizercolumns arranged in circle)
+          {
+            const numCols = 32;
+            const colIdx = i % numCols;
+            const rowIdx = Math.floor(i / numCols);
+            const totalRows = Math.floor(numParticles / numCols) || 1;
+            
+            const angle = (colIdx / numCols) * 2 * Math.PI;
+            const r = 0.85;
+            
+            // Read frequency value for this column
+            let binValue = 0.3;
+            if (freqData && freqData.length > 0) {
+              const freqIdx = Math.floor((colIdx / numCols) * (freqData.length * 0.5));
+              binValue = freqData[freqIdx] / 255;
+            } else {
+              binValue = 0.3 + 0.3 * Math.sin(colIdx * 0.4 + time * 4.0);
+            }
+            
+            const heightScale = binValue * sensitivityVal * 1.6;
+            const baseHeight = (rowIdx / totalRows) * 0.8 - 0.4;
+            
+            y = baseHeight * heightScale;
+            x = r * Math.cos(angle);
+            z = r * Math.sin(angle);
+            
+            // Add slight bar thickness/depth
+            const thickness = 0.045 * Math.sin(phi);
+            x += thickness * Math.cos(angle);
+            z += thickness * Math.sin(angle);
+          }
+          break;
+
+        case 18: // Turbulent Nebula (Organic noise cloud)
+          {
+            // Dense center sphere base
+            const rSphere = 0.38;
+            const bx = rSphere * sinTheta * Math.cos(phi);
+            const by = rSphere * sinTheta * Math.sin(phi);
+            const bz = rSphere * cosTheta;
+            
+            // Pseudo Perlin-noise 3D orbit offsets
+            const noiseX = Math.sin(phi * 4.0 + time * 2.2) * Math.cos(theta * 3.0);
+            const noiseY = Math.cos(phi * 3.0 - time * 2.0) * Math.sin(theta * 4.0);
+            const noiseZ = Math.sin(phi * 5.0 + time * 2.5) * Math.cos(theta * 5.0);
+            
+            // Disperse particles based on treble + mid energy spikes
+            const noiseScale = 0.15 + (effMidVal * 0.5 + effTrebleVal * 0.7) * sensitivityVal;
+            
+            x = bx + noiseX * noiseScale;
+            y = by + noiseY * noiseScale;
+            z = bz + noiseZ * noiseScale;
+          }
+          break;
+
+        case 19: // Alien Kraken (Hypnotic Octopus)
+          {
+            const numTentacles = 8;
+            const headRatio = 0.28; // 28% of particles for the head
+            const splitIndex = Math.floor(numParticles * headRatio);
+
+            if (i < splitIndex) {
+              // Mantle/Head of the octopus (glowing ellipsoid dome)
+              const headRadius = 0.52 + effBassVal * 0.08;
+              
+              // Map theta to [0, PI/2] so it only goes upwards
+              const halfTheta = (theta / Math.PI) * (Math.PI * 0.5);
+              
+              x = headRadius * Math.sin(halfTheta) * Math.cos(phi) * 0.72;
+              y = headRadius * Math.cos(halfTheta) * 0.88 + 0.32; // Shift upwards
+              z = headRadius * Math.sin(halfTheta) * Math.sin(phi) * 0.72;
+            } else {
+              // Tentacles (8 helical wavy arms going downwards and flaring out)
+              const tentacleIdx = i % numTentacles;
+              const baseAngle = (tentacleIdx / numTentacles) * Math.PI * 2;
+              
+              // Normalize coordinate along the length of the tentacle (0 = top, 1 = bottom)
+              const t = (i - splitIndex) / (numParticles - splitIndex);
+              
+              // Radial expansion (wider at the bottom, reactive to bass)
+              const flare = 0.25 + 0.95 * t * (1.0 + effBassVal * 0.35);
+              
+              // Helical twisting angle + sine wave wiggling to mids/time
+              const wiggleSpeed = time * 3.5;
+              const wiggleAmp = 0.08 + effMidVal * 0.12;
+              const angle = baseAngle + t * 3.8 + Math.sin(t * 7.5 - wiggleSpeed) * wiggleAmp;
+              
+              x = flare * Math.cos(angle);
+              z = flare * Math.sin(angle);
+              
+              // Vertical coordinate (starting from the base of the head at +0.32 and curving down to -1.0)
+              y = 0.32 - t * 1.35 + Math.cos(t * 8.5 - wiggleSpeed) * 0.05;
+            }
+            
+            // Orient head up, tentacles down on screen
+            y = -y;
+          }
+          break;
+
+        case 20: // Lorenz Chaotic Attractor (Chaotic butterfly wings)
+          {
+            // Parametric double-wing butterfly attractor mapping
+            const rButterfly = Math.exp(Math.cos(phi)) - 2.0 * Math.cos(4.0 * phi) + Math.pow(Math.sin(phi / 12.0), 5.0);
+            const scale = 0.28 + effMidVal * 0.12;
+            const uAngle = (theta / Math.PI) * 2.0 - 1.0;
+            
+            x = rButterfly * Math.sin(uAngle * Math.PI) * Math.cos(phi) * scale;
+            z = rButterfly * Math.sin(uAngle * Math.PI) * Math.sin(phi) * scale;
+            y = rButterfly * Math.cos(uAngle * Math.PI) * scale;
+            
+            // Add high frequency electrical micro-shiver
+            if (effTrebleVal > 0.05) {
+              const shiver = Math.sin(time * 30.0 + i) * effTrebleVal * 0.08;
+              x += shiver;
+              y += shiver;
+              z += shiver;
+            }
+          }
+          break;
+
+        case 21: // Hyperboloid Tower (Nuclear cooling tower geometry)
+          {
+            const uDepth = (theta / Math.PI) * 2.0 - 1.0; // -1.0 to 1.0
+            const scale = 0.85;
+            
+            // Hyperboloid of one sheet: radius curves outward at the ends
+            const rHyper = 0.45 * Math.sqrt(1.0 + uDepth * uDepth);
+            
+            // Pulse the middle waist of the hyperboloid to the bass
+            const reactiveRadius = rHyper * (1.0 + effBassVal * 0.12 * (1.0 - Math.abs(uDepth)));
+            
+            x = reactiveRadius * Math.cos(phi);
+            z = reactiveRadius * Math.sin(phi);
+            y = uDepth * scale;
+          }
+          break;
+
+        case 22: // Helical Tunnel (Spiraling depth warp)
+          {
+            const uDepth = (theta / Math.PI) * 2.0 - 1.0; // -1.0 to 1.0
+            const twist = uDepth * Math.PI * 5.0 + time * 2.8;
+            const rTunnel = 0.72 + (effMidVal * 0.08 * Math.sin(phi * 4.0));
+            
+            x = rTunnel * Math.cos(phi + twist);
+            z = rTunnel * Math.sin(phi + twist);
+            y = uDepth * 0.95;
+          }
+          break;
+
+        case 23: // Super-Ellipsoid (Rounded morphing cube)
+          {
+            // Morphs from a perfect sphere to a sharp cube depending on exponent n
+            // Base n = 1 (sphere). n = 0.1 (sharp cube).
+            const nExp = 0.28 + (1.0 - Math.min(0.9, effBassVal * 1.5)) * 1.6;
+            
+            const cosPhi = Math.cos(phi);
+            const sinPhi = Math.sin(phi);
+            const cosTheta = Math.cos(theta);
+            const sinTheta = Math.sin(theta);
+            
+            const rScale = 0.76;
+            
+            const signX = Math.sign(cosTheta) * Math.sign(cosPhi);
+            const signY = Math.sign(sinTheta);
+            const signZ = Math.sign(cosTheta) * Math.sign(sinPhi);
+            
+            x = signX * Math.pow(Math.abs(cosTheta), nExp) * Math.pow(Math.abs(cosPhi), nExp) * rScale;
+            z = signZ * Math.pow(Math.abs(cosTheta), nExp) * Math.pow(Math.abs(sinPhi), nExp) * rScale;
+            y = signY * Math.pow(Math.abs(sinTheta), nExp) * rScale;
+            
+            // Add treble reactive outer spike fuzz
+            if (effTrebleVal > 0.05) {
+              const noise = (Math.random() - 0.5) * effTrebleVal * 0.09;
+              x += noise;
+              y += noise;
+              z += noise;
             }
           }
           break;
@@ -1036,7 +1097,24 @@ export default function AudioReactiveSphere({
         cameraEffects = true,
       } = propsRef.current;
 
-      const palette = PALETTES[colorPalette] || PALETTES.orange;
+      const targetPalette = PALETTES[colorPalette] || PALETTES.orange;
+      const colorLerpFactor = 0.06;
+
+      curAccentRGB[0] += (targetPalette.accentRGB[0] - curAccentRGB[0]) * colorLerpFactor;
+      curAccentRGB[1] += (targetPalette.accentRGB[1] - curAccentRGB[1]) * colorLerpFactor;
+      curAccentRGB[2] += (targetPalette.accentRGB[2] - curAccentRGB[2]) * colorLerpFactor;
+
+      curMouseRGB[0] += (targetPalette.mouseRGB[0] - curMouseRGB[0]) * colorLerpFactor;
+      curMouseRGB[1] += (targetPalette.mouseRGB[1] - curMouseRGB[1]) * colorLerpFactor;
+      curMouseRGB[2] += (targetPalette.mouseRGB[2] - curMouseRGB[2]) * colorLerpFactor;
+
+      curBaseRGB[0] += (targetPalette.baseRGB[0] - curBaseRGB[0]) * colorLerpFactor;
+      curBaseRGB[1] += (targetPalette.baseRGB[1] - curBaseRGB[1]) * colorLerpFactor;
+      curBaseRGB[2] += (targetPalette.baseRGB[2] - curBaseRGB[2]) * colorLerpFactor;
+
+      const accentStr = `${Math.round(curAccentRGB[0])}, ${Math.round(curAccentRGB[1])}, ${Math.round(curAccentRGB[2])}`;
+      const mouseStr = `${Math.round(curMouseRGB[0])}, ${Math.round(curMouseRGB[1])}, ${Math.round(curMouseRGB[2])}`;
+      const baseStr = `${Math.round(curBaseRGB[0])}, ${Math.round(curBaseRGB[1])}, ${Math.round(curBaseRGB[2])}`;
 
       // ── EXTRACT AUDIO DATA ──
       let bass = 0;
@@ -1045,13 +1123,14 @@ export default function AudioReactiveSphere({
       let volume = 0;
       let hasAudio = false;
       let timeDataCached: any = null;
+      let freqData: any = null;
 
       const analyser = analyserRef.current;
       if (analyser) {
         hasAudio = true;
         
         // 1. Frequency data for size / pulsing
-        const freqData = new Uint8Array(analyser.frequencyBinCount);
+        freqData = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(freqData);
 
         const bufferLength = analyser.frequencyBinCount;
@@ -1154,16 +1233,16 @@ export default function AudioReactiveSphere({
         }
       }
 
-      // ── 120-SECOND UNIFORM MORPHING TIMELINE ──
-      const loopDuration = 126;
-      const numStates = 21;
+      // ── USER-CONFIGURABLE UNIFORM MORPHING TIMELINE ──
+      const loopDuration = Math.max(12, autoCycleDuration);
+      const numStates = 24;
       const phaseDuration = loopDuration / numStates;
       
       const cycleTime = time % loopDuration;
       const phaseIndex = Math.floor(cycleTime / phaseDuration);
       const phaseTime = cycleTime % phaseDuration;
 
-      const transitionDuration = 1.8;
+      const transitionDuration = Math.max(0.5, Math.min(3.0, phaseDuration * 0.35));
       let autoMorphWeight = Math.min(1, phaseTime / transitionDuration);
       autoMorphWeight = autoMorphWeight * autoMorphWeight * (3 - 2 * autoMorphWeight);
 
@@ -1233,8 +1312,8 @@ export default function AudioReactiveSphere({
         const p = particles[i];
 
         // 1. Calculate target coordinates (takes time-domain and mids)
-        const posPrev = getPosForState(prevState, p.theta, p.phi, i, time, timeDataCached, sensitivity, effMid);
-        const posCurr = getPosForState(currState, p.theta, p.phi, i, time, timeDataCached, sensitivity, effMid);
+        const posPrev = getPosForState(prevState, p.theta, p.phi, i, time, timeDataCached, sensitivity, effMid, effTreble, effBass, freqData);
+        const posCurr = getPosForState(currState, p.theta, p.phi, i, time, timeDataCached, sensitivity, effMid, effTreble, effBass, freqData);
 
         // 2. Morph positions
         let ux = posPrev.x + (posCurr.x - posPrev.x) * morphWeightVal;
@@ -1384,7 +1463,7 @@ export default function AudioReactiveSphere({
         
         const depthFactor = Math.max(0.04, Math.min(1, 1 - (p.z + baseR) / (baseR * 2)));
         let finalOpacity = p.opacity * depthFactor;
-        let fill = `rgba(${palette.baseRGB}, ${finalOpacity})`;
+        let fill = `rgba(${baseStr}, ${finalOpacity})`;
         let size = p.size;
 
         // Apply breathing accent effect if initialized as accent
@@ -1397,16 +1476,16 @@ export default function AudioReactiveSphere({
             // Flash brighter with treble energy
             accentColorVal = Math.min(1.0, finalOpacity + effTreble * 0.6);
           }
-          fill = `rgba(${palette.accentRGB}, ${accentColorVal})`;
+          fill = `rgba(${accentStr}, ${accentColorVal})`;
           size = Math.max(0.4, p.size * (1.1 + breath * 0.8 + (reactiveColor && hasAudio ? effTreble * 1.6 : 0)));
         }
 
         if (p.isNearMouse) {
-          fill = palette.mouseHex;
+          fill = `rgb(${mouseStr})`;
           size = p.size * 1.2;
         } else if (p.blastIntensity > 0.05) {
           const blastAlpha = Math.min(1, p.blastIntensity * 1.5 + finalOpacity);
-          fill = `rgba(${palette.accentRGB}, ${blastAlpha})`;
+          fill = `rgba(${accentStr}, ${blastAlpha})`;
           size = p.size * (1 + p.blastIntensity);
         }
 
@@ -1417,7 +1496,7 @@ export default function AudioReactiveSphere({
 
         // Glow halo
         if (p.isNearMouse || p.blastIntensity > 0.15) {
-          ctx.fillStyle = `rgba(${palette.mouseRGB}, 0.25)`;
+          ctx.fillStyle = `rgba(${mouseStr}, 0.25)`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, size * 3.5, 0, Math.PI * 2);
           ctx.fill();
