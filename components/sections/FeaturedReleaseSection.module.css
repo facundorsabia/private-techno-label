@@ -273,9 +273,10 @@
 }
 
 .badge {
-  display: inline-flex;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  width: 100%;
   font-family: var(--font-mono, monospace);
   font-size: 0.85rem;
   letter-spacing: 0.15em;
@@ -283,10 +284,28 @@
   border: 1px solid rgba(183, 72, 41, 0.6);
   padding: 0.5rem 1rem;
   text-transform: uppercase;
-  align-self: flex-start;
   background: rgba(183, 72, 41, 0.2);
   box-shadow: 0 0 15px rgba(183, 72, 41, 0.3);
   backdrop-filter: blur(5px);
+  box-sizing: border-box;
+}
+
+.badgeSeparator {
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 0.5rem;
+}
+
+.badgeDate {
+  color: var(--orange, #b74829);
+  font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  .badge {
+    font-size: 0.72rem;
+    padding: 0.4rem 0.8rem;
+    letter-spacing: 0.08em;
+  }
 }
 
 .badgeDot {
@@ -302,6 +321,46 @@
   0% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.8); }
   100% { opacity: 1; transform: scale(1); }
+}
+
+.badgeRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dateBadge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+
+.dateBadge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+}
+
+.dateBadgeLabel {
+  color: var(--orange, #b74829);
+  margin-right: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
 }
 
 .titleGroup {
@@ -330,12 +389,36 @@
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .catalog {
   font-family: var(--font-orbitron, 'Orbitron', sans-serif);
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 0.1em;
-  margin-top: 0.5rem;
+  margin: 0;
+}
+
+.metaSeparator {
+  color: var(--orange, #b74829);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.releaseDate {
+  font-family: var(--font-orbitron, 'Orbitron', sans-serif);
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .description {

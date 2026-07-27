@@ -31,7 +31,7 @@ export default function FeaturedReleaseSection() {
     description: 'A new Sumerian cycle of survival in a dystopian world.',
     bandcampId: '',
     bandcampSlug: '',
-    releaseDate: '2026',
+    releaseDate: '16.08.2026',
     color: '#b74829'
   };
   useGSAP(() => {
@@ -96,7 +96,7 @@ export default function FeaturedReleaseSection() {
 
   }, { scope: sectionRef });
 
-  const marqueeText = `/// NEXT RELEASE /// COMING SOON /// ${featuredRelease.catalog} /// ${featuredRelease.artist} - ${featuredRelease.title} `;
+  const marqueeText = `/// DECRYPT 16.08.2026 /// NEXT RELEASE /// ${featuredRelease.catalog} /// ${featuredRelease.artist} - ${featuredRelease.title} `;
 
   return (
     <section className={styles.featuredSection} id="featured-release-1" ref={sectionRef}>
@@ -166,8 +166,14 @@ export default function FeaturedReleaseSection() {
         <div className={styles.container}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%', position: 'relative', zIndex: 10 }}>
             <div className={styles.badge}>
-              <span className={styles.badgeDot} />
-              NEXT RELEASE
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span className={styles.badgeDot} />
+                <span>NEXT RELEASE</span>
+              </div>
+              <span className={styles.badgeSeparator}>//</span>
+              <span className={styles.badgeDate}>
+                DECRYPT: <BinaryScramble text={featuredRelease.releaseDate} delay={300} duration={800} />
+              </span>
             </div>
             <div className={styles.imageWrapper} ref={imageRef}>
               <Image
