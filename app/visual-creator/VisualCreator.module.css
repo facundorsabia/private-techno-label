@@ -1039,6 +1039,7 @@
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   background: transparent;
   z-index: 1;
+  cursor: none !important; /* Hide system pointer inside screen container */
 }
 
 /* Fullscreen mode matches parent hero section size */
@@ -1096,6 +1097,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  cursor: none !important; /* Hide system pointer to align with Custom Cursor */
 }
 
 /* Contained title and logos scale inside the monitor wrapper */

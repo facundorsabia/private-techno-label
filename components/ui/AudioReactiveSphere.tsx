@@ -1462,7 +1462,7 @@ export default function AudioReactiveSphere({
         
         const depthFactor = Math.max(0.04, Math.min(1, 1 - (p.z + baseR) / (baseR * 2)));
         let finalOpacity = p.opacity * depthFactor;
-        let fill = `rgba(${baseStr}, ${finalOpacity})`;
+        let fill: string | CanvasGradient = `rgba(${baseStr}, ${finalOpacity})`;
         let size = p.size;
 
         // Apply breathing accent effect if initialized as accent
@@ -1475,17 +1475,39 @@ export default function AudioReactiveSphere({
             // Flash brighter with treble energy
             accentColorVal = Math.min(1.0, finalOpacity + effTreble * 0.6);
           }
-          fill = `rgba(${accentStr}, ${accentColorVal})`;
           size = Math.max(0.5, p.size * (1.1 + breath * 0.8 + (reactiveColor && hasAudio ? effTreble * 1.8 : 0)));
+
+          // Radial Gradient for Glow Neon Core
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size);
+          grad.addColorStop(0, `rgba(255, 255, 255, ${accentColorVal})`); // Incandescent center
+          grad.addColorStop(0.3, `rgba(255, 255, 255, ${accentColorVal * 0.9})`);
+          grad.addColorStop(0.55, `rgba(${accentStr}, ${accentColorVal})`); // Saturated neon color
+          grad.addColorStop(1.0, `rgba(${accentStr}, 0)`); // Fade to transparency
+          fill = grad;
         }
 
         if (p.isNearMouse) {
-          fill = `rgb(${mouseStr})`;
-          size = p.size * 1.2;
+          size = p.size * 1.25;
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size);
+          grad.addColorStop(0, '#ffffff');
+          grad.addColorStop(0.4, `rgb(${mouseStr})`);
+          grad.addColorStop(1.0, `rgba(${mouseStr}, 0)`);
+          fill = grad;
         } else if (p.blastIntensity > 0.05) {
           const blastAlpha = Math.min(1, p.blastIntensity * 1.5 + finalOpacity);
-          fill = `rgba(${accentStr}, ${blastAlpha})`;
           size = p.size * (1 + p.blastIntensity);
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size);
+          grad.addColorStop(0, '#ffffff');
+          grad.addColorStop(0.4, `rgba(${accentStr}, ${blastAlpha})`);
+          grad.addColorStop(1.0, `rgba(${accentStr}, 0)`);
+          fill = grad;
+        } else if (!orig.isOrange && size > 1.8) {
+          // Soft incandescence for large foreground base white particles
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size);
+          grad.addColorStop(0, '#ffffff');
+          grad.addColorStop(0.35, `rgba(${baseStr}, ${finalOpacity * 0.85})`);
+          grad.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+          fill = grad;
         }
 
         ctx.fillStyle = fill;
@@ -1501,9 +1523,9 @@ export default function AudioReactiveSphere({
           ctx.fill();
         } else if (orig.isOrange) {
           // Glow effect for neon particles
-          ctx.fillStyle = `rgba(${accentStr}, 0.22)`;
+          ctx.fillStyle = `rgba(${accentStr}, 0.18)`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, size * 3.0, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, size * 2.5, 0, Math.PI * 2);
           ctx.fill();
         }
       }

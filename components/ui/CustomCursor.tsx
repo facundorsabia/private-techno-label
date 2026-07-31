@@ -113,7 +113,7 @@ export default function CustomCursor({ targetId }: { targetId?: string }) {
           pointerEvents: 'none',
           zIndex: 99999,
           opacity: isVisible ? 1 : 0,
-          transition: 'opacity 0.15s ease-out, transform 0.08s cubic-bezier(0.25, 1, 0.5, 1)',
+          transition: 'opacity 0.15s ease-out',
           willChange: 'transform',
         }}
       >
