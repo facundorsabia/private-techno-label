@@ -238,6 +238,8 @@ export default function VisualCreatorPage() {
   const [aspectRatio, setAspectRatio] = useState<'full' | 'ratio169' | 'ratio916' | 'ratio11'>('full');
   const [isRecording, setIsRecording] = useState(false);
   const [recordTime, setRecordTime] = useState(0);
+  const [downloadInfo, setDownloadInfo] = useState<{ url: string; filename: string; extension: string } | null>(null);
+  const prevDownloadUrlRef = useRef<string | null>(null);
 
   // --- Auto-Recording on Playback ---
   const [autoRecordMode, setAutoRecordMode] = useState(false);
@@ -295,6 +297,15 @@ export default function VisualCreatorPage() {
 
   // Real-time Canvas Video & Audio stream capture recording
   const startRecording = useCallback(() => {
+    // Revoke old URL to free memory
+    if (prevDownloadUrlRef.current) {
+      URL.revokeObjectURL(prevDownloadUrlRef.current);
+      prevDownloadUrlRef.current = null;
+    }
+    setDownloadInfo(null);
+
+    const isSafari = typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
     const canvas = canvasRef.current;
     if (!canvas) {
       alert('Canvas monitor not detected.');
@@ -319,7 +330,9 @@ export default function VisualCreatorPage() {
       ctx.resume();
     }
 
-    const videoStream = (canvas as any).captureStream ? (canvas as any).captureStream(recordFps) : null;
+    const videoStream = (canvas as any).captureStream 
+      ? (isSafari ? (canvas as any).captureStream() : (canvas as any).captureStream(recordFps)) 
+      : null;
     if (!videoStream) {
       alert('Canvas capture is not supported in this browser. Please try Chrome, Firefox, or Safari.');
       return;
@@ -332,15 +345,21 @@ export default function VisualCreatorPage() {
     videoStream.getVideoTracks().forEach((track: any) => combinedStream.addTrack(track));
     dest.stream.getAudioTracks().forEach((track: any) => combinedStream.addTrack(track));
 
-    // Choose container type. We prioritize MP4 container if supported (e.g. on Safari)
-    const mimeTypes = [
-      'video/mp4;codecs=h264,aac',
-      'video/mp4;codecs=h264,opus',
-      'video/mp4',
-      'video/webm;codecs=vp9,opus',
-      'video/webm;codecs=vp8,opus',
-      'video/webm' 
-    ];
+    const mimeTypes = isSafari
+      ? [
+          'video/mp4;codecs=avc1.4d401f,mp4a.40.2',
+          'video/mp4;codecs=h264,aac',
+          'video/mp4', // Safe default on Safari/Apple ecosystem
+          'video/webm;codecs=vp9,opus',
+          'video/webm'
+        ]
+      : [
+          'video/mp4;codecs=h264,aac',
+          'video/webm;codecs=vp9,opus',
+          'video/webm;codecs=vp8,opus',
+          'video/webm'
+        ];
+
     let selectedMime = '';
     for (const mime of mimeTypes) {
       if (MediaRecorder.isTypeSupported(mime)) {
@@ -349,10 +368,11 @@ export default function VisualCreatorPage() {
       }
     }
 
-    // Higher Bitrate (12-24 Mbps) to support ultra sharp canvas frames
-    const options: any = {
-      videoBitsPerSecond: resolutionMultiplier >= 2.2 ? 24000000 : 12000000
-    };
+    // Higher Bitrate (12-24 Mbps) to support ultra sharp canvas frames (only on non-Safari browsers to prevent Apple hardware encoder issues)
+    const options: any = {};
+    if (!isSafari) {
+      options.videoBitsPerSecond = resolutionMultiplier >= 2.2 ? 24000000 : 12000000;
+    }
     if (selectedMime) {
       options.mimeType = selectedMime;
     }
@@ -372,20 +392,35 @@ export default function VisualCreatorPage() {
         const blob = new Blob(recordedChunksRef.current, { type: mimeType });
         const url = URL.createObjectURL(blob);
         const extension = mimeType.includes('mp4') ? 'mp4' : 'webm';
+        const filename = `private-techno-visuals-${Date.now()}.${extension}`;
 
+        // Store download details in state & ref (to revoke later on next record)
+        setDownloadInfo({ url, filename, extension });
+        prevDownloadUrlRef.current = url;
+
+        // Auto-download attempt (might be blocked by Safari, hence the new button)
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = `private-techno-visuals-${Date.now()}.${extension}`;
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
 
         setTimeout(() => {
           document.body.removeChild(a);
-          URL.revokeObjectURL(url);
         }, 100);
 
         analyser.disconnect(dest);
+
+        if (extension === 'webm') {
+          setTimeout(() => {
+            alert(
+              'TRANSMISSION SAVED // Video exported as .webm (Chrome standard).\n\n' +
+              'NOTE FOR iOS WORKFLOW:\n' +
+              'If you want to edit this video in CapCut or play it on your iPhone, we highly recommend recording it using SAFARI to export directly as a 100% compatible .mp4 file. Alternatively, you can convert this .webm file to .mp4 online.'
+            );
+          }, 500);
+        }
       };
 
       mediaRecorderRef.current = recorder;
@@ -421,6 +456,7 @@ export default function VisualCreatorPage() {
     const ctx = new AudioContextClass();
     const analyser = ctx.createAnalyser();
     analyser.fftSize = 512;
+    analyser.smoothingTimeConstant = 0.45; // Fast response for highly reactive techno beats
 
     audioContextRef.current = ctx;
     analyserRef.current = analyser;
@@ -1246,6 +1282,47 @@ export default function VisualCreatorPage() {
             >
               {isRecording ? `🔴 STOP RECORDING [${formatRecordTime(recordTime)}]` : '⏺ RECORD STUDIO SIGNAL'}
             </button>
+
+            {downloadInfo && (
+              <a 
+                href={downloadInfo.url} 
+                download={downloadInfo.filename}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px',
+                  marginTop: '15px',
+                  background: 'rgba(255, 94, 51, 0.15)',
+                  border: '1px solid #ff5e33',
+                  color: '#ff5e33',
+                  padding: '16px',
+                  fontFamily: 'var(--font-orbitron, Orbitron, sans-serif)',
+                  fontSize: '0.85rem',
+                  letterSpacing: '0.15em',
+                  textDecoration: 'none',
+                  textTransform: 'uppercase',
+                  fontWeight: 'bold',
+                  boxShadow: '0 0 20px rgba(255, 94, 51, 0.3)',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  cursor: 'pointer',
+                  textAlign: 'center'
+                }}
+                className={styles.downloadReadyBtn}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#ff5e33';
+                  e.currentTarget.style.color = '#000';
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 94, 51, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 94, 51, 0.15)';
+                  e.currentTarget.style.color = '#ff5e33';
+                  e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 94, 51, 0.3)';
+                }}
+              >
+                <span>📥 DOWNLOAD READY ({downloadInfo.extension.toUpperCase()})</span>
+              </a>
+            )}
           </div>
         </div>
 

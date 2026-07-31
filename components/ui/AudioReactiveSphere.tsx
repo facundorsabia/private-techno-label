@@ -25,40 +25,40 @@ interface PaletteColors {
 
 const PALETTES: Record<string, PaletteColors> = {
   orange: {
-    accentRGB: [232, 85, 15],
-    mouseRGB: [183, 72, 41],
-    mouseHex: '#b74829',
+    accentRGB: [255, 80, 0],       // Vibrant neon orange
+    mouseRGB: [255, 120, 20],
+    mouseHex: '#ff7814',
     baseRGB: [255, 255, 255],
   },
   acid: {
-    accentRGB: [57, 255, 20],
-    mouseRGB: [39, 219, 12],
-    mouseHex: '#27db0c',
+    accentRGB: [57, 255, 20],      // Neon acid green
+    mouseRGB: [45, 235, 10],
+    mouseHex: '#2deb0a',
     baseRGB: [255, 255, 255],
   },
   cyan: {
-    accentRGB: [0, 240, 255],
-    mouseRGB: [0, 180, 220],
-    mouseHex: '#00b4dc',
+    accentRGB: [0, 245, 255],      // Electric electric cyan
+    mouseRGB: [0, 200, 240],
+    mouseHex: '#00c8f0',
     baseRGB: [255, 255, 255],
   },
   crimson: {
-    accentRGB: [255, 10, 40],
-    mouseRGB: [200, 5, 30],
-    mouseHex: '#c8051e',
+    accentRGB: [255, 10, 40],      // Intense crimson red
+    mouseRGB: [220, 5, 25],
+    mouseHex: '#dc0519',
     baseRGB: [255, 255, 255],
   },
   amber: {
-    accentRGB: [255, 176, 0],
-    mouseRGB: [215, 140, 0],
-    mouseHex: '#d78c00',
+    accentRGB: [255, 185, 0],      // Rich glow amber
+    mouseRGB: [230, 150, 0],
+    mouseHex: '#e69600',
     baseRGB: [255, 255, 255],
   },
   monochrome: {
     accentRGB: [255, 255, 255],
-    mouseRGB: [180, 180, 180],
-    mouseHex: '#b4b4b4',
-    baseRGB: [100, 100, 100],
+    mouseRGB: [200, 200, 200],
+    mouseHex: '#c8c8c8',
+    baseRGB: [120, 120, 120],
   }
 };
 
@@ -1329,11 +1329,11 @@ export default function AudioReactiveSphere({
             const dz = uz / distFromCenter;
             
             // Mid frequencies create wave ripples on the geometry surface
-            const ripple = Math.sin(ux * 7 + uy * 7 + time * 8.5) * effMid * 0.22;
+            const ripple = Math.sin(ux * 9 + uy * 9 + time * 22.0) * effMid * 0.38;
             // Treble frequencies trigger micro-vibrations/noise
-            const noise = (Math.random() - 0.5) * effTreble * 0.12;
+            const noise = (Math.random() - 0.5) * effTreble * 0.16;
             
-            const displacement = effBass * 0.25 + ripple + noise;
+            const displacement = effBass * 0.30 + ripple + noise;
             ux += dx * displacement;
             uy += dy * displacement;
             uz += dz * displacement;
@@ -1364,7 +1364,7 @@ export default function AudioReactiveSphere({
         rz = uy * Math.sin(angleX) + rz * Math.cos(angleX);
 
         // 4. Frequency vibrations (ambient + bass pulse if audio exists)
-        const wave = Math.sin(ux * 4 + uy * 4 + time * 3.0) * 4.5;
+        const wave = Math.sin(ux * 4 + uy * 4 + time * 8.0) * 4.5;
         const individualVib = Math.sin(time * p.speed + p.phase) * 1.8;
         
         // Bass kick pulses base sphere size
@@ -1436,9 +1436,10 @@ export default function AudioReactiveSphere({
           }
         }
 
-        // Particle size modulated by prop multiplier and treble spikes
-        const sizeAudioBoost = hasAudio ? effTreble * 1.25 * particleSizeMultiplier : 0;
-        const size = Math.max(0.18, scale * (0.58 * particleSizeMultiplier + (isNearMouse ? 0.50 : 0) + sizeAudioBoost));
+        // Particle size modulated by prop multiplier and treble spikes (higher base size on mobile to pop out)
+        const baseSizeFactor = isMobile ? 0.95 : 0.58; 
+        const sizeAudioBoost = hasAudio ? effTreble * 1.55 * particleSizeMultiplier : 0;
+        const size = Math.max(0.25, scale * (baseSizeFactor * particleSizeMultiplier + (isNearMouse ? 0.50 : 0) + sizeAudioBoost));
 
         projected.push({
           x: screenX,
@@ -1475,7 +1476,7 @@ export default function AudioReactiveSphere({
             accentColorVal = Math.min(1.0, finalOpacity + effTreble * 0.6);
           }
           fill = `rgba(${accentStr}, ${accentColorVal})`;
-          size = Math.max(0.4, p.size * (1.1 + breath * 0.8 + (reactiveColor && hasAudio ? effTreble * 1.6 : 0)));
+          size = Math.max(0.5, p.size * (1.1 + breath * 0.8 + (reactiveColor && hasAudio ? effTreble * 1.8 : 0)));
         }
 
         if (p.isNearMouse) {
@@ -1492,11 +1493,17 @@ export default function AudioReactiveSphere({
         ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Glow halo
+        // Glow halo (for near mouse, blasts, or all accent neon particles to create an electric vibe)
         if (p.isNearMouse || p.blastIntensity > 0.15) {
           ctx.fillStyle = `rgba(${mouseStr}, 0.25)`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, size * 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (orig.isOrange) {
+          // Glow effect for neon particles
+          ctx.fillStyle = `rgba(${accentStr}, 0.22)`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, size * 3.0, 0, Math.PI * 2);
           ctx.fill();
         }
       }
