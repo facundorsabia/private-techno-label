@@ -29,8 +29,8 @@ export default function FeaturedReleaseSection() {
     catalog: 'PRV038',
     cover: '/images/albumCovers/38-va-pashe-II.jpg',
     description: 'A new Sumerian cycle of survival in a dystopian world.',
-    bandcampId: '',
-    bandcampSlug: '',
+    bandcampId: '2487287096',
+    bandcampSlug: 'phase-ii',
     releaseDate: '16.08.2026',
     color: '#b74829'
   };
@@ -215,7 +215,7 @@ export default function FeaturedReleaseSection() {
               {featuredRelease.bandcampId ? (
                 <iframe
                   style={{ border: 0, width: '100%', height: '120px' }}
-                  src={`https://bandcamp.com/EmbeddedPlayer/album=${featuredRelease.bandcampId}/size=large/bgcol=111111/linkcol=b74829/tracklist=false/artwork=small/transparent=true/`}
+                  src={`https://bandcamp.com/EmbeddedPlayer/album=${featuredRelease.bandcampId}/size=large/bgcol=333333/linkcol=b74829/tracklist=false/artwork=small/transparent=true/`}
                   seamless
                   title={`${featuredRelease.title} Bandcamp Player`}
                 />

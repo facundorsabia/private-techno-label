@@ -440,6 +440,15 @@
   margin: 0;
 }
 
+/* --- Player --- */
+.playerContainer {
+  background: var(--black-mid, #0d0d0d);
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  width: 100%;
+}
+
 .actions {
   margin-top: 0.5rem;
   display: flex;

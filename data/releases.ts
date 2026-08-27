@@ -13,6 +13,18 @@ export interface Release {
 
 export const RELEASES: Release[] = [
   {
+    id: 'prv038',
+    title: 'PHASE II',
+    artist: 'VARIOUS ARTISTS',
+    catalog: 'PRV038',
+    cover: '/images/albumCovers/38-va-pashe-II.jpg',
+    description: 'A new Sumerian cycle of survival in a dystopian world. Featuring 7 uncompromising tracks.',
+    bandcampId: '2487287096',
+    bandcampSlug: 'phase-ii',
+    releaseDate: '2026',
+    color: '#b74829'
+  },
+  {
     id: 'prv037',
     title: '003%',
     artist: 'PIERO CERAOLO',
